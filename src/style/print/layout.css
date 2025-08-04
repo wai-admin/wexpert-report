@@ -1,0 +1,32 @@
+/* 프린트 시 전역 스타일 */
+@media print {
+  /* 브라우저 기본 마진/패딩 제거 */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* 페이지 설정 */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  /* 브라우저 헤더/푸터 제거 */
+  @page :first {
+    margin-top: 0;
+  }
+
+  @page :left {
+    margin-left: 0;
+  }
+
+  @page :right {
+    margin-right: 0;
+  }
+}
