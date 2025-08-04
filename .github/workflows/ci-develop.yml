@@ -10,7 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env: # 모든 step에서 공유되는 환경변수
-      AWS_REGION: ap-northeast-2
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
 
     steps:
       - name: 📷 Checkout repository
@@ -38,16 +40,11 @@ jobs:
 
       - name: 📤 Deploy to S3
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           S3_BUCKET: wexpert-report-dev
         run: aws s3 sync ./dist s3://wexpert-report-dev --delete
 
       - name: 🔁 Invalidate CloudFront cache
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id E500WWNNMEC4H \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID_DEV }} \
             --paths "/*"
