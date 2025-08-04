@@ -1,0 +1,10 @@
+.info-input {
+  display: flex;
+  min-height: 120px;
+  border: 1px solid rgb(153, 153, 153);
+  margin-top: 20px;
+  padding: 12px 10px;
+  font-size: 13px;
+  font-weight: 400;
+  color: black;
+}

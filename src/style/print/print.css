@@ -38,7 +38,6 @@
 .a4-page {
   width: 210mm;
   height: 297mm;
-  margin: 0 auto;
   position: relative;
   overflow: hidden;
 }
@@ -81,6 +80,14 @@
     display: none;
   }
 
+  .a4-container {
+    width: 210mm;
+    background-color: white;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+  }
+
   .a4-page {
     box-shadow: none;
     margin: 0;
@@ -90,5 +97,10 @@
   .a4-content {
     padding: 50px 40px;
     margin: 0;
+  }
+
+  .page-break-avoid {
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 }
