@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env: # 모든 step에서 공유되는 환경변수
+      AWS_REGION: ap-northeast-2
+
+    steps:
+      - name: 📷 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🦿 Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22.13.1
+
+      - name: 🔧 Install pnpm
+        run: npm i -g pnpm
+
+      - name: 📦 Install dependencies
+        run: pnpm install
+
+      - name: 🧹 Lint
+        run: pnpm lint
+
+      - name: 🌐 Build
+        run: pnpm build
+
+      - name: 🔍 Check generated files
+        run: ls -R dist
+
+      - name: 📤 Deploy to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          S3_BUCKET: wexpert-report-dev
+        run: aws s3 sync ./dist s3://wexpert-report-dev --delete
+
+      - name: 🔁 Invalidate CloudFront cache
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id E500WWNNMEC4H \
+            --paths "/*"
