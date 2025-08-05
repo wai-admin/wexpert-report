@@ -6,9 +6,8 @@ const Header = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        paddingBottom: "20px",
+        paddingBottom: "16px",
         borderBottom: "1px solid black",
-        marginBottom: "24px",
       }}
     >
       <p style={{ fontSize: "18px", fontWeight: "bold" }}>병원명</p>
