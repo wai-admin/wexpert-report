@@ -1,5 +1,7 @@
 @import "./print/layout.css";
 @import "./print/print.css";
+@import "./print/table.css";
+@import "./print/input.css";
 
 html,
 body {
@@ -18,4 +20,10 @@ h3 {
   list-style: none;
   height: fit-content;
   line-height: 120%;
+}
+
+table {
+  border-collapse: unset;
+  text-indent: initial;
+  border-spacing: 0px;
 }
