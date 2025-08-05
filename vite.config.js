@@ -1,9 +1,13 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react({
+      // React 17+ JSX Transform 사용 (import React 불필요)
+      jsxRuntime: "automatic",
+    }),
+  ],
   server: {
     port: 3000,
     open: true, // 자동 브라우저 열기

@@ -1,0 +1,6 @@
+const PRINT_CONFIG = {
+  FIRST_PAGE_ITEMS: 2,
+  ITEMS_PER_PAGE: 5,
+};
+
+export { PRINT_CONFIG };

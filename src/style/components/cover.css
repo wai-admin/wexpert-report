@@ -1,0 +1,57 @@
+.cover-logo {
+  width: 78px;
+  height: 30px;
+}
+
+.cover-title-highlight {
+  font-size: 34px;
+  font-weight: bold;
+  color: rgb(0, 108, 224);
+}
+
+.cover-title-normal {
+  font-size: 34px;
+  font-weight: bold;
+  color: black;
+}
+
+.cover-description {
+  font-size: 14px;
+  color: rgb(102, 102, 102);
+}
+
+.cover-reposition {
+  margin: 2px 0 0 3px;
+}
+
+.cover-wexpert-logo {
+  width: 52px;
+  height: 12px;
+}
+
+.cover-hospital-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}
+
+.cover-footer {
+  position: absolute;
+  left: 0;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 30px;
+}
+
+.cover-background {
+  width: 100%;
+  height: auto;
+}
+
+.cover-footer-text {
+  font-size: 14px;
+  color: rgb(185, 185, 185);
+}

@@ -1,4 +1,4 @@
-const imageMock = [
+const analysisMockItems = [
   {
     id: 1,
     status: "normal",
@@ -71,4 +71,4 @@ const imageMock = [
   // },
 ];
 
-export { imageMock };
+export { analysisMockItems };
