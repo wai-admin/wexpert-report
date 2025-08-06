@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { Cover, FirstPage, RemainingPage } from "@/pages";
 import { PrintButton } from "@/components";
@@ -6,7 +6,22 @@ import { analysisMockItems } from "@/constants/mock";
 import { PRINT_CONFIG } from "@/constants/config";
 
 const PrintPage = () => {
+  const [receivedMessage, setReceivedMessage] = useState<string>("");
   const printRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function callNative() {
+      window.chrome?.webview?.postMessage("initialized");
+    }
+
+    function receiveNative(param: MessageEvent) {
+      const message = JSON.stringify(param.data);
+      setReceivedMessage(message);
+    }
+
+    callNative();
+    window.addEventListener("message", receiveNative);
+  }, []);
 
   // 첫 페이지에 표시될 아이템들 (최대 2개)
   const firstPageItems = analysisMockItems.slice(
@@ -19,6 +34,7 @@ const PrintPage = () => {
   return (
     <div className="print-preview-container">
       <PrintButton printRef={printRef} />
+      {receivedMessage}
       <div ref={printRef} className="a4-container">
         <Cover />
         <FirstPage analysisItems={firstPageItems} />
