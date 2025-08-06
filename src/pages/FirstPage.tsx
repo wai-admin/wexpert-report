@@ -6,7 +6,11 @@ import {
   A4Template,
 } from "@/components";
 
-const FirstPage = ({ analysisItems }) => {
+interface FirstPageProps {
+  analysisItems: any[];
+}
+
+const FirstPage = ({ analysisItems }: FirstPageProps) => {
   return (
     <A4Template key="first-page">
       <PatientInformation />

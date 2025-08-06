@@ -6,7 +6,7 @@ import { analysisMockItems } from "@/constants/mock";
 import { PRINT_CONFIG } from "@/constants/config";
 
 const PrintPage = () => {
-  const printRef = useRef();
+  const printRef = useRef<HTMLDivElement>(null);
 
   // 첫 페이지에 표시될 아이템들 (최대 2개)
   const firstPageItems = analysisMockItems.slice(

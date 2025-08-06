@@ -1,7 +1,11 @@
 import { A4Template, Assessment, AnalysisResult } from "@/components";
 import { PRINT_CONFIG } from "@/constants/config";
 
-const RemainingPage = ({ analysisItems }) => {
+interface RemainingPageProps {
+  analysisItems: any[];
+}
+
+const RemainingPage = ({ analysisItems }: RemainingPageProps) => {
   const allPages = [];
   const { FIRST_PAGE_ITEMS, ITEMS_PER_PAGE } = PRINT_CONFIG;
 
