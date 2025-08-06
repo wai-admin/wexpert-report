@@ -22,7 +22,10 @@ const PrintPage = () => {
       <div ref={printRef} className="a4-container">
         <Cover />
         <FirstPage analysisItems={firstPageItems} />
-        <RemainingPage analysisItems={remainingItems} />
+        <RemainingPage
+          firstPageItems={firstPageItems}
+          analysisItems={remainingItems}
+        />
       </div>
     </div>
   );

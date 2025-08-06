@@ -2,12 +2,24 @@ import { A4Template, Assessment, AnalysisResult } from "@/components";
 import { PRINT_CONFIG } from "@/constants/config";
 
 interface RemainingPageProps {
+  firstPageItems: any[];
   analysisItems: any[];
 }
 
-const RemainingPage = ({ analysisItems }: RemainingPageProps) => {
+const RemainingPage = ({
+  firstPageItems,
+  analysisItems,
+}: RemainingPageProps) => {
   const allPages = [];
   const { FIRST_PAGE_ITEMS, ITEMS_PER_PAGE } = PRINT_CONFIG;
+
+  // 첫 페이지의 analysisItems이 2개이고 (2개 미만이면 첫 페이지에서 [담당 의사 소견] 표시) 남은 페이지의 analysisItems이 없는 경우 [담당 의사 소견] 표시
+  const hasFirstPageItems =
+    firstPageItems.length === 2 && analysisItems.length === 0;
+  // 마지막 페이지가 꽉 찬 경우 [담당 의사 소견]만 표시
+  const isLastPageAndFull =
+    analysisItems.length > 0 && analysisItems.length % ITEMS_PER_PAGE === 0;
+  const showAssessment = hasFirstPageItems || isLastPageAndFull;
 
   // ITEMS_PER_PAGE(5개)씩 그룹으로 나누어 페이지 생성 (한 페이지 최대 5개)
   for (let i = 0; i < analysisItems.length; i += ITEMS_PER_PAGE) {
@@ -42,9 +54,12 @@ const RemainingPage = ({ analysisItems }: RemainingPageProps) => {
     );
   }
 
-  // 마지막 페이지가 꽉 찬 경우 새로운 페이지에 "끝" 표시
-  if (analysisItems.length > 0 && analysisItems.length % ITEMS_PER_PAGE === 0) {
-    allPages.push(<Assessment />);
+  if (showAssessment) {
+    allPages.push(
+      <A4Template key="100" pageNumber={100}>
+        <Assessment />
+      </A4Template>
+    );
   }
 
   return <>{allPages}</>;
