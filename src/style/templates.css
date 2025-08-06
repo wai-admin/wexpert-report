@@ -54,6 +54,20 @@
   box-sizing: border-box;
 }
 
+/* A4 Page Number */
+.page-number-container {
+  position: absolute;
+  bottom: 11px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.page-number {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgb(153, 153, 153);
+}
+
 @media print {
   .a4-page {
     box-shadow: none;

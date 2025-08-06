@@ -14,8 +14,8 @@ const RemainingPage = ({ analysisItems }: RemainingPageProps) => {
     // 현재 페이지에 들어갈 아이템들을 추출 (i부터 i+ITEMS_PER_PAGE까지)
     const pageItems = analysisItems.slice(i, i + ITEMS_PER_PAGE);
 
-    // 현재 페이지 번호 계산 (0부터 시작하므로 +1)
-    const pageNumber = Math.floor(i / ITEMS_PER_PAGE) + 1;
+    // 현재 페이지 번호 계산 (0부터 시작하므로 +1, FirstPage가 있으므로 +1)
+    const pageNumber = Math.floor(i / ITEMS_PER_PAGE) + 2;
 
     // 현재 페이지가 마지막 페이지인지 확인 (i + ITEMS_PER_PAGE가 전체 길이보다 크거나 같으면 마지막 페이지)
     const isLastPage = i + ITEMS_PER_PAGE >= analysisItems.length;
@@ -25,7 +25,7 @@ const RemainingPage = ({ analysisItems }: RemainingPageProps) => {
 
     // 현재 페이지를 allPages 배열에 추가
     allPages.push(
-      <A4Template key={`page-${pageNumber}`}>
+      <A4Template key={`page-${pageNumber}`} pageNumber={pageNumber}>
         {/* 현재 페이지의 아이템들을 렌더링 */}
         {pageItems.map((item, index) => {
           // 전체 인덱스 계산 (첫 페이지 아이템 수 + 현재 페이지 시작 위치 + 현재 아이템 위치)

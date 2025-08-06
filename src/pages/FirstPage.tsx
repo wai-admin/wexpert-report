@@ -12,7 +12,7 @@ interface FirstPageProps {
 
 const FirstPage = ({ analysisItems }: FirstPageProps) => {
   return (
-    <A4Template key="first-page">
+    <A4Template key="first-page" pageNumber={1}>
       <PatientInformation />
       <AnalysisSummary />
       <RecommendTreatment />
