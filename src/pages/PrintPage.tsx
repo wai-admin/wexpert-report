@@ -12,15 +12,24 @@ const PrintPage = () => {
   useEffect(() => {
     function callNative() {
       window.chrome?.webview?.postMessage("initialized");
+      alert("callNative");
+      console.log("callNative");
     }
 
     function receiveNative(param: MessageEvent) {
       const message = JSON.stringify(param.data);
       setReceivedMessage(message);
+      alert("receiveNative" + message);
+      console.log("receiveNative", message);
     }
 
-    callNative();
     window.addEventListener("message", receiveNative);
+
+    callNative();
+
+    return () => {
+      window.removeEventListener("message", receiveNative);
+    };
   }, []);
 
   // 첫 페이지에 표시될 아이템들 (최대 2개)
