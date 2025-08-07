@@ -11,7 +11,17 @@ const PrintPage = () => {
 
   useEffect(() => {
     function callNative() {
+      // 문자열 형태로 전송
       window.chrome?.webview?.postMessage("initialized");
+
+      // 객체 형태로도 전송 가능
+      window.chrome?.webview?.postMessage({
+        type: "progress",
+        payload: {
+          value: true,
+        },
+      });
+
       console.log("callNative");
     }
 
@@ -21,6 +31,9 @@ const PrintPage = () => {
       alert("receiveNative" + message);
       console.log("receiveNative", message);
     }
+
+    // ✅ 전역(window) 함수로 등록
+    window.receiveNative = receiveNative;
 
     window.addEventListener("message", receiveNative);
 
