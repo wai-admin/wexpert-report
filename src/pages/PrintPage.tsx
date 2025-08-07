@@ -19,14 +19,14 @@ const PrintPage = () => {
 
     function callNative() {
       // 문자열 형태로 전송
-      window.chrome?.webview?.postMessage("initialized");
+      window.chrome?.webview?.postMessage({
+        type: "initialized",
+      });
 
       // 객체 형태로도 전송 가능
       window.chrome?.webview?.postMessage({
         type: "progress",
-        payload: {
-          value: true,
-        },
+        payload: true,
       });
 
       console.log("callNative");
