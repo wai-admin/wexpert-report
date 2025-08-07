@@ -19,7 +19,7 @@ const PrintPage = () => {
 
   return (
     <div className="print-preview-container">
-      {/* <PrintButton printRef={printRef} /> */}
+      <PrintButton printRef={printRef} />
       {receivedMessage && (
         <div>
           받은 메시지:{" "}
