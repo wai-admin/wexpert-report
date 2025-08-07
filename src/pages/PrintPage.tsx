@@ -1,44 +1,13 @@
-import { useState, useRef, useEffect } from "react";
-
+import { useRef } from "react";
 import { Cover, FirstPage, RemainingPage } from "@/pages";
 import { PrintButton } from "@/components";
 import { analysisMockItems } from "@/constants/mock";
 import { PRINT_CONFIG } from "@/constants/config";
+import { useMessageStore } from "@/store/messageStore";
 
 const PrintPage = () => {
-  const [receivedMessage, setReceivedMessage] = useState<string>("");
   const printRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    console.log("window", window.chrome);
-
-    const receiveNative = (event: any) => {
-      const message =
-        typeof event.data === "string"
-          ? event.data
-          : JSON.stringify(event.data);
-      setReceivedMessage(message);
-      alert("receiveNative: " + message);
-      console.log("receiveNative from C#: ", message);
-    };
-
-    window.chrome?.webview?.addEventListener("message", receiveNative);
-
-    function callNative() {
-      // 문자열 형태로 전송
-      window.chrome?.webview?.postMessage({
-        type: "initialized",
-      });
-
-      console.log("callNative");
-    }
-
-    callNative();
-
-    return () => {
-      window.chrome?.webview?.removeEventListener("message", receiveNative);
-    };
-  }, []);
+  const { receivedMessage } = useMessageStore();
 
   // 첫 페이지에 표시될 아이템들 (최대 2개)
   const firstPageItems = analysisMockItems.slice(
@@ -51,7 +20,14 @@ const PrintPage = () => {
   return (
     <div className="print-preview-container">
       {/* <PrintButton printRef={printRef} /> */}
-      {receivedMessage}
+      {receivedMessage && (
+        <div>
+          받은 메시지:{" "}
+          {typeof receivedMessage === "string"
+            ? receivedMessage
+            : JSON.stringify(receivedMessage, null, 2)}
+        </div>
+      )}
       <div ref={printRef} className="a4-container">
         <Cover />
         <FirstPage analysisItems={firstPageItems} />
