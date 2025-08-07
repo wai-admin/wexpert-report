@@ -12,7 +12,6 @@ const PrintPage = () => {
   useEffect(() => {
     function callNative() {
       window.chrome?.webview?.postMessage("initialized");
-      alert("callNative");
       console.log("callNative");
     }
 
