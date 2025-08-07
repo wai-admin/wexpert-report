@@ -21,8 +21,9 @@
 /* A4 프린트 미리보기 스타일 */
 .print-preview-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   position: relative;
   min-height: 100vh;
   padding: 20px;

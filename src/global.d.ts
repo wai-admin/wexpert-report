@@ -3,11 +3,11 @@ declare global {
     chrome?: {
       webview?: {
         postMessage: (message: string | object) => void;
-        addEventListener?: (
+        addEventListener: (
           event: "message",
           listener: (event: any) => void
         ) => void;
-        removeEventListener?: (
+        removeEventListener: (
           event: "message",
           listener: (event: any) => void
         ) => void;

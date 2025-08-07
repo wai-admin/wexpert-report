@@ -10,23 +10,24 @@ const PrintPage = () => {
   const printRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log("window", window);
-    // ✅ 전역(window) 함수로 등록
-    window.receiveNative = (param: any) => {
-      console.log("C#에서 전달받은 메시지 [receiveNative]: ", param);
-      setReceivedMessage(JSON.stringify(param));
+    console.log("window", window.chrome);
+
+    const receiveNative = (event: any) => {
+      const message =
+        typeof event.data === "string"
+          ? event.data
+          : JSON.stringify(event.data);
+      setReceivedMessage(message);
+      alert("receiveNative: " + message);
+      console.log("receiveNative from C#: ", message);
     };
+
+    window.chrome?.webview?.addEventListener("message", receiveNative);
 
     function callNative() {
       // 문자열 형태로 전송
       window.chrome?.webview?.postMessage({
         type: "initialized",
-      });
-
-      // 객체 형태로도 전송 가능
-      window.chrome?.webview?.postMessage({
-        type: "progress",
-        payload: true,
       });
 
       console.log("callNative");
@@ -35,7 +36,7 @@ const PrintPage = () => {
     callNative();
 
     return () => {
-      delete window.receiveNative;
+      window.chrome?.webview?.removeEventListener("message", receiveNative);
     };
   }, []);
 
@@ -49,7 +50,7 @@ const PrintPage = () => {
 
   return (
     <div className="print-preview-container">
-      <PrintButton printRef={printRef} />
+      {/* <PrintButton printRef={printRef} /> */}
       {receivedMessage}
       <div ref={printRef} className="a4-container">
         <Cover />
