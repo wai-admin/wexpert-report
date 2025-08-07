@@ -10,6 +10,13 @@ const PrintPage = () => {
   const printRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    console.log("window", window);
+    // ✅ 전역(window) 함수로 등록
+    window.receiveNative = (param: any) => {
+      console.log("C#에서 전달받은 메시지 [receiveNative]: ", param);
+      setReceivedMessage(JSON.stringify(param));
+    };
+
     function callNative() {
       // 문자열 형태로 전송
       window.chrome?.webview?.postMessage("initialized");
@@ -25,22 +32,10 @@ const PrintPage = () => {
       console.log("callNative");
     }
 
-    function receiveNative(param: MessageEvent) {
-      const message = JSON.stringify(param.data);
-      setReceivedMessage(message);
-      alert("receiveNative" + message);
-      console.log("receiveNative", message);
-    }
-
-    // ✅ 전역(window) 함수로 등록
-    window.receiveNative = receiveNative;
-
-    window.addEventListener("message", receiveNative);
-
     callNative();
 
     return () => {
-      window.removeEventListener("message", receiveNative);
+      delete window.receiveNative;
     };
   }, []);
 
