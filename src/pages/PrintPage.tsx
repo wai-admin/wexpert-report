@@ -67,8 +67,24 @@ const PrintPage = () => {
       : "",
     analysisDate: formatAnalysisDate(patientSummary.analysisDateTime),
   };
-  // 분석 결과 아이템들
-  const analysisItems = patientDetail.sonographies;
+  // 파열 관련 모든 아이템들
+  const ruptureAnalysisItems = patientDetail.sonographies.filter(
+    (item: Sonography) =>
+      item.analysis.labels.some((label) => label.result_type === "rupture")
+  );
+  // 파열 감지 결과가 없는 아이템들
+  const positiveAnalysisItems = ruptureAnalysisItems.filter(
+    (item: Sonography) =>
+      item.analysis.labels.some(
+        (label) =>
+          label.result_type === "rupture" && label.result_class !== "exist"
+      )
+  );
+  // 파열 관련 아이템들
+  const analysisItems =
+    nativeMessage?.exportOptionType === "only_positive_case"
+      ? positiveAnalysisItems
+      : ruptureAnalysisItems;
   // 전체 분석 결과 갯수
   const analysisCount = analysisItems.length;
   // 파열 감지 갯수
