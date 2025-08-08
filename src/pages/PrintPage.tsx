@@ -13,17 +13,21 @@ const PrintPage = () => {
   const { nativeMessage } = useMessageStore();
   const { data: reportData } = useQuery({
     queryKey: QUERY_KEYS.REPORT.DETAIL(
-      "id" in (nativeMessage || {})
+      nativeMessage && "id" in nativeMessage
         ? (nativeMessage as any).id?.toString() || ""
         : ""
     ),
     queryFn: () =>
       reportApi.getReport(
-        "id" in (nativeMessage || {})
+        nativeMessage && "id" in nativeMessage
           ? (nativeMessage as any).id?.toString() || ""
           : ""
       ),
-    enabled: "id" in (nativeMessage || {}) && !!(nativeMessage as any).id, // patientId가 있을 때만 실행
+    enabled: !!(
+      nativeMessage &&
+      "id" in nativeMessage &&
+      (nativeMessage as any).id
+    ), // patientId가 있을 때만 실행
   });
 
   console.log("PrintPage nativeMessage: ", nativeMessage);
