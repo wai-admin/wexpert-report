@@ -6,7 +6,8 @@ import { useMessageStore } from "@/store/messageStore";
 import { useQuery } from "@/hooks/useQuery";
 import { reportApi } from "@/services/api";
 import { QUERY_KEYS } from "@/lib/queryKeys";
-import { checkFalsy } from "@/utils/common";
+import { checkFalsy, checkTruthy } from "@/utils/common";
+import { formatAnalysisDate } from "@/utils/date";
 import { Sonography } from "@/lib/reportType";
 
 const PrintPage = () => {
@@ -55,10 +56,14 @@ const PrintPage = () => {
   const hospitalName = patientSummary.hospitalName;
   // 환자 정보
   const patientInformation = {
-    chatNumber: "",
+    chatNumber: checkTruthy(nativeMessage) ? nativeMessage.chartNo : "",
     patientName: patientDetail.name,
-    birth: "",
-    analysisDate: patientSummary.analysisDateTime,
+    birth: checkTruthy(nativeMessage)
+      ? `${nativeMessage.birthDay ?? "-"}/${nativeMessage.birthMonth ?? "-"}/${
+          nativeMessage.birthYear ?? "-"
+        }`
+      : "",
+    analysisDate: formatAnalysisDate(patientSummary.analysisDateTime),
   };
   // 분석 결과 아이템들
   const analysisItems = patientDetail.sonographies;
