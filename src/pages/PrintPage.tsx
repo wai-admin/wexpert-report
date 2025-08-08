@@ -12,30 +12,30 @@ import { Sonography } from "@/lib/reportType";
 const PrintPage = () => {
   const printRef = useRef<HTMLDivElement>(null);
   const { nativeMessage } = useMessageStore();
-  // const { data: reportData } = useQuery({
-  //   queryKey: QUERY_KEYS.REPORT.DETAIL(
-  //     nativeMessage && "id" in nativeMessage
-  //       ? (nativeMessage as any).id?.toString() || ""
-  //       : ""
-  //   ),
-  //   queryFn: () =>
-  //     reportApi.getReport(
-  //       nativeMessage && "id" in nativeMessage
-  //         ? (nativeMessage as any).id?.toString() || ""
-  //         : ""
-  //     ),
-  //   enabled: !!(
-  //     nativeMessage &&
-  //     "id" in nativeMessage &&
-  //     (nativeMessage as any).id
-  //   ), // patientId가 있을 때만 실행
-  // });
-
   const { data: reportData } = useQuery({
-    queryKey: QUERY_KEYS.REPORT.DETAIL("698"),
-    queryFn: () => reportApi.getReport("698"),
-    enabled: true, // patientId가 있을 때만 실행
+    queryKey: QUERY_KEYS.REPORT.DETAIL(
+      nativeMessage && "id" in nativeMessage
+        ? (nativeMessage as any).id?.toString() || ""
+        : ""
+    ),
+    queryFn: () =>
+      reportApi.getReport(
+        nativeMessage && "id" in nativeMessage
+          ? (nativeMessage as any).id?.toString() || ""
+          : ""
+      ),
+    enabled: !!(
+      nativeMessage &&
+      "id" in nativeMessage &&
+      (nativeMessage as any).id
+    ), // patientId가 있을 때만 실행
   });
+
+  // const { data: reportData } = useQuery({
+  //   queryKey: QUERY_KEYS.REPORT.DETAIL("698"),
+  //   queryFn: () => reportApi.getReport("698"),
+  //   enabled: true, // patientId가 있을 때만 실행
+  // });
 
   console.log("PrintPage nativeMessage: ", nativeMessage);
   console.log("PrintPage reportData: ", reportData?.data);
