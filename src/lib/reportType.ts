@@ -7,11 +7,10 @@ interface PatientSummary {
 }
 
 // 분석 요약
-interface AnalysisSummary {
-  imageId: string;
-  progress: "inProgress" | "success" | "failure"; // 가능한 값이 셋이라면 유니언 타입
-  ruptureTriage: boolean;
-  tcTriage: boolean;
+export interface AnalysisSummary {
+  implantPosition: string;
+  ruptureStatus: string;
+  surfaceType: string;
 }
 
 // 라벨 정보
@@ -40,7 +39,7 @@ interface ConsultationSummary {
 }
 
 // 초음파(sonography) 데이터
-interface Sonography {
+export interface Sonography {
   id: string;
   imageUrl: string;
   originalFileName: string;
@@ -65,9 +64,13 @@ interface PatientDetail {
 }
 
 // 전체 응답 타입
-export interface ReportResponse {
+export interface ReportDetail {
   patientSummary: PatientSummary;
   analysisSummary: AnalysisSummary;
   recommendedTreatment: string;
   patientDetail: PatientDetail;
+}
+
+export interface ReportResponse {
+  data: ReportDetail;
 }

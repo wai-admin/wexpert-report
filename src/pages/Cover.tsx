@@ -1,4 +1,8 @@
-const Cover = () => {
+interface CoverProps {
+  hospitalName: string;
+}
+
+const Cover = ({ hospitalName }: CoverProps) => {
   return (
     <div className="a4-page">
       <div className="a4-content">
@@ -20,7 +24,7 @@ const Cover = () => {
             </p>
           </div>
           <div style={{ marginTop: "50px" }}>
-            <h1 className="cover-hospital-name">병원명</h1>
+            <h1 className="cover-hospital-name">{hospitalName}</h1>
           </div>
         </div>
       </div>

@@ -7,21 +7,46 @@ import {
   Assessment,
 } from "@/components";
 import { PRINT_CONFIG } from "@/constants/config";
+import {
+  AnalysisSummary as AnalysisSummaryType,
+  Sonography,
+} from "@/lib/reportType";
 
 interface FirstPageProps {
-  analysisItems: any[];
+  patientInformation: {
+    chatNumber: string;
+    patientName: string;
+    birth: string;
+    analysisDate: string;
+  };
+  analysisSummary: AnalysisSummaryType;
+  recommendedTreatment: string;
+  analysisItems: Sonography[];
+  analysisCount: number;
+  ruptureCount: number;
 }
 
-const FirstPage = ({ analysisItems }: FirstPageProps) => {
+const FirstPage = ({
+  patientInformation,
+  analysisSummary,
+  recommendedTreatment,
+  analysisItems,
+  analysisCount,
+  ruptureCount,
+}: FirstPageProps) => {
   // 첫 페이지의 analysisItems이 0~1개면 [담당 의사 소견] 표시
   const showAssessment = analysisItems.length < PRINT_CONFIG.FIRST_PAGE_ITEMS;
 
   return (
     <A4Template key="first-page" pageNumber={1}>
-      <PatientInformation />
-      <AnalysisSummary />
-      <RecommendTreatment />
-      <AnalysisViewer analysisItems={analysisItems} />
+      <PatientInformation patientInformation={patientInformation} />
+      <AnalysisSummary analysisSummary={analysisSummary} />
+      <RecommendTreatment recommendedTreatment={recommendedTreatment} />
+      <AnalysisViewer
+        analysisItems={analysisItems}
+        analysisCount={analysisCount}
+        ruptureCount={ruptureCount}
+      />
       {showAssessment && <Assessment />}
     </A4Template>
   );

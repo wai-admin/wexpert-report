@@ -50,5 +50,6 @@ table tr:not(:first-child) {
   background-color: white;
   font-size: 14px;
   font-weight: 500;
+  line-height: 1;
   color: #212121;
 }

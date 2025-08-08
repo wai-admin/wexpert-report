@@ -1,6 +1,13 @@
 import { NumberedList } from "@/components";
+import { AnalysisSummary as AnalysisSummaryType } from "@/lib/reportType";
 
-const AnalysisSummary = () => {
+interface AnalysisSummaryProps {
+  analysisSummary: AnalysisSummaryType;
+}
+
+const AnalysisSummary = ({ analysisSummary }: AnalysisSummaryProps) => {
+  const { implantPosition, ruptureStatus, surfaceType } = analysisSummary;
+
   return (
     <div className="column">
       <NumberedList number={2} title="AI 분석 요약" />
@@ -8,15 +15,15 @@ const AnalysisSummary = () => {
         <tbody>
           <tr>
             <td className="td-label">보형물 삽입 위치</td>
-            <td className="td-value"></td>
+            <td className="td-value">{implantPosition}</td>
           </tr>
           <tr>
             <td className="td-label">표면 타입</td>
-            <td className="td-value"></td>
+            <td className="td-value">{surfaceType}</td>
           </tr>
           <tr>
             <td className="td-label">파열 여부</td>
-            <td className="td-value"></td>
+            <td className="td-value">{ruptureStatus}</td>
           </tr>
         </tbody>
       </table>
