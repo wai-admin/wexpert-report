@@ -1,13 +1,15 @@
 import { BrowserRouter } from "react-router-dom";
 import GlobalRoutes from "@/routes/GlobalRoutes";
-import GlobalProvider from "@/provider/GlobalProvider";
+import { GlobalProvider, QueryProvider } from "@/provider";
 
 function App() {
   return (
     <BrowserRouter>
-      <GlobalProvider>
-        <GlobalRoutes />
-      </GlobalProvider>
+      <QueryProvider>
+        <GlobalProvider>
+          <GlobalRoutes />
+        </GlobalProvider>
+      </QueryProvider>
     </BrowserRouter>
   );
 }
