@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { AnalysisImage } from "@/components";
 import { Sonography } from "@/lib/reportType";
 import { Point } from "rulyotano.math.geometry";
+import { useMessageStore } from "@/store";
 
 interface AnalysisResultProps {
   index: number;
@@ -10,12 +11,15 @@ interface AnalysisResultProps {
 
 const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
   const [roiCoordinates, setRoiCoordinates] = useState<Point[][]>([]);
+  const { nativeMessage } = useMessageStore();
 
   const { analysis, imageUrl, originalFileName } = item;
   const ruptureResult = analysis.labels.find(
     (label) => label.result_type === "rupture"
   );
   const isRupture = ruptureResult?.result_class === "exist";
+  const isHiddenResult =
+    nativeMessage?.exportOptionType === "only_positive_case" && isRupture;
 
   useEffect(() => {
     if (isRupture) {
@@ -36,6 +40,10 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
       setRoiCoordinates(allGroups);
     }
   }, [roiCoordinates]);
+
+  if (isHiddenResult) {
+    return <></>;
+  }
 
   return (
     <div className="analysis-container" style={{ marginTop: "14px" }}>
