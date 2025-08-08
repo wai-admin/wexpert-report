@@ -6,5 +6,7 @@ export { default as Assessment } from "./Assessment";
 
 export { default as A4Template } from "./templates/A4Template";
 export { default as AnalysisResult } from "./analysis/AnalysisResult";
+export { default as AnalysisImage } from "./analysis/AnalysisImage";
+export { default as ROIOverlay } from "./analysis/ROIOverlay";
 export { default as PrintButton } from "./button/PrintButton";
 export { default as NumberedList } from "./text/NumberedList";
