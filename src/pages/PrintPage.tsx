@@ -1,25 +1,33 @@
-import { useRef } from "react";
-import { Cover, FirstPage, RemainingPage } from "@/pages";
-// import { PrintButton } from "@/components";
-import { PRINT_CONFIG } from "@/constants/print-config";
+import { useRef, useEffect } from "react";
+import { useQuery, useWebViewLoading, usePrintHandler } from "@/hooks";
 import { useMessageStore, usePrintStore } from "@/store";
-import { useQuery } from "@/hooks/useQuery";
+import { Cover, FirstPage, RemainingPage } from "@/pages";
+import {
+  QUERY_KEYS,
+  Sonography,
+  ExportOptionType,
+  NativeDefaultMessage,
+} from "@/lib";
 import { reportApi } from "@/services/api";
-import { QUERY_KEYS } from "@/lib/queryKeys";
-import { checkFalsy, getPatientId, hasValidPatientId } from "@/utils/common";
-import { formatAnalysisDate } from "@/utils/date";
-import { Sonography } from "@/lib/reportType";
-import { useWebViewLoading } from "@/hooks/useWebViewLoading";
-import { usePrintHandler } from "@/hooks/usePrintHandler";
-import { NativeDefaultMessage } from "@/lib/nativeMessageType";
-import { useEffect } from "react";
+import { PRINT_CONFIG } from "@/constants/print-config";
+import {
+  checkFalsy,
+  getPatientId,
+  hasValidPatientId,
+  formatAnalysisDate,
+  formatBirthDate,
+} from "@/utils";
+// import { PrintButton } from "@/components";
 
 const PrintPage = () => {
   const printRef = useRef<HTMLDivElement>(null);
+
   const { nativeMessage } = useMessageStore();
   const { isPrintRequested } = usePrintStore();
   const { handlePrint } = usePrintHandler(printRef);
+
   const patientId = getPatientId(nativeMessage);
+
   const { data: reportData, isFetching } = useQuery({
     queryKey: QUERY_KEYS.REPORT.DETAIL(patientId),
     queryFn: () => reportApi.getReport(patientId),
@@ -62,11 +70,11 @@ const PrintPage = () => {
   const patientInformation = {
     chatNumber: patientInfo?.chartNo || "",
     patientName: patientDetail.name,
-    birth: patientInfo
-      ? `${patientInfo.birthYear ?? "-"}/${patientInfo.birthMonth ?? "-"}/${
-          patientInfo.birthDay ?? "-"
-        }`
-      : "",
+    birth: formatBirthDate(
+      patientInfo?.birthYear,
+      patientInfo?.birthMonth,
+      patientInfo?.birthDay
+    ),
     analysisDate: formatAnalysisDate(patientSummary.analysisDateTime),
   };
   // 분석 아이템 필터링
@@ -75,7 +83,7 @@ const PrintPage = () => {
   );
 
   const analysisItems =
-    patientInfo?.exportOptionType === "only_positive_case"
+    patientInfo?.exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE
       ? ruptureItems.filter((item: Sonography) =>
           item.analysis.labels.some(
             (label) =>
@@ -110,6 +118,7 @@ const PrintPage = () => {
           analysisItems={firstPageItems}
           analysisCount={analysisCount}
           ruptureCount={ruptureCount}
+          exportOptionType={patientInfo?.exportOptionType}
         />
         <RemainingPage
           firstPageItems={firstPageItems}

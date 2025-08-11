@@ -10,10 +10,15 @@ export interface NativeDefaultMessage {
   birthMonth: string;
   birthYear: string;
   chartNo: string;
-  exportOptionType: string;
+  exportOptionType: ExportOptionType;
   id: number;
 }
 
 export interface NativePrintMessage {
   requestPrint: boolean;
+}
+
+export enum ExportOptionType {
+  ALL = "all",
+  ONLY_POSITIVE_CASE = "only_positive_case",
 }

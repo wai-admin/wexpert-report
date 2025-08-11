@@ -69,6 +69,26 @@ function hasValidPatientId(nativeMessage: any): boolean {
   );
 }
 
+/**
+ * 생년월일 정보를 포맷팅하는 함수
+ * 모든 값이 없으면 빈 문자열 반환
+ * 2개 이상의 값이 있으면 /로 구분
+ */
+function formatBirthDate(
+  birthYear?: string | number,
+  birthMonth?: string | number,
+  birthDay?: string | number
+): string {
+  const parts = [birthYear, birthMonth, birthDay]
+    .map((part) => part?.toString())
+    .filter((part) => part && part !== "undefined" && part !== "null");
+
+  if (parts.length === 0) return "";
+  if (parts.length === 1) return parts[0] || "";
+
+  return parts.join("/");
+}
+
 export {
   checkTruthy,
   checkFalsy,
@@ -80,4 +100,5 @@ export {
   hasKey,
   getPatientId,
   hasValidPatientId,
+  formatBirthDate,
 };
