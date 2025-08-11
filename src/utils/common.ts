@@ -39,6 +39,16 @@ const checkProd = () => {
   return import.meta.env.PROD;
 };
 
+/**
+ * JSON 객체에서 특정 키가 존재하는지 확인하는 함수
+ * @param obj 확인할 객체
+ * @param key 찾을 키
+ * @returns 키가 존재하면 true, 없으면 false
+ */
+function hasKey(obj: any, key: string): boolean {
+  return key in obj;
+}
+
 export {
   checkTruthy,
   checkFalsy,
@@ -47,4 +57,5 @@ export {
   checkEnvironment,
   checkDev,
   checkProd,
+  hasKey,
 };

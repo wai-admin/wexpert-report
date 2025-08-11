@@ -1,7 +1,14 @@
-import { useEffect, ReactNode } from "react";
-import { BRIDGE_TYPE } from "@/constants/bridge";
+import { useEffect, ReactNode, useRef } from "react";
 import { useMessageStore, useAuthStore } from "@/store";
-import { NativeMessageData } from "@/lib/nativeMessageType";
+import {
+  NativeDefaultMessage,
+  NativeMessageData,
+} from "@/lib/nativeMessageType";
+import { hasKey } from "@/utils/common";
+import { NATIVE_MESSAGE_KEY } from "@/constants/native-message-key";
+import { usePrintHandler } from "@/hooks/usePrintHandler";
+import { usePrintContext } from "@/context/PrintContext";
+import { sendInitialized } from "@/utils/bridge";
 
 interface GlobalProviderProps {
   children: ReactNode;
@@ -13,21 +20,32 @@ interface GlobalProviderProps {
 const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const { setNativeMessage } = useMessageStore();
   const { setAccessToken } = useAuthStore();
+  const { printRef } = usePrintContext();
+  const { handlePrint } = usePrintHandler(printRef);
 
   // C#의 WebView2에게 초기화 메시지 전송
   const callNativeInitialized = () => {
-    window.chrome?.webview?.postMessage({
-      type: BRIDGE_TYPE.INITIALIZED,
-    });
+    sendInitialized();
   };
 
-  // C#의 WebView2에서 전달받은 메시지 처리 (초기에는 access token 수신)
+  // C#의 WebView2에서 전달받은 메시지 처리
   const receiveNative = (message: NativeMessageData) => {
-    const { data } = message;
-    setNativeMessage(data);
-    setAccessToken(data.accessToken);
+    console.log("receiveNative from C#: ", message.data);
 
-    console.log("receiveNative from C#: ", message);
+    const { data } = message;
+
+    // 토큰 및 사용자 입력 정보 처리
+    if (hasKey(data, NATIVE_MESSAGE_KEY.INITIALIZED)) {
+      console.log("receiveNative from C#: Initialized message detected");
+      setNativeMessage(data as NativeDefaultMessage);
+      setAccessToken((data as NativeDefaultMessage).accessToken);
+    }
+
+    // 프린트 이벤트 처리
+    if (hasKey(data, NATIVE_MESSAGE_KEY.REQUEST_PRINT)) {
+      console.log("receiveNative from C#: Print request detected");
+      handlePrint();
+    }
   };
 
   useEffect(() => {

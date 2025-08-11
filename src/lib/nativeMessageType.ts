@@ -1,9 +1,9 @@
 export interface NativeMessageData {
-  data: NativeMessage;
+  data: NativeDefaultMessage | NativePrintMessage;
 }
 
 // TODO: null 처리 필요
-export interface NativeMessage {
+export interface NativeDefaultMessage {
   accessToken: string;
   assessment: string;
   birthDay: string;
@@ -12,4 +12,8 @@ export interface NativeMessage {
   chartNo: string;
   exportOptionType: string;
   id: number;
+}
+
+export interface NativePrintMessage {
+  requestPrint: boolean;
 }

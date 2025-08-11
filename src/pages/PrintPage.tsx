@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Cover, FirstPage, RemainingPage } from "@/pages";
 import { PrintButton } from "@/components";
-import { PRINT_CONFIG } from "@/constants/config";
+import { PRINT_CONFIG } from "@/constants/print-config";
 import { useMessageStore } from "@/store/messageStore";
 import { useQuery } from "@/hooks/useQuery";
 import { reportApi } from "@/services/api";
@@ -10,9 +10,11 @@ import { checkFalsy, checkTruthy } from "@/utils/common";
 import { formatAnalysisDate } from "@/utils/date";
 import { Sonography } from "@/lib/reportType";
 import { useWebViewLoading } from "@/hooks/useWebViewLoading";
+import { PrintProvider, usePrintContext } from "@/context/PrintContext";
+import { NativeDefaultMessage } from "@/lib/nativeMessageType";
 
-const PrintPage = () => {
-  const printRef = useRef<HTMLDivElement>(null);
+const PrintPageContent = () => {
+  const { printRef } = usePrintContext();
   const { nativeMessage } = useMessageStore();
   const { data: reportData, isFetching } = useQuery({
     queryKey: QUERY_KEYS.REPORT.DETAIL(
@@ -42,7 +44,6 @@ const PrintPage = () => {
   // WebView에 로딩 상태 전송
   useWebViewLoading(isFetching);
 
-  console.log("PrintPage nativeMessage: ", nativeMessage);
   console.log("PrintPage reportData: ", reportData?.data);
 
   if (checkFalsy(reportData)) {
@@ -60,12 +61,14 @@ const PrintPage = () => {
   const hospitalName = patientSummary.hospitalName;
   // 환자 정보
   const patientInformation = {
-    chatNumber: checkTruthy(nativeMessage) ? nativeMessage.chartNo : "",
+    chatNumber: checkTruthy(nativeMessage)
+      ? (nativeMessage as NativeDefaultMessage).chartNo
+      : "",
     patientName: patientDetail.name,
     birth: checkTruthy(nativeMessage)
-      ? `${nativeMessage.birthYear ?? "-"}/
-        ${nativeMessage.birthMonth ?? "-"}/
-        ${nativeMessage.birthDay ?? "-"}
+      ? `${(nativeMessage as NativeDefaultMessage).birthYear ?? "-"}/
+        ${(nativeMessage as NativeDefaultMessage).birthMonth ?? "-"}/
+        ${(nativeMessage as NativeDefaultMessage).birthDay ?? "-"}
         `
       : "",
     analysisDate: formatAnalysisDate(patientSummary.analysisDateTime),
@@ -85,7 +88,8 @@ const PrintPage = () => {
   );
   // 파열 관련 아이템들
   const analysisItems =
-    nativeMessage?.exportOptionType === "only_positive_case"
+    (nativeMessage as NativeDefaultMessage)?.exportOptionType ===
+    "only_positive_case"
       ? positiveAnalysisItems
       : ruptureAnalysisItems;
   // 전체 분석 결과 갯수
@@ -105,7 +109,7 @@ const PrintPage = () => {
 
   return (
     <div className="print-preview-container">
-      <PrintButton printRef={printRef} />
+      {/* <PrintButton printRef={printRef} /> */}
       <div ref={printRef} className="a4-container">
         <Cover hospitalName={hospitalName} />
         <FirstPage
@@ -122,6 +126,16 @@ const PrintPage = () => {
         />
       </div>
     </div>
+  );
+};
+
+const PrintPage = () => {
+  const printRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <PrintProvider printRef={printRef}>
+      <PrintPageContent />
+    </PrintProvider>
   );
 };
 

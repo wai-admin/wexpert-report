@@ -6,7 +6,7 @@ import {
   A4Template,
   Assessment,
 } from "@/components";
-import { PRINT_CONFIG } from "@/constants/config";
+import { PRINT_CONFIG } from "@/constants/print-config";
 import {
   AnalysisSummary as AnalysisSummaryType,
   Sonography,

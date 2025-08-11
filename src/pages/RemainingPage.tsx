@@ -1,5 +1,5 @@
 import { A4Template, Assessment, AnalysisResult } from "@/components";
-import { PRINT_CONFIG } from "@/constants/config";
+import { PRINT_CONFIG } from "@/constants/print-config";
 import { Sonography } from "@/lib/reportType";
 
 interface RemainingPageProps {
