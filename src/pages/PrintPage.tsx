@@ -6,7 +6,7 @@ import { useMessageStore, usePrintStore } from "@/store";
 import { useQuery } from "@/hooks/useQuery";
 import { reportApi } from "@/services/api";
 import { QUERY_KEYS } from "@/lib/queryKeys";
-import { checkFalsy, checkTruthy } from "@/utils/common";
+import { checkFalsy, getPatientId, hasValidPatientId } from "@/utils/common";
 import { formatAnalysisDate } from "@/utils/date";
 import { Sonography } from "@/lib/reportType";
 import { useWebViewLoading } from "@/hooks/useWebViewLoading";
@@ -19,23 +19,11 @@ const PrintPage = () => {
   const { nativeMessage } = useMessageStore();
   const { isPrintRequested } = usePrintStore();
   const { handlePrint } = usePrintHandler(printRef);
+  const patientId = getPatientId(nativeMessage);
   const { data: reportData, isFetching } = useQuery({
-    queryKey: QUERY_KEYS.REPORT.DETAIL(
-      nativeMessage && "id" in nativeMessage
-        ? (nativeMessage as any).id?.toString() || ""
-        : ""
-    ),
-    queryFn: () =>
-      reportApi.getReport(
-        nativeMessage && "id" in nativeMessage
-          ? (nativeMessage as any).id?.toString() || ""
-          : ""
-      ),
-    enabled: !!(
-      nativeMessage &&
-      "id" in nativeMessage &&
-      (nativeMessage as any).id
-    ), // patientId가 있을 때만 실행
+    queryKey: QUERY_KEYS.REPORT.DETAIL(patientId),
+    queryFn: () => reportApi.getReport(patientId),
+    enabled: hasValidPatientId(nativeMessage),
   });
 
   // const { data: reportData, isFetching } = useQuery({
@@ -47,7 +35,7 @@ const PrintPage = () => {
   // WebView에 로딩 상태 전송
   useWebViewLoading(isFetching);
 
-  // Native로부터 인쇄 요청이 있다면 인쇄 요청 실행
+  // 인쇄 요청 시 자동 실행
   useEffect(() => {
     if (isPrintRequested) {
       handlePrint();
@@ -70,38 +58,31 @@ const PrintPage = () => {
   // 병원 이름
   const hospitalName = patientSummary.hospitalName;
   // 환자 정보
+  const patientInfo = nativeMessage as NativeDefaultMessage;
   const patientInformation = {
-    chatNumber: checkTruthy(nativeMessage)
-      ? (nativeMessage as NativeDefaultMessage).chartNo
-      : "",
+    chatNumber: patientInfo?.chartNo || "",
     patientName: patientDetail.name,
-    birth: checkTruthy(nativeMessage)
-      ? `${(nativeMessage as NativeDefaultMessage).birthYear ?? "-"}/
-        ${(nativeMessage as NativeDefaultMessage).birthMonth ?? "-"}/
-        ${(nativeMessage as NativeDefaultMessage).birthDay ?? "-"}
-        `
+    birth: patientInfo
+      ? `${patientInfo.birthYear ?? "-"}/${patientInfo.birthMonth ?? "-"}/${
+          patientInfo.birthDay ?? "-"
+        }`
       : "",
     analysisDate: formatAnalysisDate(patientSummary.analysisDateTime),
   };
-  // 파열 관련 모든 아이템들
-  const ruptureAnalysisItems = patientDetail.sonographies.filter(
-    (item: Sonography) =>
-      item.analysis.labels.some((label) => label.result_type === "rupture")
+  // 분석 아이템 필터링
+  const ruptureItems = patientDetail.sonographies.filter((item: Sonography) =>
+    item.analysis.labels.some((label) => label.result_type === "rupture")
   );
-  // 파열 감지 결과가 없는 아이템들
-  const positiveAnalysisItems = ruptureAnalysisItems.filter(
-    (item: Sonography) =>
-      item.analysis.labels.some(
-        (label) =>
-          label.result_type === "rupture" && label.result_class !== "exist"
-      )
-  );
-  // 파열 관련 아이템들
+
   const analysisItems =
-    (nativeMessage as NativeDefaultMessage)?.exportOptionType ===
-    "only_positive_case"
-      ? positiveAnalysisItems
-      : ruptureAnalysisItems;
+    patientInfo?.exportOptionType === "only_positive_case"
+      ? ruptureItems.filter((item: Sonography) =>
+          item.analysis.labels.some(
+            (label) =>
+              label.result_type === "rupture" && label.result_class !== "exist"
+          )
+        )
+      : ruptureItems;
   // 전체 분석 결과 갯수
   const analysisCount = analysisItems.length;
   // 파열 감지 갯수

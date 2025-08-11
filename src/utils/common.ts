@@ -49,6 +49,26 @@ function hasKey(obj: any, key: string): boolean {
   return key in obj;
 }
 
+/**
+ * Native 메시지에서 환자 ID를 안전하게 추출하는 함수
+ */
+function getPatientId(nativeMessage: any): string {
+  return nativeMessage && "id" in nativeMessage
+    ? (nativeMessage as any).id?.toString() || ""
+    : "";
+}
+
+/**
+ * Native 메시지에서 환자 ID가 유효한지 확인하는 함수
+ */
+function hasValidPatientId(nativeMessage: any): boolean {
+  return !!(
+    nativeMessage &&
+    "id" in nativeMessage &&
+    (nativeMessage as any).id
+  );
+}
+
 export {
   checkTruthy,
   checkFalsy,
@@ -58,4 +78,6 @@ export {
   checkDev,
   checkProd,
   hasKey,
+  getPatientId,
+  hasValidPatientId,
 };
