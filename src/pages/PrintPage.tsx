@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Cover, FirstPage, RemainingPage } from "@/pages";
 // import { PrintButton } from "@/components";
 import { PRINT_CONFIG } from "@/constants/print-config";
-import { useMessageStore } from "@/store/messageStore";
+import { useMessageStore, usePrintStore } from "@/store";
 import { useQuery } from "@/hooks/useQuery";
 import { reportApi } from "@/services/api";
 import { QUERY_KEYS } from "@/lib/queryKeys";
@@ -10,13 +10,15 @@ import { checkFalsy, checkTruthy } from "@/utils/common";
 import { formatAnalysisDate } from "@/utils/date";
 import { Sonography } from "@/lib/reportType";
 import { useWebViewLoading } from "@/hooks/useWebViewLoading";
-import { PrintProvider } from "@/provider/PrintProvider";
-import { usePrintContext } from "@/hooks/usePrintContext";
+import { usePrintHandler } from "@/hooks/usePrintHandler";
 import { NativeDefaultMessage } from "@/lib/nativeMessageType";
+import { useEffect } from "react";
 
-const PrintPageContent = () => {
-  const { printRef } = usePrintContext();
+const PrintPage = () => {
+  const printRef = useRef<HTMLDivElement>(null);
   const { nativeMessage } = useMessageStore();
+  const { isPrintRequested } = usePrintStore();
+  const { handlePrint } = usePrintHandler(printRef);
   const { data: reportData, isFetching } = useQuery({
     queryKey: QUERY_KEYS.REPORT.DETAIL(
       nativeMessage && "id" in nativeMessage
@@ -44,6 +46,13 @@ const PrintPageContent = () => {
 
   // WebView에 로딩 상태 전송
   useWebViewLoading(isFetching);
+
+  // Native로부터 인쇄 요청이 있다면 인쇄 요청 실행
+  useEffect(() => {
+    if (isPrintRequested) {
+      handlePrint();
+    }
+  }, [isPrintRequested, handlePrint]);
 
   console.log("PrintPage reportData: ", reportData?.data);
 
@@ -127,16 +136,6 @@ const PrintPageContent = () => {
         />
       </div>
     </div>
-  );
-};
-
-const PrintPage = () => {
-  const printRef = useRef<HTMLDivElement>(null);
-
-  return (
-    <PrintProvider printRef={printRef}>
-      <PrintPageContent />
-    </PrintProvider>
   );
 };
 

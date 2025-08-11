@@ -1,13 +1,11 @@
 import { useEffect, ReactNode } from "react";
-import { useMessageStore, useAuthStore } from "@/store";
+import { useMessageStore, useAuthStore, usePrintStore } from "@/store";
 import {
   NativeDefaultMessage,
   NativeMessageData,
 } from "@/lib/nativeMessageType";
 import { hasKey } from "@/utils/common";
 import { NATIVE_MESSAGE_KEY } from "@/constants/native-message-key";
-import { usePrintHandler } from "@/hooks/usePrintHandler";
-import { usePrintContext } from "@/hooks/usePrintContext";
 import { sendInitialized } from "@/utils/bridge";
 
 interface GlobalProviderProps {
@@ -22,8 +20,7 @@ interface GlobalProviderProps {
 const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const { setNativeMessage } = useMessageStore();
   const { setAccessToken } = useAuthStore();
-  const { printRef } = usePrintContext();
-  const { handlePrint } = usePrintHandler(printRef);
+  const { setPrintRequested } = usePrintStore();
 
   // C#의 WebView2에게 초기화 메시지 전송
   const callNativeInitialized = () => {
@@ -46,7 +43,7 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
     // 프린트 이벤트 처리
     if (hasKey(data, NATIVE_MESSAGE_KEY.REQUEST_PRINT)) {
       console.log("receiveNative from C#: Print request detected");
-      handlePrint();
+      setPrintRequested(true);
     }
   };
 
