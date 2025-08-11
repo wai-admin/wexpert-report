@@ -5,7 +5,7 @@ interface AnalysisViewerProps {
   analysisItems: Sonography[];
   analysisCount: number;
   ruptureCount: number;
-  exportOptionType: ExportOptionType;
+  exportOptionType?: ExportOptionType;
 }
 
 const AnalysisViewer = ({

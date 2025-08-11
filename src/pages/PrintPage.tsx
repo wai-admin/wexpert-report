@@ -20,6 +20,21 @@ const PrintPage = () => {
     queryKey: QUERY_KEYS.REPORT.DETAIL(patientId),
     queryFn: () => reportApi.getReport(patientId),
     enabled: hasValidPatientId(nativeMessage),
+    retry: (failureCount, error: any) => {
+      // 네트워크 오류나 5xx 서버 오류는 재시도
+      const isNetworkOrServerError =
+        error.message.includes("Network") ||
+        (error.response?.status && error.response.status >= 500);
+
+      if (isNetworkOrServerError) {
+        return failureCount < 2; // 최대 2번 재시도
+      }
+
+      // 4xx 클라이언트 오류는 재시도하지 않음
+      return false;
+    },
+    // 1번째 재시도: 1초 딜레이, 2번째 재시도: 2초 딜레이
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 
   // WebView에 로딩 상태 전송
@@ -34,8 +49,8 @@ const PrintPage = () => {
 
   console.log("PrintPage reportData: ", reportData?.data);
 
-  // 리포트 데이터 가공
-  const patientInfo = nativeMessage as NativeDefaultMessage;
+  // 리포트 데이터 가공 (안전한 타입 캐스팅)
+  const patientInfo = nativeMessage as NativeDefaultMessage | null;
   const {
     hospitalName,
     patientInformation,

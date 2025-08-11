@@ -53,20 +53,60 @@ function hasKey(obj: any, key: string): boolean {
  * Native 메시지에서 환자 ID를 안전하게 추출하는 함수
  */
 function getPatientId(nativeMessage: any): string {
-  return nativeMessage && "id" in nativeMessage
-    ? (nativeMessage as any).id?.toString() || ""
-    : "";
+  try {
+    if (checkFalsy(nativeMessage) || typeof nativeMessage !== "object") {
+      return "";
+    }
+
+    if (!("id" in nativeMessage)) {
+      return "";
+    }
+
+    const id = nativeMessage.id;
+    if (checkFalsy(id)) {
+      return "";
+    }
+
+    const idString = id.toString();
+    return idString === "undefined" ||
+      idString === "null" ||
+      idString.trim() === ""
+      ? ""
+      : idString;
+  } catch (error) {
+    console.warn("Error extracting patient ID:", error);
+    return "";
+  }
 }
 
 /**
  * Native 메시지에서 환자 ID가 유효한지 확인하는 함수
  */
 function hasValidPatientId(nativeMessage: any): boolean {
-  return !!(
-    nativeMessage &&
-    "id" in nativeMessage &&
-    (nativeMessage as any).id
-  );
+  try {
+    if (checkFalsy(nativeMessage) || typeof nativeMessage !== "object") {
+      return false;
+    }
+
+    if (!("id" in nativeMessage)) {
+      return false;
+    }
+
+    const id = nativeMessage.id;
+    if (checkFalsy(id)) {
+      return false;
+    }
+
+    const idString = id.toString();
+    return !(
+      idString === "undefined" ||
+      idString === "null" ||
+      idString.trim() === ""
+    );
+  } catch (error) {
+    console.warn("Error validating patient ID:", error);
+    return false;
+  }
 }
 
 /**
@@ -82,11 +122,15 @@ function formatBirthDate(
   // 1. 년/월/일을 배열로 만듦
   const parts = [birthYear, birthMonth, birthDay]
     // 2. 각 값을 문자열로 변환 (undefined는 "undefined"가 됨)
-    .map((part) => part?.toString())
+    .map((part) => {
+      if (checkFalsy(part)) return null;
+      const str = part.toString();
+      return str === "undefined" || str === "null" || str.trim() === ""
+        ? null
+        : str;
+    })
     // 3. 유효한 값은 그대로, 유효하지 않은 값은 "-"로 변환
-    .map((part) =>
-      part && part !== "undefined" && part !== "null" ? part : "-"
-    );
+    .map((part) => part || "-");
 
   // 4. 모든 값이 "-"이면 (즉, 모든 값이 유효하지 않으면) 빈 문자열 반환
   if (parts.every((part) => part === "-")) return "";

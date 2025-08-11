@@ -25,7 +25,7 @@ interface FirstPageProps {
   analysisItems: Sonography[];
   analysisCount: number;
   ruptureCount: number;
-  exportOptionType: ExportOptionType;
+  exportOptionType?: ExportOptionType;
 }
 
 const FirstPage = ({

@@ -30,7 +30,7 @@ interface ProcessedReportData {
 
 export const processReportData = (
   reportData: ReportResponse | null | undefined,
-  nativeMessage: NativeDefaultMessage
+  nativeMessage: NativeDefaultMessage | null | undefined
 ): ProcessedReportData => {
   // reportData가 없거나 유효하지 않으면 기본값 사용
   const data = reportData?.data || {
