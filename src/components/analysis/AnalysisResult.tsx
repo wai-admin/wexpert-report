@@ -57,7 +57,11 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
             {isRupture ? "파열" : "정상"}
           </span>
         </p>
-        {/* <p className="analysis-description">{description}</p> */}
+        <p className="analysis-description">
+          {isRupture
+            ? "현재 이미지 내 색깔로 표시된 해당 영역은 AI 분석 결과 파열 소견이 나타나는 부위입니다."
+            : "분석 결과, 현재 이미지에서는 파열 등 특이 소견이 관찰되지 않았습니다."}
+        </p>
       </div>
     </div>
   );
