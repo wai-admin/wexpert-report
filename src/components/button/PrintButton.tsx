@@ -1,6 +1,11 @@
+import { RefObject } from "react";
 import { useReactToPrint } from "react-to-print";
 
-const PrintButton = ({ printRef }) => {
+interface PrintButtonProps {
+  printRef: RefObject<HTMLDivElement>;
+}
+
+const PrintButton = ({ printRef }: PrintButtonProps) => {
   const handlePrint = useReactToPrint({
     contentRef: printRef,
     documentTitle: "Wexpert Report",
