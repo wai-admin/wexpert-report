@@ -27,7 +27,7 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
     setNativeMessage(data);
     setAccessToken(data.accessToken);
 
-    console.log("receiveNative from C#: ", data);
+    console.log("receiveNative from C#: ", message);
   };
 
   useEffect(() => {
