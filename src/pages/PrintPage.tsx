@@ -9,11 +9,12 @@ import { QUERY_KEYS } from "@/lib/queryKeys";
 import { checkFalsy, checkTruthy } from "@/utils/common";
 import { formatAnalysisDate } from "@/utils/date";
 import { Sonography } from "@/lib/reportType";
+import { useWebViewLoading } from "@/hooks/useWebViewLoading";
 
 const PrintPage = () => {
   const printRef = useRef<HTMLDivElement>(null);
   const { nativeMessage } = useMessageStore();
-  const { data: reportData } = useQuery({
+  const { data: reportData, isFetching } = useQuery({
     queryKey: QUERY_KEYS.REPORT.DETAIL(
       nativeMessage && "id" in nativeMessage
         ? (nativeMessage as any).id?.toString() || ""
@@ -32,11 +33,14 @@ const PrintPage = () => {
     ), // patientId가 있을 때만 실행
   });
 
-  // const { data: reportData } = useQuery({
+  // const { data: reportData, isFetching } = useQuery({
   //   queryKey: QUERY_KEYS.REPORT.DETAIL("698"),
   //   queryFn: () => reportApi.getReport("698"),
   //   enabled: true, // patientId가 있을 때만 실행
   // });
+
+  // WebView에 로딩 상태 전송
+  useWebViewLoading(isFetching);
 
   console.log("PrintPage nativeMessage: ", nativeMessage);
   console.log("PrintPage reportData: ", reportData?.data);

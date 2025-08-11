@@ -12,7 +12,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       // 기본 쿼리 옵션 설정
-      retry: 3, // 실패 시 재시도 횟수
+      retry: 2, // 실패 시 재시도 횟수
       retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // 재시도 지연 시간
       // staleTime: 5 * 60 * 1000, // 5분 - 데이터가 stale로 간주되는 시간
       // gcTime: 10 * 60 * 1000, // 10분 - 가비지 컬렉션 시간 (이전 cacheTime)
