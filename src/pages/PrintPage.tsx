@@ -2,22 +2,10 @@ import { useRef, useEffect } from "react";
 import { useQuery, useWebViewLoading, usePrintHandler } from "@/hooks";
 import { useMessageStore, usePrintStore } from "@/store";
 import { Cover, FirstPage, RemainingPage } from "@/pages";
-import {
-  QUERY_KEYS,
-  Sonography,
-  ExportOptionType,
-  NativeDefaultMessage,
-} from "@/lib";
+import { QUERY_KEYS, NativeDefaultMessage } from "@/lib";
 import { reportApi } from "@/services/api";
-import { PRINT_CONFIG } from "@/constants/print-config";
-import {
-  checkFalsy,
-  getPatientId,
-  hasValidPatientId,
-  formatAnalysisDate,
-  formatBirthDate,
-} from "@/utils";
-// import { PrintButton } from "@/components";
+import { getPatientId, hasValidPatientId } from "@/utils";
+import { processReportData } from "@/utils/reportDataProcessor";
 
 const PrintPage = () => {
   const printRef = useRef<HTMLDivElement>(null);
@@ -34,12 +22,6 @@ const PrintPage = () => {
     enabled: hasValidPatientId(nativeMessage),
   });
 
-  // const { data: reportData, isFetching } = useQuery({
-  //   queryKey: QUERY_KEYS.REPORT.DETAIL("698"),
-  //   queryFn: () => reportApi.getReport("698"),
-  //   enabled: true, // patientId가 있을 때만 실행
-  // });
-
   // WebView에 로딩 상태 전송
   useWebViewLoading(isFetching);
 
@@ -52,63 +34,21 @@ const PrintPage = () => {
 
   console.log("PrintPage reportData: ", reportData?.data);
 
-  if (checkFalsy(reportData)) {
-    return <></>;
-  }
-
+  // 리포트 데이터 가공
+  const patientInfo = nativeMessage as NativeDefaultMessage;
   const {
-    patientSummary,
+    hospitalName,
+    patientInformation,
     analysisSummary,
     recommendedTreatment,
-    patientDetail,
-  } = reportData.data;
-
-  // 병원 이름
-  const hospitalName = patientSummary.hospitalName;
-  // 환자 정보
-  const patientInfo = nativeMessage as NativeDefaultMessage;
-  const patientInformation = {
-    chatNumber: patientInfo?.chartNo || "",
-    patientName: patientDetail.name,
-    birth: formatBirthDate(
-      patientInfo?.birthYear,
-      patientInfo?.birthMonth,
-      patientInfo?.birthDay
-    ),
-    analysisDate: formatAnalysisDate(patientSummary.analysisDateTime),
-  };
-  // 분석 아이템 필터링
-  const ruptureItems = patientDetail.sonographies.filter((item: Sonography) =>
-    item.analysis.labels.some((label) => label.result_type === "rupture")
-  );
-
-  const analysisItems =
-    patientInfo?.exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE
-      ? ruptureItems.filter((item: Sonography) =>
-          item.analysis.labels.some(
-            (label) =>
-              label.result_type === "rupture" && label.result_class !== "exist"
-          )
-        )
-      : ruptureItems;
-  // 전체 분석 결과 갯수
-  const analysisCount = analysisItems.length;
-  // 파열 감지 갯수
-  const ruptureCount = analysisItems.filter((item: Sonography) =>
-    item.analysis.labels.some(
-      (label) =>
-        label.result_type === "rupture" && label.result_class === "exist"
-    )
-  ).length;
-
-  // 첫 페이지에 표시될 아이템들 (최대 2개)
-  const firstPageItems = analysisItems.slice(0, PRINT_CONFIG.FIRST_PAGE_ITEMS);
-  // 첫 페이지 이후의 아이템들
-  const remainingItems = analysisItems.slice(PRINT_CONFIG.FIRST_PAGE_ITEMS);
+    firstPageItems,
+    remainingItems,
+    analysisCount,
+    ruptureCount,
+  } = processReportData(reportData, patientInfo);
 
   return (
     <div className="print-preview-container">
-      {/* <PrintButton printRef={printRef} /> */}
       <div ref={printRef} className="a4-container">
         <Cover hospitalName={hospitalName} />
         <FirstPage

@@ -14,11 +14,11 @@ const Header = () => {
     enabled: hasValidPatientId(nativeMessage),
   });
 
-  const hospitalName = reportData!.data!.patientSummary?.hospitalName;
+  const hospitalName = reportData?.data?.patientSummary?.hospitalName || "";
 
   return (
     <div className="header">
-      <p className="header-hospital-name">{hospitalName || "병원명"}</p>
+      <p className="header-hospital-name">{hospitalName}</p>
       <img src="/images/wexpert.png" className="header-logo" />
     </div>
   );
