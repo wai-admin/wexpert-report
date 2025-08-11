@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Cover, FirstPage, RemainingPage } from "@/pages";
-import { PrintButton } from "@/components";
+// import { PrintButton } from "@/components";
 import { PRINT_CONFIG } from "@/constants/print-config";
 import { useMessageStore } from "@/store/messageStore";
 import { useQuery } from "@/hooks/useQuery";
@@ -10,7 +10,8 @@ import { checkFalsy, checkTruthy } from "@/utils/common";
 import { formatAnalysisDate } from "@/utils/date";
 import { Sonography } from "@/lib/reportType";
 import { useWebViewLoading } from "@/hooks/useWebViewLoading";
-import { PrintProvider, usePrintContext } from "@/context/PrintContext";
+import { PrintProvider } from "@/provider/PrintProvider";
+import { usePrintContext } from "@/hooks/usePrintContext";
 import { NativeDefaultMessage } from "@/lib/nativeMessageType";
 
 const PrintPageContent = () => {
