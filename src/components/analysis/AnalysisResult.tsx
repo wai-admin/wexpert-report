@@ -35,7 +35,7 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
         );
       setRoiCoordinates(allGroups);
     }
-  }, [roiCoordinates]);
+  }, [isRupture, ruptureResult]);
 
   return (
     <div className="analysis-container" style={{ marginTop: "14px" }}>
