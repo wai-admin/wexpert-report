@@ -127,29 +127,23 @@ const processAnalysisItems = (
       ) || false
   );
 
+  const positiveCaseItems = ruptureItems.filter(
+    (item: Sonography) =>
+      item?.analysis?.labels?.some(
+        (label) =>
+          label?.result_type === "rupture" && label?.result_class === "exist"
+      ) || false
+  );
+
   // exportOptionType에 따른 필터링
   const analysisItems =
     exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE
-      ? ruptureItems.filter(
-          (item: Sonography) =>
-            item?.analysis?.labels?.some(
-              (label) =>
-                label?.result_type === "rupture" &&
-                label?.result_class !== "exist"
-            ) || false
-        )
+      ? positiveCaseItems
       : ruptureItems;
 
   // 통계 계산 (기본값: 0)
-  const analysisCount = analysisItems?.length || 0;
-  const ruptureCount =
-    analysisItems?.filter(
-      (item: Sonography) =>
-        item?.analysis?.labels?.some(
-          (label) =>
-            label?.result_type === "rupture" && label?.result_class === "exist"
-        ) || false
-    )?.length || 0;
+  const analysisCount = ruptureItems?.length || 0;
+  const ruptureCount = positiveCaseItems?.length || 0;
 
   return { analysisItems: analysisItems || [], analysisCount, ruptureCount };
 };

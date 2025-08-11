@@ -73,7 +73,6 @@ const PrintPage = () => {
           analysisItems={firstPageItems}
           analysisCount={analysisCount}
           ruptureCount={ruptureCount}
-          exportOptionType={patientInfo?.exportOptionType}
         />
         <RemainingPage
           firstPageItems={firstPageItems}

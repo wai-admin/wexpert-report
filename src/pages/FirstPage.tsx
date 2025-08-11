@@ -7,11 +7,7 @@ import {
   Assessment,
 } from "@/components";
 import { PRINT_CONFIG } from "@/constants/print-config";
-import {
-  AnalysisSummary as AnalysisSummaryType,
-  Sonography,
-  ExportOptionType,
-} from "@/lib";
+import { AnalysisSummary as AnalysisSummaryType, Sonography } from "@/lib";
 
 interface FirstPageProps {
   patientInformation: {
@@ -25,7 +21,6 @@ interface FirstPageProps {
   analysisItems: Sonography[];
   analysisCount: number;
   ruptureCount: number;
-  exportOptionType?: ExportOptionType;
 }
 
 const FirstPage = ({
@@ -35,7 +30,6 @@ const FirstPage = ({
   analysisItems,
   analysisCount,
   ruptureCount,
-  exportOptionType,
 }: FirstPageProps) => {
   // 첫 페이지의 analysisItems이 0~1개면 [담당 의사 소견] 표시
   const showAssessment = analysisItems.length < PRINT_CONFIG.FIRST_PAGE_ITEMS;
@@ -49,7 +43,6 @@ const FirstPage = ({
         analysisItems={analysisItems}
         analysisCount={analysisCount}
         ruptureCount={ruptureCount}
-        exportOptionType={exportOptionType}
       />
       {showAssessment && <Assessment />}
     </A4Template>

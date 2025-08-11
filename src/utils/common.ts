@@ -135,9 +135,9 @@ function formatBirthDate(
   // 4. 모든 값이 "-"이면 (즉, 모든 값이 유효하지 않으면) 빈 문자열 반환
   if (parts.every((part) => part === "-")) return "";
 
-  // 5. 유효한 값이 1개만 있으면 해당 값만 반환
+  // 5. 유효한 값이 1개만 있으면 모든 위치를 표시 (예: "1990/-/-")
   if (parts.filter((part) => part !== "-").length === 1) {
-    return parts.filter((part) => part !== "-")[0] || "";
+    return parts.join("/"); // 모든 위치를 표시
   }
 
   // 6. 유효한 값이 2개 이상이면 모든 값을 "/"로 구분하여 반환
