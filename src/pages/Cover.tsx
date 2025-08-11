@@ -6,8 +6,7 @@ const Cover = ({ hospitalName }: CoverProps) => {
   return (
     <div className="a4-page">
       <div className="a4-content">
-        <img src="/images/wai.png" className="cover-logo" />
-        <div style={{ marginTop: "120px" }}>
+        <div style={{ marginTop: "140px" }}>
           <h1 className="cover-title-highlight">
             AI 기반 초음파 분석을 활용한
           </h1>
@@ -29,7 +28,7 @@ const Cover = ({ hospitalName }: CoverProps) => {
         </div>
       </div>
       <div className="cover-footer">
-        <img src="/images/background.png" className="cover-background" />
+        <img src="/images/background.webp" className="cover-background" />
         <p className="cover-footer-text">
           Generated using a platform provided by W.AI Inc.
         </p>
