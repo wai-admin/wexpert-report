@@ -59,11 +59,10 @@ const PrintPage = () => {
     chatNumber: checkTruthy(nativeMessage) ? nativeMessage.chartNo : "",
     patientName: patientDetail.name,
     birth: checkTruthy(nativeMessage)
-      ? `${nativeMessage.birthDay ?? "-"}${
-          nativeMessage.birthDay && nativeMessage.birthMonth && "/"
-        }${nativeMessage.birthMonth ?? "-"}${
-          nativeMessage.birthMonth && nativeMessage.birthYear && "/"
-        }${nativeMessage.birthYear ?? "-"}`
+      ? `${nativeMessage.birthDay ?? "-"}/
+        ${nativeMessage.birthMonth ?? "-"}/
+        ${nativeMessage.birthYear ?? "-"}
+        `
       : "",
     analysisDate: formatAnalysisDate(patientSummary.analysisDateTime),
   };
