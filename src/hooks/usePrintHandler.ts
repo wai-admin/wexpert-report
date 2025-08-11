@@ -24,6 +24,22 @@ export const usePrintHandler = (printRef: RefObject<HTMLDivElement | null>) => {
       // Native에게 인쇄 완료 메시지 전송
       sendPrintStatus(false);
     },
+    pageStyle: `
+      @page {
+        size: A4;
+        margin: 0 0 0 0 !important;
+      }
+      body {
+        margin: 0 0 0 0 !important;
+        -webkit-print-color-adjust: exact;
+      }
+      @media print {
+        body {
+          margin: 0 0 0 0;
+          padding: 0 0 0 0;
+        }
+      }
+    `,
   });
 
   return { handlePrint };

@@ -10,6 +10,22 @@ const PrintButton = ({ printRef }: PrintButtonProps) => {
     contentRef: printRef ?? undefined,
     documentTitle: "Wexpert Report",
     onAfterPrint: () => console.log("Print completed"),
+    pageStyle: `
+      @page {
+        size: A4;
+        margin: 0 0 0 0 !important;
+      }
+      body {
+        margin: 0 0 0 0 !important;
+        -webkit-print-color-adjust: exact;
+      }
+      @media print {
+        body {
+          margin: 0 0 0 0;
+          padding: 0 0 0 0;
+        }
+      }
+    `,
   });
 
   return (
