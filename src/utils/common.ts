@@ -72,20 +72,31 @@ function hasValidPatientId(nativeMessage: any): boolean {
 /**
  * 생년월일 정보를 포맷팅하는 함수
  * 모든 값이 없으면 빈 문자열 반환
- * 2개 이상의 값이 있으면 /로 구분
+ * 일부 값만 있으면 없는 값은 -로 표시하고 /로 구분
  */
 function formatBirthDate(
   birthYear?: string | number,
   birthMonth?: string | number,
   birthDay?: string | number
 ): string {
+  // 1. 년/월/일을 배열로 만듦
   const parts = [birthYear, birthMonth, birthDay]
+    // 2. 각 값을 문자열로 변환 (undefined는 "undefined"가 됨)
     .map((part) => part?.toString())
-    .filter((part) => part && part !== "undefined" && part !== "null");
+    // 3. 유효한 값은 그대로, 유효하지 않은 값은 "-"로 변환
+    .map((part) =>
+      part && part !== "undefined" && part !== "null" ? part : "-"
+    );
 
-  if (parts.length === 0) return "";
-  if (parts.length === 1) return parts[0] || "";
+  // 4. 모든 값이 "-"이면 (즉, 모든 값이 유효하지 않으면) 빈 문자열 반환
+  if (parts.every((part) => part === "-")) return "";
 
+  // 5. 유효한 값이 1개만 있으면 해당 값만 반환
+  if (parts.filter((part) => part !== "-").length === 1) {
+    return parts.filter((part) => part !== "-")[0] || "";
+  }
+
+  // 6. 유효한 값이 2개 이상이면 모든 값을 "/"로 구분하여 반환
   return parts.join("/");
 }
 
