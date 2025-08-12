@@ -5,9 +5,7 @@ import { checkTruthy } from "@/utils/common";
 const Assessment = () => {
   const { nativeMessage } = useMessageStore();
 
-  const assessment = checkTruthy(nativeMessage)
-    ? nativeMessage.assessment
-    : "담당 의사 소견 없음";
+  const assessment = checkTruthy(nativeMessage) ? nativeMessage.assessment : "";
 
   return (
     <div className="column">
