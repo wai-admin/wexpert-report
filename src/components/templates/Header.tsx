@@ -1,18 +1,7 @@
-import { useQuery } from "@/hooks/useQuery";
-import { QUERY_KEYS } from "@/lib/queryKeys";
-import { reportApi } from "@/services/api";
-import { useMessageStore } from "@/store";
-import { getPatientId, hasValidPatientId } from "@/utils/common";
+import { useReport } from "@/services/useReport";
 
 const Header = () => {
-  const { nativeMessage } = useMessageStore();
-  const patientId = getPatientId(nativeMessage);
-
-  const { data: reportData } = useQuery({
-    queryKey: QUERY_KEYS.REPORT.DETAIL(patientId),
-    queryFn: () => reportApi.getReport(patientId),
-    enabled: hasValidPatientId(nativeMessage),
-  });
+  const { data: reportData } = useReport();
 
   const hospitalName = reportData?.data?.patientSummary?.hospitalName || "";
 
