@@ -1,5 +1,6 @@
 import { create } from "zustand";
 
+// 프린트 실행 요청 상태
 interface PrintState {
   isPrintRequested: boolean;
   setPrintRequested: (requested: boolean) => void;
