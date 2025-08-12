@@ -21,6 +21,7 @@ export const useReportUpload = () => {
 
       try {
         const response = await reportApi.uploadReport(data);
+        console.log("Successfully uploaded report!!!");
         return response;
       } catch (error) {
         console.error("Failed to upload report:", error);

@@ -1,10 +1,11 @@
 // 리포트 정보 타입
-// TODO: chartNumber, birthDate 타입 구체화
 export interface ReportData {
   patientId: number | null;
   includeAllImages: boolean;
   chartNumber: number | null;
-  birthDate: string | null;
+  birthYear: number | null;
+  birthMonth: number | null;
+  birthDay: number | null;
   doctorOpinion: string | null;
 }
 

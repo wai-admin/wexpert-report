@@ -2,7 +2,7 @@ import { RefObject } from "react";
 import { useReactToPrint } from "react-to-print";
 import { sendPrintStatus, checkTruthy } from "@/utils";
 import { useMessageStore, usePrintStore } from "@/store";
-// import { useReportUpload } from "@/services/useReportUpload";
+import { useReportUpload } from "@/services/useReportUpload";
 import { ReportData, ExportOptionType } from "@/lib";
 
 /**
@@ -11,7 +11,7 @@ import { ReportData, ExportOptionType } from "@/lib";
 export const usePrintHandler = (printRef: RefObject<HTMLDivElement | null>) => {
   const { clearPrintRequest } = usePrintStore();
   const { nativeMessage } = useMessageStore();
-  // const { uploadReport } = useReportUpload();
+  const { uploadReport } = useReportUpload();
 
   const handlePrint = useReactToPrint({
     contentRef: printRef,
@@ -27,16 +27,18 @@ export const usePrintHandler = (printRef: RefObject<HTMLDivElement | null>) => {
           includeAllImages:
             nativeMessage.exportOptionType === ExportOptionType.ALL,
           chartNumber: nativeMessage.chartNo || null,
-          birthDate: `${nativeMessage.birthYear}-${nativeMessage.birthMonth}-${nativeMessage.birthDay}`,
+          birthYear: nativeMessage.birthYear || null,
+          birthMonth: nativeMessage.birthMonth || null,
+          birthDay: nativeMessage.birthDay || null,
           doctorOpinion: nativeMessage.assessment || null,
         } as ReportData;
 
         console.log("Upload reportData: ", reportData);
 
-        // uploadReport({
-        //   report: reportData,
-        //   file: null,
-        // });
+        uploadReport({
+          report: reportData,
+          file: null,
+        });
       }
 
       return Promise.resolve();
