@@ -24,7 +24,7 @@ const PrintPage = () => {
     if (isPrintRequested) {
       handlePrint();
     }
-  }, [isPrintRequested, handlePrint]);
+  }, [isPrintRequested]);
 
   console.log("PrintPage reportData: ", reportData?.data);
 
