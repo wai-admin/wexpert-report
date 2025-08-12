@@ -28,23 +28,29 @@
   min-height: 100vh;
   padding: 20px;
   background-color: rgb(102, 102, 102);
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 /* A4 Template */
 .a4-container {
   width: 210mm;
+  min-width: 210mm;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  flex-shrink: 0; /* 크기 축소 방지 */
 }
 
 .a4-page {
   width: 210mm;
+  min-width: 210mm;
   height: 297mm;
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
+  flex-shrink: 0; /* 크기 축소 방지 */
 }
 
 .a4-content {
@@ -67,6 +73,22 @@
   font-size: 12px;
   font-weight: 500;
   color: #9e9e9e;
+}
+
+/* 
+ * 반응형 스타일
+ * 210mm 미만일 때 프린트 화면 정렬 필요
+ */
+@media screen and (max-width: 210mm) {
+  .print-preview-container {
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 10px;
+  }
+
+  .a4-container {
+    margin: 0;
+  }
 }
 
 @media print {
