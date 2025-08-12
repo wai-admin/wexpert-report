@@ -120,6 +120,7 @@ const processAnalysisItems = (
   const safeSonographies = sonographies || [];
 
   // 파열 관련 모든 아이템들 (안전한 필터링)
+  // TODO: 현재는 rupture 라벨이 있는 경우만 표시되지만 추후에 result_class의 exist/none 구분이 되는 라벨은 모두 표시되도록 수정해야함
   const ruptureItems = safeSonographies.filter(
     (item: Sonography) =>
       item?.analysis?.labels?.some(
