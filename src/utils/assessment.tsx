@@ -14,7 +14,7 @@ const showAssessmentInFirstPage = (
   }
 
   if (analysisCount === 1) {
-    // [담당 의사 소견] 375자를 초과하면 UI 깨짐.
+    // [담당 의사 소견] 342자를 초과하면 UI 깨지기 때문에 표시하지 않음.
     if (assessment.length > EXCEED_ASSESSMENT_LENGTH_IN_FIRST_PAGE) {
       return false;
     } else {

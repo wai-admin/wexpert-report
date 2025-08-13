@@ -35,14 +35,12 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
 
     // 토큰 및 사용자 입력 정보 처리
     if (hasKey(data, NATIVE_MESSAGE_KEY.INITIALIZED)) {
-      console.log("receiveNative from C#: Initialized message detected");
       setNativeMessage(data as NativeDefaultMessage);
       setAccessToken((data as NativeDefaultMessage).accessToken);
     }
 
     // 프린트 이벤트 처리
     if (hasKey(data, NATIVE_MESSAGE_KEY.REQUEST_PRINT)) {
-      console.log("receiveNative from C#: Print request detected");
       setPrintRequested(true);
     }
   };

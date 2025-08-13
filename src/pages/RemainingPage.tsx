@@ -34,7 +34,10 @@ const RemainingPage = ({
     const isLastPage = i + ITEMS_PER_PAGE >= analysisItems.length;
 
     console.log(pageItems.length, ITEMS_PER_PAGE, assessment.length);
-    // 현재 페이지가 5개의 분석 결과가 존재하는지 혹은 4개의 분석 결과가 존재하면서 텍스트 길이가 761자 이상(761자 이상이면 다음 페이지에 [담당 의사 소견] 표시를 위한 체크)인지 확인
+    // 현재 페이지가 5개의 분석 결과가 존재하는지 (pageItems.length === ITEMS_PER_PAGE)
+    // 혹은
+    // 4개의 분석 결과가 존재하면서 [담당 의사 소견]의 텍스트 길이가 741자 이상인지 확인 (pageItems.length === ITEMS_PER_PAGE - 1 && assessment.length > EXCEED_ASSESSMENT_LENGTH_IN_REMAINING_PAGE)
+    // 참고: 741자가 초과되면 UI가 깨지기 때문에 다음 페이지에서 [담당 의사 소견] 표시를 해야함.
     const isPageFull =
       pageItems.length === ITEMS_PER_PAGE ||
       (pageItems.length === ITEMS_PER_PAGE - 1 &&
@@ -60,6 +63,7 @@ const RemainingPage = ({
   }
 
   // 첫 페이지, 마지막 페이지 모두 [담당 의사 소견] 표시 안되는 경우
+  // 새로운 A4를 추가하여 [담당 의사 소견] 표시
   if (
     showAssessmentInLastPage === false &&
     showAssessmentInFirstPage(firstPageItems, assessment) === false
