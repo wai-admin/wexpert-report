@@ -15,7 +15,7 @@ export const usePrintHandler = (printRef: RefObject<HTMLDivElement | null>) => {
 
   const handlePrint = useReactToPrint({
     contentRef: printRef,
-    documentTitle: "Wexpert Report",
+    documentTitle: "123",
     onBeforePrint: async () => {
       // Native에게 인쇄 요청 메시지 전송
       sendPrintStatus(true);
