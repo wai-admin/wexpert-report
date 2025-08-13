@@ -1,11 +1,13 @@
 import { NumberedList } from "@/components";
 import { useMessageStore } from "@/store";
-import { checkTruthy } from "@/utils/common";
+import { checkTruthy, normalizeLineBreaks } from "@/utils/common";
 
 const Assessment = () => {
   const { nativeMessage } = useMessageStore();
 
-  const assessment = checkTruthy(nativeMessage) ? nativeMessage.assessment : "";
+  const assessment = checkTruthy(nativeMessage)
+    ? normalizeLineBreaks(nativeMessage.assessment)
+    : "";
 
   return (
     <div className="column">
