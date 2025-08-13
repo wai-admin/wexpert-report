@@ -29,7 +29,7 @@ const PrintPage = () => {
   console.log("PrintPage reportData: ", reportData?.data);
 
   // 리포트 데이터 가공 (안전한 타입 캐스팅)
-  const patientInfo = nativeMessage as NativeDefaultMessage | null;
+  const patientInfo = nativeMessage as NativeDefaultMessage;
   const {
     hospitalName,
     patientInformation,
@@ -52,10 +52,12 @@ const PrintPage = () => {
           analysisItems={firstPageItems}
           analysisCount={analysisCount}
           ruptureCount={ruptureCount}
+          assessment={patientInfo.assessment}
         />
         <RemainingPage
           firstPageItems={firstPageItems}
           analysisItems={remainingItems}
+          assessment={patientInfo.assessment}
         />
       </div>
     </div>

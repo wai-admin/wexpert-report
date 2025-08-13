@@ -1,5 +1,8 @@
 import { create } from "zustand";
-import { NativeDefaultMessage } from "@/lib/nativeMessageType";
+import {
+  ExportOptionType,
+  NativeDefaultMessage,
+} from "@/lib/nativeMessageType";
 
 interface MessageState {
   nativeMessage: NativeDefaultMessage | null;
@@ -8,7 +11,16 @@ interface MessageState {
 }
 
 export const useMessageStore = create<MessageState>((set) => ({
-  nativeMessage: null,
+  nativeMessage: {
+    accessToken: "",
+    assessment: "",
+    birthDay: "",
+    birthMonth: "",
+    birthYear: "",
+    chartNo: "",
+    exportOptionType: ExportOptionType.ALL,
+    id: -1,
+  },
   setNativeMessage: (message: NativeDefaultMessage) =>
     set({ nativeMessage: message }),
   clearMessage: () => set({ nativeMessage: null }),
