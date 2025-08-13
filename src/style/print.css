@@ -55,4 +55,10 @@
     bottom: 20px !important;
     width: 100% !important;
   }
+
+  .comment-box-assessment {
+    word-break: break-all !important;
+    overflow-wrap: break-word !important;
+    font-family: Pretendard !important;
+  }
 }

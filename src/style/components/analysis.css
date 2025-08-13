@@ -22,6 +22,7 @@
   font-size: 13px;
   font-weight: 500;
   color: black;
+  font-family: Pretendard;
 }
 
 .analysis-description {
@@ -29,6 +30,7 @@
   font-weight: 400;
   color: black;
   margin-top: 8px;
+  font-family: Pretendard;
 }
 
 .analysis-img-container {

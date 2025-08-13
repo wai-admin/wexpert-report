@@ -39,6 +39,7 @@ table tr:not(:first-child) {
   font-size: 14px;
   font-weight: 500;
   color: #212121;
+  font-family: Pretendard;
 }
 
 .td-value {
@@ -52,4 +53,5 @@ table tr:not(:first-child) {
   font-weight: 500;
   line-height: 1;
   color: #212121;
+  font-family: Pretendard;
 }
