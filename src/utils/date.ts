@@ -20,4 +20,8 @@ const formatAnalysisDate = (date: string) => {
   }
 };
 
-export { formatAnalysisDate };
+const formatPdfFileName = (date: Date) => {
+  return format(date, "yyMMddHHmm");
+};
+
+export { formatAnalysisDate, formatPdfFileName };

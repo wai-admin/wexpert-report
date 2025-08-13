@@ -1,6 +1,6 @@
 import { RefObject } from "react";
 import { useReactToPrint } from "react-to-print";
-import { sendPrintStatus, checkTruthy } from "@/utils";
+import { sendPrintStatus, checkTruthy, formatPdfFileName } from "@/utils";
 import { useMessageStore, usePrintStore } from "@/store";
 import { useReportUpload } from "@/services/useReportUpload";
 import { ReportData, ExportOptionType } from "@/lib";
@@ -8,14 +8,21 @@ import { ReportData, ExportOptionType } from "@/lib";
 /**
  * 인쇄 처리를 위한 커스텀 훅
  */
-export const usePrintHandler = (printRef: RefObject<HTMLDivElement | null>) => {
+export const usePrintHandler = (
+  printRef: RefObject<HTMLDivElement | null>,
+  patientName: string
+) => {
   const { clearPrintRequest } = usePrintStore();
   const { nativeMessage } = useMessageStore();
   const { uploadReport } = useReportUpload();
 
+  const fileName = `${
+    checkTruthy(patientName) ? patientName : "Unknown"
+  }_${formatPdfFileName(new Date())}`;
+
   const handlePrint = useReactToPrint({
     contentRef: printRef,
-    documentTitle: "123",
+    documentTitle: fileName,
     onBeforePrint: async () => {
       // Native에게 인쇄 요청 메시지 전송
       sendPrintStatus(true);

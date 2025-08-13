@@ -7,14 +7,16 @@ import { NativeDefaultMessage } from "@/lib";
 import { processReportData } from "@/utils/reportDataProcessor";
 
 const PrintPage = () => {
-  // 프린트 관련 상태 및 커스텀 훅
-  const printRef = useRef<HTMLDivElement>(null);
-  const { handlePrint } = usePrintHandler(printRef);
-  const { isPrintRequested } = usePrintStore();
-
   // 리포트 관련 커스텀 훅
   const { nativeMessage } = useMessageStore();
   const { data: reportData, isFetching } = useReport();
+
+  const printRef = useRef<HTMLDivElement>(null);
+  const patientName = reportData?.data?.patientSummary?.patientName ?? "";
+
+  // 프린트 관련 상태 및 커스텀 훅
+  const { handlePrint } = usePrintHandler(printRef, patientName);
+  const { isPrintRequested } = usePrintStore();
 
   // Native에 로딩 상태 전송
   useWebViewLoading(isFetching);
