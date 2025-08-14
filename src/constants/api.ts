@@ -12,8 +12,13 @@ const getApiBaseUrl = () => {
     return "https://dev-wexpert-api.w-ai.ai";
   }
 
-  // stage 서버 (기본값)
-  return "https://stage-wexpert-api.w-ai.ai";
+  // stage 서버 (URL에 stage 포함)
+  if (hostname.includes("stage")) {
+    return "https://stage-wexpert-api.w-ai.ai";
+  }
+
+  // prod 서버 (기본값)
+  return "https://wexpert-api.w-ai.ai";
 };
 
 // API 기본 설정
