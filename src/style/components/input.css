@@ -35,4 +35,6 @@
   word-break: break-all;
   overflow-wrap: break-word;
   box-sizing: border-box;
+  /* 개행 문자를 그대로 표시 */
+  white-space: pre-wrap;
 }
