@@ -4,7 +4,7 @@ import { checkDev } from "@/utils/common";
 // TODO: stg 서버 base url 설정
 const API_BASE_URL = checkDev()
   ? "https://dev-wexpert-api.w-ai.ai"
-  : "https://dev-wexpert-api.w-ai.ai";
+  : "https://stage-wexpert-api.w-ai.ai";
 
 const DEFAULT_OPTIONS = {
   headers: {
