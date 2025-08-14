@@ -40,8 +40,8 @@ jobs:
 
       - name: 📤 Deploy to S3
         env:
-          S3_BUCKET: wexpert-report
-        run: aws s3 sync ./dist s3://wexpert-report --delete
+          S3_BUCKET: wexpert-report-stg
+        run: aws s3 sync ./dist s3://wexpert-report-stg --delete
 
       - name: 🔁 Invalidate CloudFront cache
         run: |
