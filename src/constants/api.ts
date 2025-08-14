@@ -1,8 +1,22 @@
-import { checkDev } from "@/utils/common";
+const getApiBaseUrl = () => {
+  const hostname = window.location.hostname;
+
+  // 로컬 개발 환경
+  if (hostname === "localhost" || hostname === "127.0.0.1") {
+    return "https://dev-wexpert-api.w-ai.ai";
+  }
+
+  // dev 서버 (URL에 dev 포함)
+  if (hostname.includes("dev")) {
+    return "https://dev-wexpert-api.w-ai.ai";
+  }
+
+  // stage 서버 (기본값)
+  return "https://stage-wexpert-api.w-ai.ai";
+};
 
 // API 기본 설정
-// TODO: stg 서버 base url 설정
-const API_BASE_URL = checkDev()
+const API_BASE_URL = getApiBaseUrl()
   ? "https://dev-wexpert-api.w-ai.ai"
   : "https://stage-wexpert-api.w-ai.ai";
 
