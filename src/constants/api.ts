@@ -1,5 +1,6 @@
 const getApiBaseUrl = () => {
   const hostname = window.location.hostname;
+  console.log("hostname", hostname);
 
   // 로컬 개발 환경
   if (hostname === "localhost" || hostname === "127.0.0.1") {
@@ -16,9 +17,7 @@ const getApiBaseUrl = () => {
 };
 
 // API 기본 설정
-const API_BASE_URL = getApiBaseUrl()
-  ? "https://dev-wexpert-api.w-ai.ai"
-  : "https://stage-wexpert-api.w-ai.ai";
+const API_BASE_URL = getApiBaseUrl();
 
 const DEFAULT_OPTIONS = {
   headers: {
