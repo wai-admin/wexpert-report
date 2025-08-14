@@ -54,12 +54,12 @@ const PrintPage = () => {
           analysisItems={firstPageItems}
           analysisCount={analysisCount}
           ruptureCount={ruptureCount}
-          assessment={patientInfo.assessment}
+          assessment={patientInfo?.assessment}
         />
         <RemainingPage
           firstPageItems={firstPageItems}
           analysisItems={remainingItems}
-          assessment={patientInfo.assessment}
+          assessment={patientInfo?.assessment}
         />
       </div>
     </div>
