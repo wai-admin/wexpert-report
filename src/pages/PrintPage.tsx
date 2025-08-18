@@ -28,7 +28,7 @@ const PrintPage = () => {
     }
   }, [isPrintRequested]);
 
-  console.log("PrintPage reportData: ", reportData?.data);
+  console.log("PrintPage reportDatas: ", reportData?.data);
 
   // 리포트 데이터 가공 (안전한 타입 캐스팅)
   const patientInfo = nativeMessage as NativeDefaultMessage;
