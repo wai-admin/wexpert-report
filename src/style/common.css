@@ -29,6 +29,24 @@
     "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
     "Droid Sans", "Helvetica Neue", sans-serif;
   --line-height-base: 1.4;
+  overflow-x: auto;
+  overflow-y: auto;
+  height: 100%;
+  background-color: rgb(102, 102, 102);
+}
+
+:root::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+:root::-webkit-scrollbar-track {
+  background: rgba(207, 207, 207, 0.8);
+}
+
+:root::-webkit-scrollbar-thumb {
+  background: #787878;
+  border-radius: 4px;
 }
 
 /* 컬럼 레이아웃 */
