@@ -22,7 +22,7 @@ const PrintPage = () => {
   // Native에 로딩 상태 전송
   useWebViewLoading(isFetching);
 
-  const { measureRootRef } = useA4Handler({ reportData });
+  const { pages, measureRootRef } = useA4Handler({ reportData, nativeMessage });
 
   // 인쇄 요청 시 자동 실행
   useEffect(() => {
@@ -31,7 +31,7 @@ const PrintPage = () => {
     }
   }, [isPrintRequested]);
 
-  console.log("PrintPage reportDatas: ", reportData?.data);
+  console.log("PrintPage Data Information: ", reportData?.data, pages);
 
   // 리포트 데이터 가공 (안전한 타입 캐스팅)
   const patientInfo = nativeMessage as NativeDefaultMessage;
@@ -48,12 +48,11 @@ const PrintPage = () => {
 
   return (
     <div className="print-preview-container">
-      <div ref={printRef} className="a4-container">
-        {/* <div
+      <div
         ref={measureRootRef}
         style={{ position: "absolute", top: "-9999px", left: "-9999px" }}
-      /> */}
-        <div ref={measureRootRef} />
+      />
+      <div ref={printRef} className="a4-container">
         <Cover hospitalName={hospitalName} />
         <FirstPage
           patientInformation={patientInformation}

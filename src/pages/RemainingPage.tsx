@@ -33,7 +33,6 @@ const RemainingPage = ({
     // 현재 페이지가 마지막 페이지인지 확인 (i + ITEMS_PER_PAGE가 전체 길이보다 크거나 같으면 마지막 페이지)
     const isLastPage = i + ITEMS_PER_PAGE >= analysisItems.length;
 
-    console.log(pageItems.length, ITEMS_PER_PAGE, assessment.length);
     // 현재 페이지가 5개의 분석 결과가 존재하는지 (pageItems.length === ITEMS_PER_PAGE)
     // 혹은
     // 4개의 분석 결과가 존재하면서 [담당 의사 소견]의 텍스트 길이가 741자 이상인지 확인 (pageItems.length === ITEMS_PER_PAGE - 1 && assessment.length > EXCEED_ASSESSMENT_LENGTH_IN_REMAINING_PAGE)
