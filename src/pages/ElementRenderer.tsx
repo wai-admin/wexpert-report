@@ -1,5 +1,4 @@
 import {
-  A4Template,
   AnalysisResult,
   AnalysisSummary,
   AnalysisViewer,
@@ -64,6 +63,7 @@ const ElementRenderer = ({
   }
 
   if (element.includes(ELEMENT.ANALYSIS_RESULT_COMMON)) {
+    // element 형식: analysis-result-{index}
     const analysisResultIndex = Number(element.split("-")[2]);
     const analysisItem = analysisItems[analysisResultIndex];
 

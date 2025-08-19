@@ -1,8 +1,5 @@
 import { Sonography, ReportResponse, AnalysisSummary } from "@/lib/reportType";
-import {
-  ExportOptionType,
-  NativeDefaultMessage,
-} from "@/lib/nativeMessageType";
+import { ExportOptionType, NativeDefaultMessage } from "@/lib";
 import { formatBirthDate } from "@/utils/common";
 import { formatAnalysisDate } from "@/utils/date";
 
