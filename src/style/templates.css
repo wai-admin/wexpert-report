@@ -88,7 +88,7 @@
  * 반응형 스타일
  * A4 너비 미만일 때 프린트 화면 정렬 필요
  */
-@media screen and (max-width: var(--a4-width)) {
+@media screen and (max-width: 210mm) {
   .print-preview-container {
     align-items: flex-start;
     justify-content: flex-start;

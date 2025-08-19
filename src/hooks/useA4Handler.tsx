@@ -25,7 +25,16 @@ const useA4Handler = ({ reportData, nativeMessage }: UseA4HandlerProps) => {
   const [elementPageInfo, setElementPageInfo] = useState<ElementPageInfo[]>([]);
 
   useEffect(() => {
-    if (reportData && measureRootRef.current) {
+    if (reportData) {
+      // 1. elementPageInfo 초기화
+      setElementPageInfo([]);
+
+      // 2. measureRootRef 초기화
+      if (measureRootRef.current) {
+        measureRootRef.current.innerHTML = "";
+      }
+
+      // 3. 새로운 데이터로 페이지 생성
       const a4Element = getA4Element(reportData, nativeMessage);
       const generatedPages = getA4Data(a4Element);
       setElementPageInfo(generatedPages);
