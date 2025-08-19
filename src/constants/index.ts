@@ -1,4 +1,4 @@
-export * from "./element-id";
+export * from "./element";
 export * from "./print-config";
 export * from "./api";
 export * from "./native-message-key";

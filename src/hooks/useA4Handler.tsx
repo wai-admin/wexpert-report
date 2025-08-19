@@ -116,8 +116,13 @@ const useA4Handler = ({ reportData, nativeMessage }: UseA4HandlerProps) => {
   };
 
   return {
-    measureRootRef,
     elementPageInfo,
+    MeasureContainer: () => (
+      <div
+        ref={measureRootRef}
+        style={{ position: "absolute", top: "-9999px", left: "-9999px" }}
+      />
+    ),
   };
 };
 

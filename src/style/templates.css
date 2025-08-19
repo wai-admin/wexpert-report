@@ -32,18 +32,18 @@
 
 /* A4 Template */
 .a4-container {
-  width: 210mm;
-  min-width: 210mm;
+  width: var(--a4-width);
+  min-width: var(--a4-width);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--page-gap);
   flex-shrink: 0; /* 크기 축소 방지 */
 }
 
 .a4-page {
-  width: 210mm;
-  min-width: 210mm;
-  height: 297mm;
+  width: var(--a4-width);
+  min-width: var(--a4-width);
+  height: var(--a4-height);
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
@@ -52,7 +52,8 @@
 }
 
 .a4-content {
-  padding: 30px 40px;
+  padding: var(--a4-padding-top) var(--a4-padding-right)
+    var(--a4-padding-bottom) var(--a4-padding-left);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -85,9 +86,9 @@
 
 /* 
  * 반응형 스타일
- * 210mm 미만일 때 프린트 화면 정렬 필요
+ * A4 너비 미만일 때 프린트 화면 정렬 필요
  */
-@media screen and (max-width: 210mm) {
+@media screen and (max-width: var(--a4-width)) {
   .print-preview-container {
     align-items: flex-start;
     justify-content: flex-start;
