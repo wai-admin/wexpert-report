@@ -25,10 +25,7 @@ const PrintPage = () => {
   useWebViewLoading(isFetching);
 
   // 페이지 정보 관리
-  const { elementPageInfo, MeasureContainer } = useA4Handler({
-    reportData,
-    nativeMessage,
-  });
+  const { elementPageInfo, MeasureContainer } = useA4Handler();
 
   // 인쇄 요청 시 자동 실행
   useEffect(() => {

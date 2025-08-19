@@ -9,6 +9,7 @@ import {
 import { processReportData } from "@/utils/reportDataProcessor";
 import { ELEMENT } from "@/constants/element";
 import { ReportResponse, NativeDefaultMessage } from "@/lib";
+import { checkFalsy } from "@/utils";
 
 interface ElementRendererProps {
   element: string;
@@ -67,6 +68,10 @@ const ElementRenderer = ({
     const analysisResultIndex = Number(element.split("-")[2]);
     const analysisItem = analysisItems[analysisResultIndex];
     console.log("analysisItem", analysisItems, analysisItem);
+
+    if (checkFalsy(analysisItem)) {
+      return <></>;
+    }
 
     return (
       <AnalysisResult

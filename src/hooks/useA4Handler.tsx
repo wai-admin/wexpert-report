@@ -14,18 +14,18 @@ import {
   Sonography,
 } from "@/lib";
 import { ELEMENT, CONTENTS_MAX_HEIGHT } from "@/constants";
+import { useMessageStore } from "@/store";
+import { useReport } from "@/services/useReport";
 
 interface ElementPageInfo {
   page: number;
   elements: string[];
 }
 
-interface UseA4HandlerProps {
-  reportData: ReportResponse | undefined;
-  nativeMessage: NativeDefaultMessage | null;
-}
+const useA4Handler = () => {
+  const { data: reportData } = useReport();
+  const { nativeMessage } = useMessageStore();
 
-const useA4Handler = ({ reportData, nativeMessage }: UseA4HandlerProps) => {
   const measureRootRef = useRef<HTMLDivElement>(null);
   const [elementPageInfo, setElementPageInfo] = useState<ElementPageInfo[]>([]);
 
