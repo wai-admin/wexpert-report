@@ -1,7 +1,7 @@
 import { numberedList } from "./templates/numberedList";
 
-const patientInformation = `
-  <div id="patient-information" class="column">
+const patientInformation = (id: string) => `
+  <div id="${id}" class="column">
       ${numberedList(1, "환자 정보")}
       <table>
         <tbody>

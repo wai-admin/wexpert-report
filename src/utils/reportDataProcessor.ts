@@ -5,7 +5,6 @@ import {
 } from "@/lib/nativeMessageType";
 import { formatBirthDate } from "@/utils/common";
 import { formatAnalysisDate } from "@/utils/date";
-import { PRINT_CONFIG } from "@/constants/print-config";
 
 /**
  * 리포트 데이터를 가공하여 컴포넌트에서 사용할 수 있는 형태로 변환
@@ -24,8 +23,6 @@ interface ProcessedReportData {
   analysisItems: Sonography[];
   analysisCount: number;
   ruptureCount: number;
-  firstPageItems: Sonography[];
-  remainingItems: Sonography[];
 }
 
 export const processReportData = (
@@ -92,9 +89,6 @@ export const processReportData = (
     nativeMessage?.exportOptionType
   );
 
-  // 페이지별 아이템 분할
-  const { firstPageItems, remainingItems } = splitItemsByPage(analysisItems);
-
   return {
     hospitalName,
     patientInformation,
@@ -103,8 +97,6 @@ export const processReportData = (
     analysisItems,
     analysisCount,
     ruptureCount,
-    firstPageItems,
-    remainingItems,
   };
 };
 
@@ -147,21 +139,4 @@ const processAnalysisItems = (
   const ruptureCount = positiveCaseItems?.length || 0;
 
   return { analysisItems: analysisItems || [], analysisCount, ruptureCount };
-};
-
-/**
- * 분석 아이템들을 페이지별로 분할
- * analysisItems가 없거나 유효하지 않으면 빈 배열 제공
- */
-const splitItemsByPage = (analysisItems: Sonography[]) => {
-  // analysisItems가 없으면 빈 배열 사용
-  const safeAnalysisItems = analysisItems || [];
-
-  const firstPageItems = safeAnalysisItems.slice(
-    0,
-    PRINT_CONFIG.FIRST_PAGE_ITEMS
-  );
-  const remainingItems = safeAnalysisItems.slice(PRINT_CONFIG.FIRST_PAGE_ITEMS);
-
-  return { firstPageItems, remainingItems };
 };

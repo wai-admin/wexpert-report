@@ -1,14 +1,11 @@
-import { NumberedList, AnalysisResult } from "@/components";
-import { Sonography } from "@/lib";
+import { NumberedList } from "@/components";
 
 interface AnalysisViewerProps {
-  analysisItems: Sonography[];
   analysisCount: number;
   ruptureCount: number;
 }
 
 const AnalysisViewer = ({
-  analysisItems,
   analysisCount,
   ruptureCount,
 }: AnalysisViewerProps) => {
@@ -30,9 +27,6 @@ const AnalysisViewer = ({
           </>
         )}
       </div>
-      {analysisItems.map((item: Sonography, index: number) => (
-        <AnalysisResult key={item.id} index={index + 1} item={item} />
-      ))}
     </div>
   );
 };

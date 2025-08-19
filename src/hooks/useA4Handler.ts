@@ -1,15 +1,18 @@
 import { useEffect, useRef, useState } from "react";
+import {
+  patientInformation,
+  analysisSummary,
+  recommendTreatment,
+  analysisViewer,
+  analysisResult,
+  assessment,
+} from "@/components/html";
 import { NativeDefaultMessage, ReportResponse, Sonography } from "@/lib";
+import { ELEMENT, CONTENTS_MAX_HEIGHT } from "@/constants";
 
-import { patientInformation } from "@/components/html/patientInformation";
-import { analysisSummary } from "@/components/html/analysisSummary";
-import { recommendTreatment } from "@/components/html/recommendTreatment";
-import { analysisResult } from "@/components/html/analysisResult";
-import { assessment } from "@/components/html/assessment";
-
-interface PageData {
+interface ElementPageInfo {
   page: number;
-  data: string[];
+  elements: string[];
 }
 
 interface UseA4HandlerProps {
@@ -19,13 +22,13 @@ interface UseA4HandlerProps {
 
 const useA4Handler = ({ reportData, nativeMessage }: UseA4HandlerProps) => {
   const measureRootRef = useRef<HTMLDivElement>(null);
-  const [pages, setPages] = useState<PageData[]>([]);
+  const [elementPageInfo, setElementPageInfo] = useState<ElementPageInfo[]>([]);
 
   useEffect(() => {
     if (reportData && measureRootRef.current) {
       const a4Element = getA4Element(reportData, nativeMessage);
       const generatedPages = getA4Data(a4Element);
-      setPages(generatedPages);
+      setElementPageInfo(generatedPages);
     }
   }, [reportData, nativeMessage]);
 
@@ -40,31 +43,38 @@ const useA4Handler = ({ reportData, nativeMessage }: UseA4HandlerProps) => {
 
     return [
       {
-        type: "patient-information",
-        data: patientInformation,
+        type: ELEMENT.PATIENT_INFORMATION,
+        data: patientInformation(ELEMENT.PATIENT_INFORMATION),
       },
       {
-        type: "analysis-summary",
-        data: analysisSummary,
+        type: ELEMENT.ANALYSIS_SUMMARY,
+        data: analysisSummary(ELEMENT.ANALYSIS_SUMMARY),
       },
       {
-        type: "recommend-treatment",
-        data: recommendTreatment(reportData.data.recommendedTreatment),
+        type: ELEMENT.RECOMMEND_TREATMENT,
+        data: recommendTreatment(
+          ELEMENT.RECOMMEND_TREATMENT,
+          reportData.data.recommendedTreatment
+        ),
+      },
+      {
+        type: ELEMENT.ANALYSIS_VIEWER,
+        data: analysisViewer(ELEMENT.ANALYSIS_VIEWER),
       },
       // ruptureItems의 길이만큼 analysisResult 생성
       ...(ruptureItems?.map((_, index) => ({
-        type: `analysis-result-${index}`,
-        data: analysisResult,
+        type: ELEMENT.ANALYSIS_RESULT(index),
+        data: analysisResult(ELEMENT.ANALYSIS_RESULT(index)),
       })) || []),
       {
-        type: "assessment",
-        data: assessment(nativeMessage?.assessment || ""),
+        type: ELEMENT.ASSESSMENT,
+        data: assessment(ELEMENT.ASSESSMENT, nativeMessage?.assessment || ""),
       },
     ];
   };
 
   const getA4Data = (a4Element: { type: string; data: string }[]) => {
-    const pages: PageData[] = [];
+    const pages: ElementPageInfo[] = [];
     let currentPage = 1;
     let currentPageData: string[] = [];
 
@@ -79,7 +89,7 @@ const useA4Handler = ({ reportData, nativeMessage }: UseA4HandlerProps) => {
           if (currentPageData.length > 0) {
             pages.push({
               page: currentPage,
-              data: [...currentPageData],
+              elements: [...currentPageData],
             });
           }
 
@@ -98,7 +108,7 @@ const useA4Handler = ({ reportData, nativeMessage }: UseA4HandlerProps) => {
     if (currentPageData.length > 0) {
       pages.push({
         page: currentPage,
-        data: [...currentPageData],
+        elements: [...currentPageData],
       });
     }
 
@@ -107,13 +117,8 @@ const useA4Handler = ({ reportData, nativeMessage }: UseA4HandlerProps) => {
 
   return {
     measureRootRef,
-    pages,
+    elementPageInfo,
   };
 };
 
 export default useA4Handler;
-
-// px기준
-// 297mm * 3.7795275591px - 60px - 35px = 1027px
-// A4 세로 길이를 px로 변환하고 상하 padding과 헤더 높이를 제외한 값
-const CONTENTS_MAX_HEIGHT = 1027;
