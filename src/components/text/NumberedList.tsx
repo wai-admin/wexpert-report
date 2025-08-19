@@ -1,6 +1,11 @@
-const NumberedList = ({ number, title }) => {
+interface NumberedListProps {
+  number: number;
+  title: string;
+}
+
+const NumberedList = ({ number, title }: NumberedListProps) => {
   return (
-    <h3 style={{ fontSize: "16px", fontWeight: "bold", margin: "26px 0 12px" }}>
+    <h3 className="numbered-list">
       {number}. {title}
     </h3>
   );

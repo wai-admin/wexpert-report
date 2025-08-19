@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react";
 import { useWebViewLoading, usePrintHandler } from "@/hooks";
+import useA4Handler from "@/hooks/useA4Handler";
 import { useReport } from "@/services/useReport";
 import { useMessageStore, usePrintStore } from "@/store";
 import { Cover, FirstPage, RemainingPage } from "@/pages";
@@ -20,6 +21,8 @@ const PrintPage = () => {
 
   // Native에 로딩 상태 전송
   useWebViewLoading(isFetching);
+
+  const { measureRootRef } = useA4Handler({ reportData });
 
   // 인쇄 요청 시 자동 실행
   useEffect(() => {
@@ -46,6 +49,11 @@ const PrintPage = () => {
   return (
     <div className="print-preview-container">
       <div ref={printRef} className="a4-container">
+        {/* <div
+        ref={measureRootRef}
+        style={{ position: "absolute", top: "-9999px", left: "-9999px" }}
+      /> */}
+        <div ref={measureRootRef} />
         <Cover hospitalName={hospitalName} />
         <FirstPage
           patientInformation={patientInformation}

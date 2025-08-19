@@ -9,14 +9,15 @@ import { getPatientId, hasValidPatientId } from "@/utils/common";
  */
 export const useReport = () => {
   const { nativeMessage } = useMessageStore();
-  const patientId = getPatientId(nativeMessage);
+  // const patientId = getPatientId(nativeMessage);
+  const patientId = "694";
 
   console.log("useReport patientId", patientId);
 
   const query = useQuery({
     queryKey: QUERY_KEYS.REPORT.DETAIL(patientId),
     queryFn: () => reportApi.getReport(patientId),
-    enabled: hasValidPatientId(nativeMessage),
+    // enabled: hasValidPatientId(nativeMessage),
     retry: (failureCount, error: any) => {
       // 실패 시 오류 로그
       console.error(`Report fetch failed (attempt ${failureCount + 1}):`, {
