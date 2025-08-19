@@ -17,8 +17,6 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
   );
   const isRupture = ruptureResult?.result_class === "exist";
 
-  console.log("AnalysisREsult", item);
-
   useEffect(() => {
     if (isRupture) {
       // 각 그룹별로 Point[]로 변환하여 2차원 배열로 저장

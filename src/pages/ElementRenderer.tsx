@@ -8,20 +8,19 @@ import {
 } from "@/components";
 import { processReportData } from "@/utils/reportDataProcessor";
 import { ELEMENT } from "@/constants/element";
-import { ReportResponse, NativeDefaultMessage } from "@/lib";
+import { ReportResponse } from "@/lib";
 import { checkFalsy } from "@/utils";
+import { useMessageStore } from "@/store";
 
 interface ElementRendererProps {
   element: string;
   reportData: ReportResponse | undefined;
-  nativeMessage: NativeDefaultMessage | null;
 }
 
-const ElementRenderer = ({
-  element,
-  reportData,
-  nativeMessage,
-}: ElementRendererProps) => {
+const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
+  // 리포트 관련 커스텀 훅
+  const { nativeMessage } = useMessageStore();
+
   const {
     patientInformation,
     analysisSummary,
@@ -67,8 +66,8 @@ const ElementRenderer = ({
     // element 형식: analysis-result-{index}
     const analysisResultIndex = Number(element.split("-")[2]);
     const analysisItem = analysisItems[analysisResultIndex];
-    console.log("analysisItem", analysisItems, analysisItem);
 
+    // 예방 차원 (시나리오에 없음)
     if (checkFalsy(analysisItem)) {
       return <></>;
     }

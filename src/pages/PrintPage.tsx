@@ -2,13 +2,11 @@ import { useRef, useEffect } from "react";
 import { useWebViewLoading, usePrintHandler } from "@/hooks";
 import useA4Handler from "@/hooks/useA4Handler";
 import { useReport } from "@/services/useReport";
-import { useMessageStore, usePrintStore } from "@/store";
+import { usePrintStore } from "@/store";
 import { Cover, ElementRenderer } from "@/pages";
 import { A4Template } from "@/components";
 
 const PrintPage = () => {
-  // 리포트 관련 커스텀 훅
-  const { nativeMessage } = useMessageStore();
   const { data: reportData, isFetching } = useReport();
   // 표시 정보
   const patientName = reportData?.data?.patientSummary?.patientName ?? "";
@@ -56,7 +54,6 @@ const PrintPage = () => {
                   key={element}
                   element={element}
                   reportData={reportData}
-                  nativeMessage={nativeMessage}
                 />
               ))}
             </A4Template>
