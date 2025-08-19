@@ -12,10 +12,12 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
   const [roiCoordinates, setRoiCoordinates] = useState<Point[][]>([]);
 
   const { analysis, imageUrl, originalFileName } = item;
-  const ruptureResult = analysis.labels.find(
-    (label) => label.result_type === "rupture"
+  const ruptureResult = analysis?.labels?.find(
+    (label) => label?.result_type === "rupture"
   );
   const isRupture = ruptureResult?.result_class === "exist";
+
+  console.log("AnalysisREsult", item);
 
   useEffect(() => {
     if (isRupture) {

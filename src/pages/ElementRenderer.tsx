@@ -66,6 +66,7 @@ const ElementRenderer = ({
     // element 형식: analysis-result-{index}
     const analysisResultIndex = Number(element.split("-")[2]);
     const analysisItem = analysisItems[analysisResultIndex];
+    console.log("analysisItem", analysisItems, analysisItem);
 
     return (
       <AnalysisResult
