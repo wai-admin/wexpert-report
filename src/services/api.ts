@@ -10,8 +10,6 @@ import { ENDPOINTS } from "@/constants/endpoints";
 export const reportApi = {
   // 특정 환자 리포트 조회
   getReport: (patientId: string) => {
-    console.log("getReport patientId", patientId);
-
     return apiFetch.get<ReportResponse>(ENDPOINTS.REPORT.GET_REPORT(patientId));
   },
   // 리포트 업로드

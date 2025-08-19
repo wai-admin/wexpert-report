@@ -11,8 +11,6 @@ export const useReport = () => {
   const { nativeMessage } = useMessageStore();
   const patientId = getPatientId(nativeMessage);
 
-  console.log("useReport patientId", patientId);
-
   const query = useQuery({
     queryKey: QUERY_KEYS.REPORT.DETAIL(patientId),
     queryFn: () => reportApi.getReport(patientId),

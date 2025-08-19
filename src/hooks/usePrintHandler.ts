@@ -40,8 +40,6 @@ export const usePrintHandler = (
           doctorOpinion: nativeMessage.assessment || null,
         } as ReportData;
 
-        console.log("Upload reportData: ", reportData);
-
         uploadReport({
           report: reportData,
           file: null,

@@ -6,6 +6,30 @@
 @import "./components/input.css";
 @import "./components/analysis.css";
 
+/* CSS 변수 정의 */
+:root {
+  /* A4 용지 크기 */
+  --a4-width: 210mm;
+  --a4-height: 297mm;
+
+  /* A4 패딩 */
+  --a4-padding-top: 30px;
+  --a4-padding-bottom: 30px;
+  --a4-padding-left: 40px;
+  --a4-padding-right: 40px;
+
+  /* A4 콘텐츠 영역 */
+  --a4-content-width: calc(
+    var(--a4-width) - var(--a4-padding-left) - var(--a4-padding-right)
+  );
+  --a4-content-height: calc(
+    var(--a4-height) - var(--a4-padding-top) - var(--a4-padding-bottom)
+  );
+
+  /* 페이지 간격 */
+  --page-gap: 10px;
+}
+
 html,
 body {
   margin: 0;
