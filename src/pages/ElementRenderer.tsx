@@ -33,6 +33,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
   if (element === ELEMENT.PATIENT_INFORMATION) {
     return (
       <PatientInformation
+        id={element}
         key={element}
         patientInformation={patientInformation}
       />
@@ -40,12 +41,19 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
   }
 
   if (element === ELEMENT.ANALYSIS_SUMMARY) {
-    return <AnalysisSummary key={element} analysisSummary={analysisSummary} />;
+    return (
+      <AnalysisSummary
+        id={element}
+        key={element}
+        analysisSummary={analysisSummary}
+      />
+    );
   }
 
   if (element === ELEMENT.RECOMMEND_TREATMENT) {
     return (
       <RecommendTreatment
+        id={element}
         key={element}
         recommendedTreatment={recommendedTreatment}
       />
@@ -55,6 +63,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
   if (element === ELEMENT.ANALYSIS_VIEWER) {
     return (
       <AnalysisViewer
+        id={element}
         key={element}
         analysisCount={analysisCount}
         ruptureCount={ruptureCount}
@@ -82,7 +91,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
   }
 
   if (element === ELEMENT.ASSESSMENT) {
-    return <Assessment key={element} />;
+    return <Assessment id={element} key={element} />;
   }
 
   return <></>;

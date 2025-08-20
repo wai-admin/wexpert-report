@@ -1,18 +1,20 @@
 import { NumberedList } from "@/components";
 
 interface AnalysisViewerProps {
+  id: string;
   analysisCount: number;
   ruptureCount: number;
 }
 
 const AnalysisViewer = ({
+  id,
   analysisCount,
   ruptureCount,
 }: AnalysisViewerProps) => {
   const hasRupture = ruptureCount > 0;
 
   return (
-    <div className="column">
+    <div id={id} className="column">
       <NumberedList number={4} title="부작용 감지 이미지 첨부" />
       <div className="comment-box-image">
         {hasRupture ? (

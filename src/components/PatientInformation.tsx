@@ -1,6 +1,7 @@
 import { NumberedList } from "@/components";
 
 interface PatientInformationProps {
+  id: string;
   patientInformation: {
     chatNumber: string;
     patientName: string;
@@ -9,12 +10,13 @@ interface PatientInformationProps {
   };
 }
 const PatientInformation = ({
+  id,
   patientInformation,
 }: PatientInformationProps) => {
   const { chatNumber, patientName, birth, analysisDate } = patientInformation;
 
   return (
-    <div className="column">
+    <div id={id} className="column">
       <NumberedList number={1} title="환자 정보" />
       <table>
         <tbody>

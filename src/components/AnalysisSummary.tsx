@@ -2,14 +2,15 @@ import { NumberedList } from "@/components";
 import { AnalysisSummary as AnalysisSummaryType } from "@/lib/reportType";
 
 interface AnalysisSummaryProps {
+  id: string;
   analysisSummary: AnalysisSummaryType;
 }
 
-const AnalysisSummary = ({ analysisSummary }: AnalysisSummaryProps) => {
+const AnalysisSummary = ({ id, analysisSummary }: AnalysisSummaryProps) => {
   const { implantPosition, ruptureStatus, surfaceType } = analysisSummary;
 
   return (
-    <div className="column">
+    <div id={id} className="column">
       <NumberedList number={2} title="AI 분석 요약" />
       <table>
         <tbody>
