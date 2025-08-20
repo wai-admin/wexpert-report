@@ -24,6 +24,8 @@
 
 .comment-box-assessment {
   min-height: 110px;
+  max-height: 960px;
+  overflow-y: hidden;
   display: flex;
   border: 1px solid #c0c0c0;
   padding: 12px 10px;
