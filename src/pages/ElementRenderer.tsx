@@ -33,6 +33,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
     analysisItems,
     analysisCount,
     ruptureCount,
+    assessment,
   } = processReportData(reportData, nativeMessage);
 
   if (element === ELEMENT.PATIENT_INFORMATION) {
@@ -97,7 +98,11 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
 
   if (element === ELEMENT.ASSESSMENT) {
     return (
-      <Assessment id={`${ELEMENT.A4_CONTAINER}-${element}`} key={element} />
+      <Assessment
+        id={`${ELEMENT.A4_CONTAINER}-${element}`}
+        key={element}
+        assessment={assessment}
+      />
     );
   }
 

@@ -20,6 +20,7 @@ interface ProcessedReportData {
   analysisItems: Sonography[];
   analysisCount: number;
   ruptureCount: number;
+  assessment: string;
 }
 
 export const processReportData = (
@@ -86,6 +87,8 @@ export const processReportData = (
     nativeMessage?.exportOptionType
   );
 
+  const assessment = nativeMessage?.assessment || "";
+
   return {
     hospitalName,
     patientInformation,
@@ -94,6 +97,7 @@ export const processReportData = (
     analysisItems,
     analysisCount,
     ruptureCount,
+    assessment,
   };
 };
 
