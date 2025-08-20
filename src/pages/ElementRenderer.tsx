@@ -33,7 +33,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
   if (element === ELEMENT.PATIENT_INFORMATION) {
     return (
       <PatientInformation
-        id={element}
+        id={`${ELEMENT.A4_CONTAINER}-${element}`}
         key={element}
         patientInformation={patientInformation}
       />
@@ -43,7 +43,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
   if (element === ELEMENT.ANALYSIS_SUMMARY) {
     return (
       <AnalysisSummary
-        id={element}
+        id={`${ELEMENT.A4_CONTAINER}-${element}`}
         key={element}
         analysisSummary={analysisSummary}
       />
@@ -53,7 +53,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
   if (element === ELEMENT.RECOMMEND_TREATMENT) {
     return (
       <RecommendTreatment
-        id={element}
+        id={`${ELEMENT.A4_CONTAINER}-${element}`}
         key={element}
         recommendedTreatment={recommendedTreatment}
       />
@@ -63,7 +63,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
   if (element === ELEMENT.ANALYSIS_VIEWER) {
     return (
       <AnalysisViewer
-        id={element}
+        id={`${ELEMENT.A4_CONTAINER}-${element}`}
         key={element}
         analysisCount={analysisCount}
         ruptureCount={ruptureCount}
@@ -91,7 +91,9 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
   }
 
   if (element === ELEMENT.ASSESSMENT) {
-    return <Assessment id={element} key={element} />;
+    return (
+      <Assessment id={`${ELEMENT.A4_CONTAINER}-${element}`} key={element} />
+    );
   }
 
   return <></>;

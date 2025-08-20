@@ -58,7 +58,7 @@ const handleScrollToElement = ({
 
   // 변경된 요소 중 가장 마지막 요소로 스크롤
   const targetElement = document.getElementById(
-    changedElements[changedElements.length - 1]
+    `${ELEMENT.A4_CONTAINER}-${changedElements[changedElements.length - 1]}`
   );
 
   // 스크롤 실행 (값 적용 후 스크롤을 위해 setTimeout)
