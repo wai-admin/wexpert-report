@@ -36,6 +36,14 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
     // 토큰 및 사용자 입력 정보 처리
     if (hasKey(data, NATIVE_MESSAGE_KEY.INITIALIZED)) {
       setNativeMessage(data as NativeDefaultMessage);
+
+      if ((data as NativeDefaultMessage).assessment !== "") {
+        const assessmentEl = document.getElementById("assessment");
+        if (assessmentEl) {
+          assessmentEl.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+
       setAccessToken((data as NativeDefaultMessage).accessToken);
     }
 

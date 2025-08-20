@@ -10,7 +10,7 @@ const Assessment = () => {
     : "";
 
   return (
-    <div className="column">
+    <div id="assessment" className="column">
       <NumberedList number={5} title="담당 의사 소견" />
       <div className="comment-box-assessment">{assessment}</div>
     </div>
