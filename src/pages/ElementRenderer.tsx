@@ -17,6 +17,11 @@ interface ElementRendererProps {
   reportData: ReportResponse | undefined;
 }
 
+/**
+ * 요소 렌더링
+ * @description 각 요소에 해당하는 HTML이 존재하며 id 중복을 피하기 위해 요소 ID에 컨테이너 ID(ELEMENT.A4_CONTAINER)를 붙여서 사용
+ * @description 해당 ID는 Native의 메시지 수신 시, 자동 스크롤 기능에 사용됨
+ */
 const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
   // 리포트 관련 커스텀 훅
   const { nativeMessage } = useMessageStore();
@@ -28,11 +33,13 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
     analysisItems,
     analysisCount,
     ruptureCount,
+    assessment,
   } = processReportData(reportData, nativeMessage);
 
   if (element === ELEMENT.PATIENT_INFORMATION) {
     return (
       <PatientInformation
+        id={`${ELEMENT.A4_CONTAINER}-${element}`}
         key={element}
         patientInformation={patientInformation}
       />
@@ -40,12 +47,19 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
   }
 
   if (element === ELEMENT.ANALYSIS_SUMMARY) {
-    return <AnalysisSummary key={element} analysisSummary={analysisSummary} />;
+    return (
+      <AnalysisSummary
+        id={`${ELEMENT.A4_CONTAINER}-${element}`}
+        key={element}
+        analysisSummary={analysisSummary}
+      />
+    );
   }
 
   if (element === ELEMENT.RECOMMEND_TREATMENT) {
     return (
       <RecommendTreatment
+        id={`${ELEMENT.A4_CONTAINER}-${element}`}
         key={element}
         recommendedTreatment={recommendedTreatment}
       />
@@ -55,6 +69,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
   if (element === ELEMENT.ANALYSIS_VIEWER) {
     return (
       <AnalysisViewer
+        id={`${ELEMENT.A4_CONTAINER}-${element}`}
         key={element}
         analysisCount={analysisCount}
         ruptureCount={ruptureCount}
@@ -82,7 +97,13 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
   }
 
   if (element === ELEMENT.ASSESSMENT) {
-    return <Assessment key={element} />;
+    return (
+      <Assessment
+        id={`${ELEMENT.A4_CONTAINER}-${element}`}
+        key={element}
+        assessment={assessment}
+      />
+    );
   }
 
   return <></>;

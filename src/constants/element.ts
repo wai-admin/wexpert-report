@@ -1,4 +1,5 @@
 const ELEMENT = {
+  A4_CONTAINER: "a4-container",
   PATIENT_INFORMATION: "patient-information",
   ANALYSIS_SUMMARY: "analysis-summary",
   RECOMMEND_TREATMENT: "recommend-treatment",
