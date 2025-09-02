@@ -11,6 +11,7 @@ export interface NativeDefaultMessage {
   birthYear: string;
   chartNo: string;
   exportOptionType: ExportOptionType;
+  nativeVersion: string;
   id: number;
 }
 

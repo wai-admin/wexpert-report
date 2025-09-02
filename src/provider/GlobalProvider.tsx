@@ -5,7 +5,7 @@ import {
   NativeMessageData,
 } from "@/lib/nativeMessageType";
 import { hasKey } from "@/utils/common";
-import { NATIVE_MESSAGE_KEY } from "@/constants/native-message-key";
+import { NATIVE_MESSAGE_KEY } from "@/constants/bridge";
 import { sendInitialized } from "@/utils/bridge";
 
 interface GlobalProviderProps {
