@@ -13,7 +13,13 @@ import {
   ReportResponse,
   Sonography,
 } from "@/lib";
-import { ELEMENT, CONTENTS_MAX_HEIGHT } from "@/constants";
+import {
+  ELEMENT,
+  CONTENTS_MAX_HEIGHT,
+  FEATURE,
+  NATIVE_VERSION,
+  getFeatureActivation,
+} from "@/constants";
 import { useMessageStore } from "@/store";
 import { useReport } from "@/services/useReport";
 
@@ -71,10 +77,12 @@ const useA4Handler = () => {
       {
         type: ELEMENT.PATIENT_INFORMATION,
         data: patientInformation(ELEMENT.PATIENT_INFORMATION),
+        active: true,
       },
       {
         type: ELEMENT.ANALYSIS_SUMMARY,
         data: analysisSummary(ELEMENT.ANALYSIS_SUMMARY),
+        active: true,
       },
       {
         type: ELEMENT.RECOMMEND_TREATMENT,
@@ -82,29 +90,42 @@ const useA4Handler = () => {
           ELEMENT.RECOMMEND_TREATMENT,
           reportData.data.recommendedTreatment
         ),
+        active: true,
       },
       {
         type: ELEMENT.ANALYSIS_VIEWER,
         data: analysisViewer(ELEMENT.ANALYSIS_VIEWER),
+        active: true,
       },
       // ruptureItems의 길이만큼 analysisResult 생성
       ...(analysisItems?.map((_, index) => ({
         type: ELEMENT.ANALYSIS_RESULT(index),
         data: analysisResult(ELEMENT.ANALYSIS_RESULT(index)),
+        active: true,
       })) || []),
       {
         type: ELEMENT.ASSESSMENT,
         data: assessment(ELEMENT.ASSESSMENT, nativeMessage?.assessment || ""),
+        active: getFeatureActivation(
+          FEATURE.ASSESSMENT,
+          nativeMessage?.nativeVersion as NATIVE_VERSION | undefined
+        ),
       },
     ];
   };
 
-  const getA4Data = (a4Element: { type: string; data: string }[]) => {
+  const getA4Data = (
+    a4Element: { type: string; data: string; active: boolean | undefined }[]
+  ) => {
     const pages: ElementPageInfo[] = [];
     let currentPage = 1;
     let currentPageData: string[] = [];
 
     a4Element.forEach((element) => {
+      if (element.active === false) {
+        return;
+      }
+
       if (measureRootRef.current) {
         measureRootRef.current.innerHTML += element.data;
         const elementHeight = measureRootRef.current.offsetHeight;
