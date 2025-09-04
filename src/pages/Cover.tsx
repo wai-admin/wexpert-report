@@ -3,6 +3,12 @@ interface CoverProps {
 }
 
 const Cover = ({ hospitalName }: CoverProps) => {
+  // 이미지 로드 완료시 부드럽게 표시
+  const handleLoadImage = (e: any) => {
+    const img = e.target;
+    img.style.opacity = 1;
+  };
+
   return (
     <div className="a4-page">
       <div className="a4-content">
@@ -15,7 +21,12 @@ const Cover = ({ hospitalName }: CoverProps) => {
         </div>
       </div>
       <div className="cover-footer">
-        <img src="/images/background.webp" className="cover-background" />
+        <img
+          src="/images/background.webp"
+          className="cover-background"
+          style={{ opacity: "0", transition: "opacity 0.5s ease" }}
+          onLoad={handleLoadImage}
+        />
         <p className="cover-footer-text">
           Generated using a platform provided by W.AI Inc.
         </p>
