@@ -2,34 +2,34 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  height: 160px;
+  height: 42.3mm; /* 160px */
 }
 
 .analysis-img {
-  width: 220px;
-  height: 160px;
+  width: 58.3mm; /* 220px */
+  height: 42.3mm; /* 160px */
   background-color: black;
 }
 
 .analysis-info-box {
   display: flex;
   flex-direction: column;
-  margin-left: 14px;
-  padding: 4px 0;
+  margin-left: 3.7mm; /* 14px */
+  padding: 1.1mm 0; /* 4px 0 */
 }
 
 .analysis-status {
-  font-size: 13px;
+  font-size: 3.5mm; /* 13px */
   font-weight: 500;
   color: black;
   font-family: Pretendard;
 }
 
 .analysis-description {
-  font-size: 13px;
+  font-size: 3.5mm; /* 13px */
   font-weight: 400;
   color: black;
-  margin-top: 8px;
+  margin-top: 2.1mm; /* 8px */
   font-family: Pretendard;
 }
 

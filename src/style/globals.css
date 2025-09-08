@@ -13,10 +13,10 @@
   --a4-height: 297mm;
 
   /* A4 패딩 */
-  --a4-padding-top: 30px;
-  --a4-padding-bottom: 30px;
-  --a4-padding-left: 40px;
-  --a4-padding-right: 40px;
+  --a4-padding-top: 8mm;
+  --a4-padding-bottom: 8mm;
+  --a4-padding-left: 10.5mm;
+  --a4-padding-right: 10.5mm;
 
   /* A4 콘텐츠 영역 */
   --a4-content-width: calc(
@@ -27,7 +27,7 @@
   );
 
   /* 페이지 간격 */
-  --page-gap: 10px;
+  --page-gap: 2.7mm;
 }
 
 html,

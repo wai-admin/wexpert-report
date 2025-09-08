@@ -38,7 +38,7 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
   }, [isRupture, ruptureResult]);
 
   return (
-    <div className="analysis-container" style={{ marginTop: "14px" }}>
+    <div className="analysis-container" style={{ marginTop: "3.7mm" }}>
       <AnalysisImage
         imageUrl={imageUrl}
         originalFileName={originalFileName}

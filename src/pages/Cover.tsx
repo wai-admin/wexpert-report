@@ -12,11 +12,11 @@ const Cover = ({ hospitalName }: CoverProps) => {
   return (
     <div className="a4-page">
       <div className="a4-content">
-        <div style={{ marginTop: "140px" }}>
+        <div style={{ marginTop: "36.7mm" }}>
           <h1 className="cover-title-highlight">AI를 활용한</h1>
           <h1 className="cover-title-normal">유방 보형물 진단</h1>
         </div>
-        <div style={{ marginTop: "50px" }}>
+        <div style={{ marginTop: "13.3mm" }}>
           <h1 className="cover-hospital-name">{hospitalName}</h1>
         </div>
       </div>
