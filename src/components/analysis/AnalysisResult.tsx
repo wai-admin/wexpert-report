@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { AnalysisImage } from "@/components";
+import { useTranslation } from "react-i18next";
 import { Sonography } from "@/lib/reportType";
 import { Point } from "rulyotano.math.geometry";
+import { AnalysisImage } from "@/components";
 
 interface AnalysisResultProps {
   index: number;
@@ -9,6 +10,8 @@ interface AnalysisResultProps {
 }
 
 const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
+  const { t: i18n } = useTranslation();
+
   const [roiCoordinates, setRoiCoordinates] = useState<Point[][]>([]);
 
   const { analysis, imageUrl, originalFileName } = item;
@@ -47,20 +50,26 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
       <div className="analysis-info-box">
         <p className="analysis-status">
           <span className="analysis-status" style={{ color: "#595959" }}>
-            {index}번 이미지{" "}
+            {i18n("complication-images-attached.image-number", { index })}{" "}
           </span>
           |{" "}
           <span
             className="analysis-status"
             style={{ color: isRupture ? "red" : "black" }}
           >
-            {isRupture ? "파열" : "정상"}
+            {isRupture
+              ? i18n("complication-images-attached.image-status-rupture")
+              : i18n("complication-images-attached.image-status-normal")}
           </span>
         </p>
         <p className="analysis-description">
           {isRupture
-            ? "현재 이미지 내 색깔로 표시된 해당 영역은 AI 분석 결과 파열 소견이 나타나는 부위입니다."
-            : "분석 결과, 현재 이미지에서는 파열 등 특이 소견이 관찰되지 않았습니다."}
+            ? i18n(
+                "complication-images-attached.analysis-result-rupture-comment"
+              )
+            : i18n(
+                "complication-images-attached.analysis-result-normal-comment"
+              )}
         </p>
       </div>
     </div>

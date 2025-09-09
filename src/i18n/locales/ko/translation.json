@@ -1,0 +1,36 @@
+{
+  "cover": {
+    "title-highlight": "AI를 활용한",
+    "title-normal": "유방 보형물 진단",
+    "footer-text": "Generated using a platform provided by W.AI Inc."
+  },
+  "numberedList": {
+    "patient-information": "환자 정보",
+    "summary-of-ai-analysis": "AI 분석 요약",
+    "recommend-treatment-based-on-ai-analysis": "AI 분석 결과에 따른 추천 치료",
+    "complication-images-attached": "부작용 감지 이미지 첨부",
+    "physician-assessment": "담당 의사 소견"
+  },
+  "patient-information": {
+    "chart-number": "차트 번호",
+    "name": "성명",
+    "birth-date": "생년월일",
+    "exam-date": "검사일시"
+  },
+  "analysis-summary": {
+    "pocket-position": "보형물 삽입 위치",
+    "shell-type": "표면 타입",
+    "rupture": "파열 여부"
+  },
+  "recommend-treatment-based-on-ai-analysis": {},
+  "complication-images-attached": {
+    "no-rupture-comment": "총 {{analysisCount}}장의 이미지를 분석한 결과, 파열이 확인되지 않았습니다.",
+    "rupture-comment": "총 {{analysisCount}}장의 이미지 중 {{ruptureCount}}장에서 파열이 감지되었습니다.",
+    "image-number": "{{index}}번 이미지",
+    "image-status-normal": "정상",
+    "image-status-rupture": "파열",
+    "analysis-result-normal-comment": "분석 결과, 현재 이미지에서는 파열 등 특이 소견이 관찰되지 않았습니다.",
+    "analysis-result-rupture-comment": "현재 이미지 내 색깔로 표시된 해당 영역은 AI 분석 결과 파열 소견이 나타나는 부위입니다."
+  },
+  "assessment": {}
+}

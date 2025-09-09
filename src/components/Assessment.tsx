@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { NumberedList } from "@/components";
 import { normalizeLineBreaks } from "@/utils/common";
 
@@ -7,9 +8,14 @@ interface AssessmentProps {
 }
 
 const Assessment = ({ id, assessment }: AssessmentProps) => {
+  const { t: i18n } = useTranslation();
+
   return (
     <div id={id} className="column">
-      <NumberedList number={5} title="담당 의사 소견" />
+      <NumberedList
+        number={5}
+        title={i18n("numberedList.physician-assessment")}
+      />
       <div className="comment-box-assessment">
         {normalizeLineBreaks(assessment)}
       </div>

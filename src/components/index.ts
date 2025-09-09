@@ -10,3 +10,4 @@ export { default as AnalysisImage } from "./analysis/AnalysisImage";
 export { default as ROIOverlay } from "./analysis/ROIOverlay";
 export { default as PrintButton } from "./button/PrintButton";
 export { default as NumberedList } from "./text/NumberedList";
+export { default as LanguageSwitcher } from "./i18n/LanguageSwitcher";
