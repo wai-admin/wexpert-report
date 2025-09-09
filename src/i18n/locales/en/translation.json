@@ -1,0 +1,35 @@
+{
+  "cover": {
+    "title-highlight": "AI-Assisted Ultrasound Analysis",
+    "title-normal": "of Breast Implants",
+    "footer-text": "Generated using a platform provided by W.AI Inc."
+  },
+  "numberedList": {
+    "patient-information": "Patient Information",
+    "summary-of-ai-analysis": "Summary of AI Analysis",
+    "recommend-treatment-based-on-ai-analysis": "Recommend Treatment Based on AI Analysis",
+    "complication-images-attached": "Complication Images Attached",
+    "physician-assessment": "Physician's Assessment"
+  },
+  "patient-information": {
+    "chart-number": "Chart No.",
+    "name": "Name",
+    "birth-date": "Birth Date",
+    "exam-date": "Exam Date/Time"
+  },
+  "analysis-summary": {
+    "pocket-position": "Pocket Position",
+    "shell-type": "Shell Type",
+    "rupture": "Rupture"
+  },
+  "recommend-treatment-based-on-ai-analysis": {},
+  "complication-images-attached": {
+    "no-rupture-comment": "Total {{analysisCount}} images were analyzed, and no rupture was detected.",
+    "rupture-comment": "Rupture was detected in {{ruptureCount}} out of {{analysisCount}} images.",
+    "image-number": "Image {{index}}",
+    "image-status-normal": "Normal",
+    "image-status-rupture": "Rupture",
+    "analysis-result-normal-comment": "No signs of rupture or other notable findings were observed in the current image.",
+    "analysis-result-rupture-comment": "The color-highlighted region in the image indicates an area where the AI analysis suggests signs of rupture."
+  }
+}

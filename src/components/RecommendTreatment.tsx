@@ -1,4 +1,5 @@
 import { NumberedList } from "@/components";
+import { useTranslation } from "react-i18next";
 import { normalizeLineBreaks } from "@/utils/common";
 
 interface RecommendTreatmentProps {
@@ -10,9 +11,14 @@ const RecommendTreatment = ({
   id,
   recommendedTreatment,
 }: RecommendTreatmentProps) => {
+  const { t: i18n } = useTranslation();
+
   return (
     <div id={id} className="column">
-      <NumberedList number={3} title="AI 분석 결과에 따른 추천 치료" />
+      <NumberedList
+        number={3}
+        title={i18n("numberedList.recommend-treatment-based-on-ai-analysis")}
+      />
       <div className="comment-box-recommend">
         {normalizeLineBreaks(recommendedTreatment)}
       </div>
