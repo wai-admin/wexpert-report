@@ -22,6 +22,9 @@ const RecommendTreatment = ({
       <div className="comment-box-recommend">
         {normalizeLineBreaks(recommendedTreatment)}
       </div>
+      <div className="recommend-warning">
+        {i18n("recommend-treatment-based-on-ai-analysis.warning")}
+      </div>
     </div>
   );
 };

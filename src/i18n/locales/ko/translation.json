@@ -7,8 +7,8 @@
   "numberedList": {
     "patient-information": "환자 정보",
     "summary-of-ai-analysis": "AI 분석 요약",
-    "recommend-treatment-based-on-ai-analysis": "AI 분석 결과에 따른 추천 치료",
-    "complication-images-attached": "부작용 감지 이미지 첨부",
+    "recommend-treatment-based-on-ai-analysis": "AI 종합 분석 결과",
+    "complication-images-attached": "분석 이미지",
     "physician-assessment": "담당 의사 소견"
   },
   "patient-information": {
@@ -22,7 +22,9 @@
     "shell-type": "표면 타입",
     "rupture": "파열 여부"
   },
-  "recommend-treatment-based-on-ai-analysis": {},
+  "recommend-treatment-based-on-ai-analysis": {
+    "warning": "※ 분석 결과는 업로드된 이미지만을 대상으로 한 것이며, 분석되지 않은 부위에 문제가 있을 가능성이 있습니다. 최종 진단은 보형물 검사를 시행한 검사자나 진료를 진행한 의사의 판단에 따릅니다."
+  },
   "complication-images-attached": {
     "no-rupture-comment": "총 {{analysisCount}}장의 이미지를 분석한 결과, 파열이 확인되지 않았습니다.",
     "rupture-comment": "총 {{analysisCount}}장의 이미지 중 {{ruptureCount}}장에서 파열이 감지되었습니다.",

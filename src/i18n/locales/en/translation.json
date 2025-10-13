@@ -22,7 +22,9 @@
     "shell-type": "Shell Type",
     "rupture": "Rupture"
   },
-  "recommend-treatment-based-on-ai-analysis": {},
+  "recommend-treatment-based-on-ai-analysis": {
+    "warning": "※ The analysis covers only the uploaded images; unexamined areas may still have issues. The final diagnosis is determined by the examiner or treating physician."
+  },
   "complication-images-attached": {
     "no-rupture-comment": "Total {{analysisCount}} images were analyzed, and no rupture was detected.",
     "rupture-comment": "Rupture was detected in {{ruptureCount}} out of {{analysisCount}} images.",
