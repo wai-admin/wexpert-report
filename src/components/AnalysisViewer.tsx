@@ -5,12 +5,14 @@ interface AnalysisViewerProps {
   id: string;
   analysisCount: number;
   ruptureCount: number;
+  invasionToCapsuleExist: boolean;
 }
 
 const AnalysisViewer = ({
   id,
   analysisCount,
   ruptureCount,
+  invasionToCapsuleExist,
 }: AnalysisViewerProps) => {
   const { t: i18n } = useTranslation();
   const hasRupture = ruptureCount > 0;
@@ -28,6 +30,10 @@ const AnalysisViewer = ({
               analysisCount,
               ruptureCount,
             })}
+            {invasionToCapsuleExist &&
+              i18n(
+                "complication-images-attached.invasion-to-capsule-exist-comment"
+              )}
           </>
         ) : (
           <>

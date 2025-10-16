@@ -73,6 +73,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
         key={element}
         analysisCount={analysisCount}
         ruptureCount={ruptureCount}
+        invasionToCapsuleExist={analysisSummary.invasionToCapsuleExist}
       />
     );
   }

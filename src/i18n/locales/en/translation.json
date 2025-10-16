@@ -28,10 +28,15 @@
   "complication-images-attached": {
     "no-rupture-comment": "Total {{analysisCount}} images were analyzed, and no rupture was detected.",
     "rupture-comment": "Rupture was detected in {{ruptureCount}} out of {{analysisCount}} images.",
+    "invasion-to-capsule-exist-comment": "Silicone capsule invasion was detected.",
     "image-number": "Image {{index}}",
     "image-status-normal": "Normal",
     "image-status-rupture": "Rupture",
-    "analysis-result-normal-comment": "No signs of rupture or other notable findings were observed in the current image.",
-    "analysis-result-rupture-comment": "The color-highlighted region in the image indicates an area where the AI analysis suggests signs of rupture."
+    "analysis-result-comment": {
+      "normal": "No signs of rupture or other notable findings were observed in the current image.",
+      "rupture": "The color-highlighted region in the image indicates an area where the AI analysis suggests signs of rupture.",
+      "invasion-to-capsule": "Silicone capsule invasion was detected.",
+      "no-invasion-to-capsule": "No silicone capsule invasion was detected."
+    }
   }
 }

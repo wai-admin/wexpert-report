@@ -11,6 +11,7 @@ export interface AnalysisSummary {
   implantPosition: string;
   ruptureStatus: string;
   surfaceType: string;
+  invasionToCapsuleExist: boolean;
 }
 
 // 라벨 정보

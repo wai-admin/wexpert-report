@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Sonography } from "@/lib/reportType";
 import { Point } from "rulyotano.math.geometry";
 import { AnalysisImage } from "@/components";
+import { checkTruthy } from "@/utils/common";
 
 interface AnalysisResultProps {
   index: number;
@@ -40,6 +41,14 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
     }
   }, [isRupture, ruptureResult]);
 
+  // 실리콘 피막 침범 존재 여부 확인
+  const invasionToCapsuleResult = analysis?.labels?.find(
+    (label) =>
+      label?.result_type === "silicone_invasion_to_capsule" &&
+      label?.result_class === "exist"
+  );
+  const isInvasionToCapsuleExist = checkTruthy(invasionToCapsuleResult);
+
   return (
     <div className="analysis-container" style={{ marginTop: "3.7mm" }}>
       <AnalysisImage
@@ -64,11 +73,19 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
         </p>
         <p className="analysis-description">
           {isRupture
-            ? i18n(
-                "complication-images-attached.analysis-result-rupture-comment"
-              )
+            ? `${i18n(
+                "complication-images-attached.analysis-result-comment.rupture"
+              )} ${
+                isInvasionToCapsuleExist
+                  ? i18n(
+                      "complication-images-attached.analysis-result-comment.invasion-to-capsule"
+                    )
+                  : i18n(
+                      "complication-images-attached.analysis-result-comment.no-invasion-to-capsule"
+                    )
+              }`
             : i18n(
-                "complication-images-attached.analysis-result-normal-comment"
+                "complication-images-attached.analysis-result-comment.normal"
               )}
         </p>
       </div>

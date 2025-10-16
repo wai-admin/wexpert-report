@@ -39,6 +39,7 @@ export const processReportData = (
       implantPosition: "",
       ruptureStatus: "",
       surfaceType: "",
+      invasionToCapsuleExist: false,
     },
     recommendedTreatment: "",
     patientDetail: {
