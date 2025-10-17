@@ -35,6 +35,7 @@ const useA4Handler = () => {
   const measureRootRef = useRef<HTMLDivElement>(null);
   const [elementPageInfo, setElementPageInfo] = useState<ElementPageInfo[]>([]);
 
+  // 데이터 초기화, 변경 시 페이지 생성 (A4 내부에 표시할 요소 목록 생성)
   useEffect(() => {
     if (reportData) {
       // 1. elementPageInfo 초기화
@@ -52,6 +53,7 @@ const useA4Handler = () => {
     }
   }, [reportData, nativeMessage]);
 
+  // A4 내부에 표시할 요소 목록 생성
   const getA4Element = (
     reportData: ReportResponse,
     nativeMessage: NativeDefaultMessage | null
@@ -114,6 +116,7 @@ const useA4Handler = () => {
     ];
   };
 
+  // 요소 목록을 기반으로 페이지 분배
   const getA4Data = (
     a4Element: { type: string; data: string; active: boolean | undefined }[]
   ) => {

@@ -6,6 +6,7 @@ interface PrintButtonProps {
 }
 
 const PrintButton = ({ printRef }: PrintButtonProps) => {
+  // 브라우저 프린트 요청
   const handlePrint = useReactToPrint({
     contentRef: printRef ?? undefined,
     documentTitle: "Wexpert Report",

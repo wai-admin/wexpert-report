@@ -58,6 +58,7 @@ const AnalysisImage = ({
     alert("이미지를 불러올 수 없습니다.");
   };
 
+  // 이미지 로드 완료 시 크기 저장
   const onImageLoad = (e: SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
     // 원본 이미지 크기 저장
