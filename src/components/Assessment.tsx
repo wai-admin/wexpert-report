@@ -13,7 +13,7 @@ const Assessment = ({ id, assessment }: AssessmentProps) => {
   return (
     <div id={id} className="column">
       <NumberedList
-        number={5}
+        number={6}
         title={i18n("numberedList.physician-assessment")}
       />
       <div className="comment-box-assessment">

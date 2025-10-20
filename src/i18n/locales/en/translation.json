@@ -8,6 +8,7 @@
     "patient-information": "Patient Information",
     "summary-of-ai-analysis": "Summary of AI Analysis",
     "recommend-treatment-based-on-ai-analysis": "Recommend Treatment Based on AI Analysis",
+    "rupture-risk-level": "Rupture Risk Level",
     "complication-images-attached": "Complication Images Attached",
     "physician-assessment": "Physician's Assessment"
   },
@@ -24,6 +25,9 @@
   },
   "recommend-treatment-based-on-ai-analysis": {
     "warning": "※ The analysis covers only the uploaded images; unexamined areas may still have issues. The final diagnosis is determined by the examiner or treating physician."
+  },
+  "rupture-risk-level": {
+    "warning": "※ Risk predictions are for reference only, based on AI analysis. Actual risk levels may vary depending on additional testing or the results of a plastic surgeon's consultation."
   },
   "complication-images-attached": {
     "no-rupture-comment": "Total {{analysisCount}} images were analyzed, and no rupture was detected.",

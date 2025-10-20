@@ -20,7 +20,7 @@ const AnalysisViewer = ({
   return (
     <div id={id} className="column">
       <NumberedList
-        number={4}
+        number={5}
         title={i18n("numberedList.complication-images-attached")}
       />
       <div className="comment-box-image">

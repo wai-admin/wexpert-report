@@ -5,6 +5,7 @@
 @import "./components/table.css";
 @import "./components/input.css";
 @import "./components/analysis.css";
+@import "./components/rupture-risk.css";
 
 /* CSS 변수 정의 */
 :root {

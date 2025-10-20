@@ -1,0 +1,68 @@
+.risk-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: fit-content;
+  gap: 30px;
+}
+
+.risk-score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.risk-guage-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.risk-score {
+  font-size: 30px;
+  font-weight: 500;
+  color: black;
+  font-family: Pretendard-Medium;
+}
+
+.risk-guage {
+  width: 200px;
+  height: 10px;
+  background: linear-gradient(
+    90deg,
+    rgba(76, 175, 80, 1) 0%,
+    rgba(255, 235, 59, 1) 25%,
+    rgba(255, 152, 0, 1) 50%,
+    rgba(244, 67, 54, 1) 75%
+  );
+  border-radius: 5px;
+}
+
+.risk-status-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.risk-status {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ff9800;
+  font-family: Pretendard-SemiBold;
+}
+
+.risk-description {
+  font-size: 13px;
+  font-weight: 500;
+  color: black;
+  font-family: Pretendard-Medium;
+}
+
+.rupture-risk-warning {
+  font-size: 2.7mm; /* 10px */
+  font-weight: 400;
+  color: rgb(102, 102, 102);
+  font-family: Pretendard;
+  margin-top: 2.1mm; /* 8px */
+}

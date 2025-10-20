@@ -3,6 +3,7 @@ export { default as RecommendTreatment } from "./RecommendTreatment";
 export { default as AnalysisSummary } from "./AnalysisSummary";
 export { default as AnalysisViewer } from "./AnalysisViewer";
 export { default as Assessment } from "./Assessment";
+export { default as RuptureRiskLevel } from "./RuptureRiskLevel";
 
 export { default as A4Template } from "./templates/A4Template";
 export { default as AnalysisResult } from "./analysis/AnalysisResult";

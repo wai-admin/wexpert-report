@@ -6,6 +6,7 @@ import {
   analysisViewer,
   analysisResult,
   assessment,
+  ruptureRiskLevel,
 } from "@/components/html";
 import {
   ExportOptionType,
@@ -92,6 +93,11 @@ const useA4Handler = () => {
           ELEMENT.RECOMMEND_TREATMENT,
           reportData.data.recommendedTreatment
         ),
+        active: true,
+      },
+      {
+        type: ELEMENT.RUPTURE_RISK_LEVEL,
+        data: ruptureRiskLevel(ELEMENT.RUPTURE_RISK_LEVEL),
         active: true,
       },
       {

@@ -3,6 +3,7 @@ import {
   AnalysisSummary,
   AnalysisViewer,
   Assessment,
+  RuptureRiskLevel,
   PatientInformation,
   RecommendTreatment,
 } from "@/components";
@@ -62,6 +63,15 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
         id={`${ELEMENT.A4_CONTAINER}-${element}`}
         key={element}
         recommendedTreatment={recommendedTreatment}
+      />
+    );
+  }
+
+  if (element === ELEMENT.RUPTURE_RISK_LEVEL) {
+    return (
+      <RuptureRiskLevel
+        id={`${ELEMENT.A4_CONTAINER}-${element}`}
+        key={element}
       />
     );
   }
