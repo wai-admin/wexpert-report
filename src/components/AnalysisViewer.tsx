@@ -6,6 +6,7 @@ interface AnalysisViewerProps {
   analysisCount: number;
   ruptureCount: number;
   invasionToCapsuleExist: boolean;
+  invasionToLnExist: boolean;
 }
 
 const AnalysisViewer = ({
@@ -13,9 +14,61 @@ const AnalysisViewer = ({
   analysisCount,
   ruptureCount,
   invasionToCapsuleExist,
+  invasionToLnExist,
 }: AnalysisViewerProps) => {
   const { t: i18n } = useTranslation();
-  const hasRupture = ruptureCount > 0;
+
+  const getComment = () => {
+    const hasRupture = ruptureCount > 0;
+
+    if (hasRupture === false) {
+      return i18n("complication-images-attached.no-rupture-comment", {
+        analysisCount,
+      });
+    } else {
+      const ruptureComment = i18n(
+        "complication-images-attached.rupture-comment",
+        {
+          analysisCount,
+          ruptureCount,
+        }
+      );
+
+      if (invasionToCapsuleExist) {
+        if (invasionToLnExist) {
+          return (
+            ruptureComment +
+            "\n" +
+            i18n(
+              "complication-images-attached.invasion-to-capsule-ln-exist-comment"
+            )
+          );
+        } else {
+          return (
+            ruptureComment +
+            "\n" +
+            i18n(
+              "complication-images-attached.invasion-to-capsule-exist-but-no-ln-comment"
+            )
+          );
+        }
+      } else {
+        if (invasionToLnExist) {
+          return (
+            ruptureComment +
+            "\n" +
+            i18n("complication-images-attached.invasion-to-ln-exist-comment")
+          );
+        } else {
+          return (
+            ruptureComment +
+            "\n" +
+            i18n("complication-images-attached.no-invasion-to-ln-comment")
+          );
+        }
+      }
+    }
+  };
 
   return (
     <div id={id} className="column">
@@ -23,26 +76,7 @@ const AnalysisViewer = ({
         number={4}
         title={i18n("numberedList.complication-images-attached")}
       />
-      <div className="comment-box-image">
-        {hasRupture ? (
-          <>
-            {i18n("complication-images-attached.rupture-comment", {
-              analysisCount,
-              ruptureCount,
-            })}
-            {invasionToCapsuleExist &&
-              i18n(
-                "complication-images-attached.invasion-to-capsule-exist-comment"
-              )}
-          </>
-        ) : (
-          <>
-            {i18n("complication-images-attached.no-rupture-comment", {
-              analysisCount,
-            })}
-          </>
-        )}
-      </div>
+      <div className="comment-box-image">{getComment()}</div>
     </div>
   );
 };

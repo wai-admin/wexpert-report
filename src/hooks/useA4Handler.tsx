@@ -7,12 +7,7 @@ import {
   analysisResult,
   assessment,
 } from "@/components/html";
-import {
-  ExportOptionType,
-  NativeDefaultMessage,
-  ReportResponse,
-  Sonography,
-} from "@/lib";
+import { ExportOptionType, NativeDefaultMessage, ReportResponse } from "@/lib";
 import {
   ELEMENT,
   CONTENTS_MAX_HEIGHT,
@@ -22,6 +17,7 @@ import {
 } from "@/constants";
 import { useMessageStore } from "@/store";
 import { useReport } from "@/services/useReport";
+import { getAnalysisItems } from "@/utils/reportDataProcessor";
 
 interface ElementPageInfo {
   page: number;
@@ -58,22 +54,11 @@ const useA4Handler = () => {
     reportData: ReportResponse,
     nativeMessage: NativeDefaultMessage | null
   ) => {
-    // TODO: 필터링 로직 리팩토링 필요
-    // analysis result 관련 필터링 <시작>
-    const ruptureItems = reportData.data.patientDetail.sonographies.filter(
-      (item: Sonography) =>
-        item.analysis.labels.some((label) => label.result_type === "rupture")
-    );
-
-    const positiveCaseItems = ruptureItems.filter((item: Sonography) =>
-      item.analysis.labels.some((label) => label.result_class === "exist")
-    );
-
-    const analysisItems =
-      nativeMessage?.exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE
-        ? positiveCaseItems
-        : ruptureItems;
-    // analysis result 관련 필터링 <끝>
+    const analysisItems = getAnalysisItems({
+      onlyExist:
+        nativeMessage?.exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE,
+      sonographies: reportData.data.patientDetail.sonographies,
+    });
 
     return [
       {
@@ -99,7 +84,7 @@ const useA4Handler = () => {
         data: analysisViewer(ELEMENT.ANALYSIS_VIEWER),
         active: true,
       },
-      // ruptureItems의 길이만큼 analysisResult 생성
+      // analysisItems 길이만큼 analysisResult 생성
       ...(analysisItems?.map((_, index) => ({
         type: ELEMENT.ANALYSIS_RESULT(index),
         data: analysisResult(ELEMENT.ANALYSIS_RESULT(index)),

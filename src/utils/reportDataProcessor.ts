@@ -40,6 +40,7 @@ export const processReportData = (
       ruptureStatus: "",
       surfaceType: "",
       invasionToCapsuleExist: false,
+      invasionToLnExist: false,
     },
     recommendedTreatment: "",
     patientDetail: {
@@ -110,35 +111,85 @@ const processAnalysisItems = (
   sonographies: Sonography[],
   exportOptionType?: ExportOptionType
 ) => {
-  // sonographies가 없으면 빈 배열 사용
-  const safeSonographies = sonographies || [];
+  const { ruptureItemCount, ruptureExistItemCount } =
+    getAnalysisItemCount(sonographies);
 
-  // 파열 관련 모든 아이템들 (안전한 필터링)
-  // TODO: 현재는 rupture 라벨이 있는 경우만 표시되지만 추후에 result_class의 exist/none 구분이 되는 라벨은 모두 표시되도록 수정해야함
-  const ruptureItems = safeSonographies.filter(
+  const processedAnalysisItems = getAnalysisItems({
+    onlyExist: exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE,
+    sonographies: sonographies,
+  });
+
+  return {
+    analysisItems: processedAnalysisItems,
+    analysisCount: ruptureItemCount,
+    ruptureCount: ruptureExistItemCount,
+  };
+};
+
+export const getAnalysisItems = ({
+  onlyExist,
+  sonographies,
+}: {
+  onlyExist: boolean;
+  sonographies: Sonography[];
+}) => {
+  let analysisItems: Sonography[] = [];
+
+  sonographies.forEach((item: Sonography) => {
+    if (item.type === "LYMPH_NODE") {
+      const lymphNodeAnalysisItems = item.analysis.labels.filter(
+        (label) => label.result_type === "silicone_invasion_to_ln"
+      );
+
+      if (lymphNodeAnalysisItems.length > 0) {
+        analysisItems.push(item);
+      }
+    }
+
+    if (item.type === "BREAST_IMPLANT") {
+      const breastImplantAnalysisItems = item.analysis.labels.filter(
+        (label) => label.result_type === "rupture"
+      );
+
+      if (breastImplantAnalysisItems.length > 0) {
+        analysisItems.push(item);
+      }
+    }
+  });
+
+  if (onlyExist) {
+    return analysisItems.filter((item: Sonography) =>
+      item.analysis.labels.some((label) => label.result_class === "exist")
+    );
+  } else {
+    return analysisItems;
+  }
+};
+
+const getAnalysisItemCount = (sonographies: Sonography[]) => {
+  // 림프 노드 또는 파열 관련 아이템
+  const allRuptureItems = sonographies.filter((item: Sonography) => {
+    // WARNING: 림프 노드는 무조건 파열이 되어있음.
+    if (item.type === "LYMPH_NODE") {
+      return true;
+    } else if (item.type === "BREAST_IMPLANT") {
+      return item.analysis.labels.some(
+        (label) => label.result_type === "rupture"
+      );
+    }
+    return false;
+  });
+
+  // WARNING: 림프 노드는 무조건 파열이 되어있음.
+  const existItems = allRuptureItems.filter(
     (item: Sonography) =>
-      item?.analysis?.labels?.some(
-        (label) => label?.result_type === "rupture"
-      ) || false
+      item.type === "LYMPH_NODE" ||
+      (item.type === "BREAST_IMPLANT" &&
+        item.analysis.labels.some((label) => label.result_class === "exist"))
   );
 
-  const positiveCaseItems = ruptureItems.filter(
-    (item: Sonography) =>
-      item?.analysis?.labels?.some(
-        (label) =>
-          label?.result_type === "rupture" && label?.result_class === "exist"
-      ) || false
-  );
-
-  // exportOptionType에 따른 필터링
-  const analysisItems =
-    exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE
-      ? positiveCaseItems
-      : ruptureItems;
-
-  // 통계 계산 (기본값: 0)
-  const analysisCount = ruptureItems?.length || 0;
-  const ruptureCount = positiveCaseItems?.length || 0;
-
-  return { analysisItems: analysisItems || [], analysisCount, ruptureCount };
+  return {
+    ruptureItemCount: allRuptureItems.length || 0,
+    ruptureExistItemCount: existItems.length || 0,
+  };
 };

@@ -12,10 +12,11 @@ export interface AnalysisSummary {
   ruptureStatus: string;
   surfaceType: string;
   invasionToCapsuleExist: boolean;
+  invasionToLnExist: boolean;
 }
 
 // 라벨 정보
-interface AnalysisLabel {
+export interface AnalysisLabel {
   result_type: string;
   result_class: string;
   points: number[][][]; // [[[x, y], [x, y], ...]]
@@ -46,6 +47,7 @@ export interface Sonography {
   originalFileName: string;
   analysis: SonographyAnalysis;
   consultationSummary: ConsultationSummary;
+  type: "LYMPH_NODE" | "BREAST_IMPLANT";
 }
 
 // 환자 상세 정보
