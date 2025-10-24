@@ -29,6 +29,10 @@
     "no-rupture-comment": "Total {{analysisCount}} images were analyzed, and no rupture was detected.",
     "rupture-comment": "Rupture was detected in {{ruptureCount}} out of {{analysisCount}} images.",
     "invasion-to-capsule-exist-comment": "Silicone capsule invasion was detected.",
+    "invasion-to-capsule-ln-exist-comment": "Silicone capsule and lymph node invasion were detected.",
+    "invasion-to-capsule-exist-but-no-ln-comment": "Silicone capsule invasion was detected, but lymph node invasion was not detected.",
+    "invasion-to-ln-exist-comment": "Silicone lymph node invasion was detected.",
+    "no-invasion-to-ln-comment": "No silicone lymph node invasion was detected.",
     "image-number": "Image {{index}}",
     "image-status-normal": "Normal",
     "image-status-rupture": "Rupture",
@@ -36,7 +40,8 @@
       "normal": "No signs of rupture or other notable findings were observed in the current image.",
       "rupture": "The color-highlighted region in the image indicates an area where the AI analysis suggests signs of rupture.",
       "invasion-to-capsule": "Silicone capsule invasion was detected.",
-      "no-invasion-to-capsule": "No silicone capsule invasion was detected."
+      "invasion-to-ln": "Silicone lymph node invasion was detected by the AI analysis.",
+      "no-invasion-to-ln": "No silicone lymph node invasion was detected by the AI analysis."
     }
   }
 }
