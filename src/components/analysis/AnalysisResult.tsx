@@ -98,12 +98,12 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
 
   // WARNING: 림프 노드는 무조건 파열이 되어있음.
   // 파열 or 정상
-  const getRuptureExist = (isValid: boolean) => {
+  const getRuptureExist = (isExist: boolean) => {
     if (type === "LYMPH_NODE") {
       return true;
     }
 
-    if (type === "BREAST_IMPLANT" && isValid) {
+    if (type === "BREAST_IMPLANT" && isExist) {
       return true;
     }
 

@@ -26,8 +26,8 @@
     "warning": "※ 분석 결과는 업로드된 이미지만을 대상으로 한 것이며, 분석 요청이 없는 부위의 문제는 알 수 없습니다. 최종 진단은 검사를 시행한 의사의 판단에 따릅니다."
   },
   "complication-images-attached": {
-    "no-rupture-comment": "총 {{analysisCount}}장의 이미지를 분석한 결과, 파열이 확인되지 않았습니다.",
-    "rupture-comment": "총 {{analysisCount}}장의 이미지 중 {{ruptureCount}}장에서 파열이 감지되었습니다.",
+    "no-rupture-comment": "총 {{totalAnalysisImageCount}}장의 이미지를 분석한 결과, 파열이 확인되지 않았습니다.",
+    "rupture-comment": "총 {{totalAnalysisImageCount}}장의 이미지 중 {{ruptureImageCount}}장에서 파열이 감지되었습니다.",
     "invasion-to-capsule-ln-exist-comment": "실리콘 피막 및 림프절 침범이 감지되었습니다.",
     "invasion-to-capsule-exist-but-no-ln-comment": "실리콘 피막 침범이 감지되었으며, 림프절 침범은 감지되지 않았습니다.",
     "invasion-to-capsule-exist-comment": "실리콘 피막 침범이 감지되었습니다.",

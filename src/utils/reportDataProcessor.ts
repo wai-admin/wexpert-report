@@ -18,8 +18,9 @@ interface ProcessedReportData {
   analysisSummary: AnalysisSummary;
   recommendedTreatment: string;
   analysisItems: Sonography[];
-  analysisCount: number;
-  ruptureCount: number;
+  totalAnalysisImageCount: number;
+  lymphNodeImageCount: number;
+  ruptureImageCount: number;
   assessment: string;
 }
 
@@ -84,7 +85,12 @@ export const processReportData = (
   };
 
   // 분석 아이템 필터링 및 가공 (기본값: 빈 배열)
-  const { analysisItems, analysisCount, ruptureCount } = processAnalysisItems(
+  const {
+    analysisItems,
+    totalAnalysisImageCount,
+    lymphNodeImageCount,
+    ruptureImageCount,
+  } = processAnalysisItems(
     patientDetail?.sonographies || [],
     nativeMessage?.exportOptionType
   );
@@ -97,8 +103,9 @@ export const processReportData = (
     analysisSummary,
     recommendedTreatment,
     analysisItems,
-    analysisCount,
-    ruptureCount,
+    totalAnalysisImageCount,
+    lymphNodeImageCount,
+    ruptureImageCount,
     assessment,
   };
 };
@@ -111,26 +118,27 @@ const processAnalysisItems = (
   sonographies: Sonography[],
   exportOptionType?: ExportOptionType
 ) => {
-  const { ruptureItemCount, ruptureExistItemCount } =
+  const { totalAnalysisImageCount, lymphNodeImageCount, ruptureImageCount } =
     getAnalysisItemCount(sonographies);
 
   const processedAnalysisItems = getAnalysisItems({
-    onlyExist: exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE,
+    onlyRuptureExist: exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE,
     sonographies: sonographies,
   });
 
   return {
     analysisItems: processedAnalysisItems,
-    analysisCount: ruptureItemCount,
-    ruptureCount: ruptureExistItemCount,
+    totalAnalysisImageCount: totalAnalysisImageCount,
+    lymphNodeImageCount: lymphNodeImageCount,
+    ruptureImageCount: ruptureImageCount,
   };
 };
 
 export const getAnalysisItems = ({
-  onlyExist,
+  onlyRuptureExist,
   sonographies,
 }: {
-  onlyExist: boolean;
+  onlyRuptureExist: boolean;
   sonographies: Sonography[];
 }) => {
   let analysisItems: Sonography[] = [];
@@ -157,39 +165,48 @@ export const getAnalysisItems = ({
     }
   });
 
-  if (onlyExist) {
-    return analysisItems.filter((item: Sonography) =>
-      item.analysis.labels.some((label) => label.result_class === "exist")
-    );
+  if (onlyRuptureExist) {
+    return analysisItems.filter((item: Sonography) => {
+      // WARNING: 림프 노드는 무조건 파열이 되어있음.
+      if (item.type === "LYMPH_NODE") {
+        return true;
+      } else if (item.type === "BREAST_IMPLANT") {
+        return item.analysis.labels.some(
+          (label) =>
+            label.result_type === "rupture" && label.result_class === "exist"
+        );
+      }
+      return false;
+    });
   } else {
     return analysisItems;
   }
 };
 
 const getAnalysisItemCount = (sonographies: Sonography[]) => {
-  // 림프 노드 또는 파열 관련 아이템
-  const allRuptureItems = sonographies.filter((item: Sonography) => {
+  const breastImplantImages = sonographies.filter(
+    (item: Sonography) => item.type === "BREAST_IMPLANT"
+  );
+  const lymphNodeImages = sonographies.filter(
+    (item: Sonography) => item.type === "LYMPH_NODE"
+  );
+  const ruptureImages = sonographies.filter((item: Sonography) => {
     // WARNING: 림프 노드는 무조건 파열이 되어있음.
     if (item.type === "LYMPH_NODE") {
       return true;
     } else if (item.type === "BREAST_IMPLANT") {
       return item.analysis.labels.some(
-        (label) => label.result_type === "rupture"
+        (label) =>
+          label.result_type === "rupture" && label.result_class === "exist"
       );
     }
     return false;
   });
 
-  // WARNING: 림프 노드는 무조건 파열이 되어있음.
-  const existItems = allRuptureItems.filter(
-    (item: Sonography) =>
-      item.type === "LYMPH_NODE" ||
-      (item.type === "BREAST_IMPLANT" &&
-        item.analysis.labels.some((label) => label.result_class === "exist"))
-  );
-
   return {
-    ruptureItemCount: allRuptureItems.length || 0,
-    ruptureExistItemCount: existItems.length || 0,
+    totalAnalysisImageCount: sonographies.length,
+    breastImplantImageCount: breastImplantImages.length,
+    lymphNodeImageCount: lymphNodeImages.length,
+    ruptureImageCount: ruptureImages.length,
   };
 };

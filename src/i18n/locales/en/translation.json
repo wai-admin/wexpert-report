@@ -26,8 +26,8 @@
     "warning": "※ The analysis covers only the uploaded images; unexamined areas may still have issues. The final diagnosis is determined by the examiner or treating physician."
   },
   "complication-images-attached": {
-    "no-rupture-comment": "Total {{analysisCount}} images were analyzed, and no rupture was detected.",
-    "rupture-comment": "Rupture was detected in {{ruptureCount}} out of {{analysisCount}} images.",
+    "no-rupture-comment": "Total {{totalAnalysisImageCount}} images were analyzed, and no rupture was detected.",
+    "rupture-comment": "Rupture was detected in {{ruptureImageCount}} out of {{totalAnalysisImageCount}} images.",
     "invasion-to-capsule-exist-comment": "Silicone capsule invasion was detected.",
     "invasion-to-capsule-ln-exist-comment": "Silicone capsule and lymph node invasion were detected.",
     "invasion-to-capsule-exist-but-no-ln-comment": "Silicone capsule invasion was detected, but lymph node invasion was not detected.",
