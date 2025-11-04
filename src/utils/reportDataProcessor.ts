@@ -141,45 +141,43 @@ export const getAnalysisItems = ({
   onlyRuptureExist: boolean;
   sonographies: Sonography[];
 }) => {
-  let analysisItems: Sonography[] = [];
+  let breastImplantLabels: Sonography[] = [];
+  let lymphNodeLabels: Sonography[] = [];
 
   sonographies.forEach((item: Sonography) => {
-    if (item.type === "LYMPH_NODE") {
-      const lymphNodeAnalysisItems = item.analysis.labels.filter(
-        (label) => label.result_type === "silicone_invasion_to_ln"
-      );
-
-      if (lymphNodeAnalysisItems.length > 0) {
-        analysisItems.push(item);
-      }
-    }
-
     if (item.type === "BREAST_IMPLANT") {
-      const breastImplantAnalysisItems = item.analysis.labels.filter(
+      const breastImplantAnalysisLabels = item.analysis.labels.filter(
         (label) => label.result_type === "rupture"
       );
 
-      if (breastImplantAnalysisItems.length > 0) {
-        analysisItems.push(item);
+      if (breastImplantAnalysisLabels.length > 0) {
+        breastImplantLabels.push(item);
+      }
+    }
+
+    if (item.type === "LYMPH_NODE") {
+      const lymphNodeAnalysisLabels = item.analysis.labels.filter(
+        (label) => label.result_type === "silicone_invasion_to_ln"
+      );
+
+      if (lymphNodeAnalysisLabels.length > 0) {
+        lymphNodeLabels.push(item);
       }
     }
   });
 
   if (onlyRuptureExist) {
-    return analysisItems.filter((item: Sonography) => {
-      // WARNING: 림프 노드는 무조건 파열이 되어있음.
-      if (item.type === "LYMPH_NODE") {
-        return true;
-      } else if (item.type === "BREAST_IMPLANT") {
-        return item.analysis.labels.some(
+    return [
+      ...breastImplantLabels.filter((item: Sonography) =>
+        item.analysis.labels.some(
           (label) =>
             label.result_type === "rupture" && label.result_class === "exist"
-        );
-      }
-      return false;
-    });
+        )
+      ),
+      ...lymphNodeLabels,
+    ];
   } else {
-    return analysisItems;
+    return [...breastImplantLabels, ...lymphNodeLabels];
   }
 };
 
