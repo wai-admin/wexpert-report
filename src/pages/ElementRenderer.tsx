@@ -76,7 +76,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
         lymphNodeImageCount={lymphNodeImageCount}
         ruptureImageCount={ruptureImageCount}
         invasionToCapsuleExist={analysisSummary.invasionToCapsuleExist}
-        invasionToLnExist={analysisSummary.invasionToLnExist}
+        invasionToLymphNodeExist={analysisSummary.invasionToLymphNodeExist}
       />
     );
   }

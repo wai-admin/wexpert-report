@@ -7,7 +7,7 @@ interface AnalysisViewerProps {
   lymphNodeImageCount: number;
   ruptureImageCount: number;
   invasionToCapsuleExist: boolean;
-  invasionToLnExist: boolean;
+  invasionToLymphNodeExist: boolean;
 }
 
 const AnalysisViewer = ({
@@ -16,7 +16,7 @@ const AnalysisViewer = ({
   lymphNodeImageCount,
   ruptureImageCount,
   invasionToCapsuleExist,
-  invasionToLnExist,
+  invasionToLymphNodeExist,
 }: AnalysisViewerProps) => {
   const { t: i18n } = useTranslation();
 
@@ -42,7 +42,7 @@ const AnalysisViewer = ({
         // 림프절 이미지가 있는 경우
         if (hasLymphNode) {
           // 림프절 침범 감지된 경우
-          if (invasionToLnExist) {
+          if (invasionToLymphNodeExist) {
             return (
               ruptureComment +
               "\n" +
@@ -75,7 +75,7 @@ const AnalysisViewer = ({
         // 림프절 이미지가 있는 경우
         if (hasLymphNode) {
           // 림프절 침범 감지된 경우
-          if (invasionToLnExist) {
+          if (invasionToLymphNodeExist) {
             return (
               ruptureComment +
               "\n" +

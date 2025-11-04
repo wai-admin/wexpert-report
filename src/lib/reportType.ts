@@ -12,7 +12,7 @@ export interface AnalysisSummary {
   ruptureStatus: string;
   surfaceType: string;
   invasionToCapsuleExist: boolean;
-  invasionToLnExist: boolean;
+  invasionToLymphNodeExist: boolean;
 }
 
 // 라벨 정보

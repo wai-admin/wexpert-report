@@ -41,7 +41,7 @@ export const processReportData = (
       ruptureStatus: "",
       surfaceType: "",
       invasionToCapsuleExist: false,
-      invasionToLnExist: false,
+      invasionToLymphNodeExist: false,
     },
     recommendedTreatment: "",
     patientDetail: {
