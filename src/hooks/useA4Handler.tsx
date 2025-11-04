@@ -55,7 +55,7 @@ const useA4Handler = () => {
     nativeMessage: NativeDefaultMessage | null
   ) => {
     const analysisItems = getAnalysisItems({
-      onlyExist:
+      onlyRuptureExist:
         nativeMessage?.exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE,
       sonographies: reportData.data.patientDetail.sonographies,
     });
