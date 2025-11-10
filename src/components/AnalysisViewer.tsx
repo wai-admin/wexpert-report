@@ -13,7 +13,10 @@ interface AnalysisViewerProps {
 const AnalysisViewer = (props: AnalysisViewerProps) => {
   const { id, ...commentProps } = props;
   const { t: i18n } = useTranslation();
-  const comment = getImageCommentSummary(commentProps);
+  const comment = getImageCommentSummary({
+    ...commentProps,
+    i18n: i18n,
+  });
 
   return (
     <div id={id} className="column">

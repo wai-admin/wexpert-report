@@ -25,9 +25,8 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
     analysis,
   });
   // 분석 결과 좌표
-  const roiCoordinates: Point[][] | undefined = getRoiCoordinates({
-    analysisResult: analysisResult || undefined,
-  });
+  const roiCoordinates: Point[][] | undefined =
+    getRoiCoordinates(analysisResult);
   const {
     isRuptureExist,
     isInvasionToCapsuleExist,
@@ -41,12 +40,14 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
     isRuptureExist,
     isInvasionToCapsuleExist,
     isInvasionToLymphNodeExist,
+    i18n: i18n,
   });
   // 이미지 상태
   const imageStatusInfo = getImageStatus({
     type,
     isRuptureExist,
     isInvasionToLymphNodeExist,
+    i18n: i18n,
   });
 
   return (
