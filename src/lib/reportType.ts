@@ -23,7 +23,7 @@ export interface AnalysisLabel {
 }
 
 // 분석 정보
-interface SonographyAnalysis {
+export interface SonographyAnalysis {
   id: number;
   sonographyId: string;
   filename: string;

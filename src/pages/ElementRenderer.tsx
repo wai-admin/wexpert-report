@@ -32,7 +32,6 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
     recommendedTreatment,
     analysisItems,
     totalAnalysisImageCount,
-    lymphNodeImageCount,
     ruptureImageCount,
     assessment,
   } = processReportData(reportData, nativeMessage);
@@ -73,7 +72,6 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
         id={`${ELEMENT.A4_CONTAINER}-${element}`}
         key={element}
         totalAnalysisImageCount={totalAnalysisImageCount}
-        lymphNodeImageCount={lymphNodeImageCount}
         ruptureImageCount={ruptureImageCount}
         invasionToCapsuleExist={analysisSummary.invasionToCapsuleExist}
         invasionToLymphNodeExist={analysisSummary.invasionToLymphNodeExist}
