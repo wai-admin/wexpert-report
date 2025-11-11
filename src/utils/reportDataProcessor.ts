@@ -193,17 +193,11 @@ const getAnalysisItemCount = (sonographies: Sonography[]) => {
   const lymphNodeImages = sonographies.filter(
     (item: Sonography) => item.type === "LYMPH_NODE"
   );
-  const ruptureImages = sonographies.filter((item: Sonography) => {
-    // WARNING: 림프 노드는 무조건 파열이 되어있음.
-    if (item.type === "LYMPH_NODE") {
-      return true;
-    } else if (item.type === "BREAST_IMPLANT") {
-      return item.analysis.labels.some(
-        (label) =>
-          label.result_type === "rupture" && label.result_class === "exist"
-      );
-    }
-    return false;
+  const ruptureImages = breastImplantImages.filter((item: Sonography) => {
+    return item.analysis.labels.some(
+      (label) =>
+        label.result_type === "rupture" && label.result_class === "exist"
+    );
   });
 
   return {
