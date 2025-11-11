@@ -50,6 +50,11 @@ export interface Sonography {
   type: "LYMPH_NODE" | "BREAST_IMPLANT";
 }
 
+export interface NoteDetail {
+  note: string;
+  updatedAt: string; // ISO date string
+}
+
 // 환자 상세 정보
 interface PatientDetail {
   id: number;
@@ -57,7 +62,7 @@ interface PatientDetail {
   registeredAt: string; // ISO date string
   type: "aesthetic" | "reconstructive" | "both";
   name: string;
-  comment: string;
+  adminNote: NoteDetail;
   sonographyCount: number;
   sonographies: Sonography[];
   ruptureTriage: number;

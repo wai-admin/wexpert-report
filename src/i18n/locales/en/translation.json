@@ -15,7 +15,13 @@
     "chart-number": "Chart No.",
     "name": "Name",
     "birth-date": "Birth Date",
+    "type": "Surgery Type",
     "exam-date": "Exam Date/Time"
+  },
+  "patient-type": {
+    "aesthetic": "Breast Aesthetic",
+    "reconstructive": "Breast Reconstructive",
+    "both": "Breast Aesthetic and Reconstructive"
   },
   "analysis-summary": {
     "pocket-position": "Pocket Position",

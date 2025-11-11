@@ -13,6 +13,7 @@ interface ProcessedReportData {
     chatNumber: string;
     patientName: string;
     birth: string;
+    type: string;
     analysisDate: string;
   };
   analysisSummary: AnalysisSummary;
@@ -50,7 +51,10 @@ export const processReportData = (
       registeredAt: "",
       type: "aesthetic",
       name: "",
-      comment: "",
+      adminNote: {
+        note: "",
+        updatedAt: "",
+      },
       sonographyCount: 0,
       sonographies: [],
       ruptureTriage: 0,
@@ -74,6 +78,7 @@ export const processReportData = (
   const patientInformation = {
     chatNumber: nativeMessage?.chartNo || "",
     patientName: patientDetail?.name || "",
+    type: patientDetail?.type || "",
     birth: formatBirthDate(
       nativeMessage?.birthYear,
       nativeMessage?.birthMonth,

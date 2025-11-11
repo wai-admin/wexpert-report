@@ -7,6 +7,7 @@ interface PatientInformationProps {
     chatNumber: string;
     patientName: string;
     birth: string;
+    type: string;
     analysisDate: string;
   };
 }
@@ -15,7 +16,19 @@ const PatientInformation = ({
   patientInformation,
 }: PatientInformationProps) => {
   const { t: i18n } = useTranslation();
-  const { chatNumber, patientName, birth, analysisDate } = patientInformation;
+  const { chatNumber, patientName, birth, type, analysisDate } =
+    patientInformation;
+
+  const getPatientType = (type: string) => {
+    switch (type) {
+      case "aesthetic":
+        return i18n("patient-type.aesthetic");
+      case "reconstructive":
+        return i18n("patient-type.reconstructive");
+      case "both":
+        return i18n("patient-type.both");
+    }
+  };
 
   return (
     <div id={id} className="column">
@@ -40,6 +53,10 @@ const PatientInformation = ({
               {i18n("patient-information.birth-date")}
             </td>
             <td className="td-value">{birth}</td>
+          </tr>
+          <tr>
+            <td className="td-label">{i18n("patient-information.type")}</td>
+            <td className="td-value">{getPatientType(type)}</td>
           </tr>
           <tr>
             <td className="td-label">

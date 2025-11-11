@@ -15,7 +15,13 @@
     "chart-number": "차트 번호",
     "name": "성명",
     "birth-date": "생년월일",
+    "type": "수술 유형",
     "exam-date": "검사일시"
+  },
+  "patient-type": {
+    "aesthetic": "유방확대",
+    "reconstructive": "유방재건",
+    "both": "유방확대 및 재건"
   },
   "analysis-summary": {
     "pocket-position": "보형물 삽입 위치",

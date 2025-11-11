@@ -21,6 +21,10 @@ const patientInformation = (id: string) => `
             <td class="td-label"></td>
             <td class="td-value"></td>
           </tr>
+          <tr>
+            <td class="td-label"></td>
+            <td class="td-value"></td>
+          </tr>
         </tbody>
       </table>
     </div>
