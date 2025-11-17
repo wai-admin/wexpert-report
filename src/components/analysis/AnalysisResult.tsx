@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Sonography, AnalysisLabel } from "@/lib/reportType";
-import { Point } from "rulyotano.math.geometry";
+import { ROICoordinate } from "@/utils/roi";
 import { AnalysisImage } from "@/components";
 import {
   getImageStatus,
@@ -25,7 +25,7 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
     analysis,
   });
   // 분석 결과 좌표
-  const roiCoordinates: Point[][] | undefined =
+  const roiCoordinates: ROICoordinate[][] | undefined =
     getRoiCoordinates(analysisResult);
   const {
     isRuptureExist,

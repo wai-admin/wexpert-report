@@ -1,5 +1,4 @@
 import { AnalysisLabel, SonographyAnalysis } from "@/lib/reportType";
-import { Point } from "rulyotano.math.geometry";
 
 interface GetImageCommentSummaryProps {
   totalAnalysisImageCount: number;
@@ -213,19 +212,14 @@ const getAnalysisResultExist = (props: GetAnalysisResultExistProps) => {
 
 // ROI 좌표 저장
 const getRoiCoordinates = (analysisResult: AnalysisLabel | undefined) => {
-  return analysisResult?.points
-    .filter(Array.isArray)
-    .map((group: any) =>
-      Array.isArray(group)
-        ? group.map(
-            ([x, y]) =>
-              new Point(
-                Number(String(x).replace(/,/g, "")),
-                Number(String(y).replace(/,/g, ""))
-              )
-          )
-        : []
-    );
+  return analysisResult?.points.filter(Array.isArray).map((group: any) =>
+    Array.isArray(group)
+      ? group.map(([x, y]) => ({
+          x: Number(String(x).replace(/,/g, "")),
+          y: Number(String(y).replace(/,/g, "")),
+        }))
+      : []
+  );
 };
 
 export {

@@ -1,5 +1,3 @@
-import { Point } from "rulyotano.math.geometry";
-
 // ROI 좌표 타입 정의
 export type ROICoordinate = { x: number; y: number };
 export type ROIGroup = ROICoordinate[];
@@ -35,7 +33,7 @@ export const calculateScaleFactors = (
  * ROI 좌표를 표시 이미지 크기에 맞춰 스케일링
  */
 export const scaleROICoordinates = (
-  coordinates: Point[][],
+  coordinates: ROICoordinate[][],
   scaleFactors: ScaleFactors
 ): ROICoordinates => {
   return coordinates.map((group) =>
@@ -113,13 +111,13 @@ export const createBezierSVGPathData = (group: ROICoordinate[]): string => {
 /**
  * ROI 좌표가 유효한지 확인
  */
-export const isValidROI = (coordinates: Point[][]): boolean => {
+export const isValidROI = (coordinates: ROICoordinate[][]): boolean => {
   return coordinates.some((group) => group.length > 2);
 };
 
 /**
  * ROI 그룹 수 계산
  */
-export const getROIGroupCount = (coordinates: Point[][]): number => {
+export const getROIGroupCount = (coordinates: ROICoordinate[][]): number => {
   return coordinates.filter((group) => group.length > 2).length;
 };

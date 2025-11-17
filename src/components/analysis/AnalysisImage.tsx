@@ -1,13 +1,12 @@
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
-import { type ImageSize } from "@/utils/roi";
+import { ROICoordinate, type ImageSize } from "@/utils/roi";
 import { checkFalsy, checkTruthy } from "@/utils/common";
 import { ROIOverlay } from "@/components";
-import { Point } from "rulyotano.math.geometry";
 
 interface AnalysisImageProps {
   imageUrl: string;
   originalFileName: string;
-  coordinates: Point[][];
+  coordinates: ROICoordinate[][];
 }
 
 const AnalysisImage = ({

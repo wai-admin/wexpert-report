@@ -1,22 +1,22 @@
-import { Point } from "rulyotano.math.geometry";
 import {
   scaleROICoordinates,
   getValidROIGroups,
   createBezierSVGPathData,
   calculateScaleFactors,
+  ROICoordinate,
   type ImageSize,
 } from "@/utils/roi";
 import { checkFalsy } from "@/utils/common";
 
 interface ROIOverlayProps {
-  coordinates: Point[][];
+  coordinates: ROICoordinate[][];
   originalSize: ImageSize;
   displaySize: ImageSize;
 }
 
 // ROI Path 요소 생성
 const createROIPaths = (
-  coordinates: Point[][],
+  coordinates: ROICoordinate[][],
   originalSize: ImageSize,
   displaySize: ImageSize
 ) => {
