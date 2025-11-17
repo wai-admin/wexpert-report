@@ -8,9 +8,9 @@ interface PatientSummary {
 
 // 분석 요약
 export interface AnalysisSummary {
-  implantPosition: string;
-  ruptureStatus: string;
-  surfaceType: string;
+  implantPosition: string | null;
+  ruptureStatus: string | null;
+  surfaceType: string | null;
   invasionToCapsuleExist: boolean;
   invasionToLymphNodeExist: boolean;
 }

@@ -1,6 +1,7 @@
+import { useTranslation } from "react-i18next";
 import { NumberedList } from "@/components";
 import { AnalysisSummary as AnalysisSummaryType } from "@/lib/reportType";
-import { useTranslation } from "react-i18next";
+import { checkFalsy } from "@/utils/common";
 
 interface AnalysisSummaryProps {
   id: string;
@@ -23,15 +24,21 @@ const AnalysisSummary = ({ id, analysisSummary }: AnalysisSummaryProps) => {
             <td className="td-label">
               {i18n("analysis-summary.pocket-position")}
             </td>
-            <td className="td-value">{implantPosition}</td>
+            <td className="td-value">
+              {checkFalsy(implantPosition) ? "" : implantPosition}
+            </td>
           </tr>
           <tr>
             <td className="td-label">{i18n("analysis-summary.shell-type")}</td>
-            <td className="td-value">{surfaceType}</td>
+            <td className="td-value">
+              {checkFalsy(surfaceType) ? "" : surfaceType}
+            </td>
           </tr>
           <tr>
             <td className="td-label">{i18n("analysis-summary.rupture")}</td>
-            <td className="td-value">{ruptureStatus}</td>
+            <td className="td-value">
+              {checkFalsy(ruptureStatus) ? "" : ruptureStatus}
+            </td>
           </tr>
         </tbody>
       </table>
