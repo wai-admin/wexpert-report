@@ -1,12 +1,56 @@
-import { Sonography, ReportResponse, AnalysisSummary } from "@/lib/reportType";
+import {
+  Sonography,
+  ReportResponse,
+  AnalysisSummary,
+  ReportDetail,
+} from "@/lib/reportType";
 import { ExportOptionType, NativeDefaultMessage } from "@/lib";
-import { formatBirthDate, formatAnalysisDate } from "@/utils";
+import {
+  checkTruthy,
+  formatBirthDate,
+  formatAnalysisDate,
+  checkFalsy,
+} from "@/utils";
+
+const DEFAULT_REPORT_DATA: ReportDetail = {
+  patientSummary: {
+    hospitalName: "",
+    code: "",
+    patientName: "",
+    analysisDateTime: "",
+  },
+  analysisSummary: {
+    implantPosition: "",
+    ruptureStatus: "",
+    surfaceType: "",
+    invasionToCapsuleExist: false,
+    invasionToLymphNodeExist: false,
+  },
+  recommendedTreatment: "",
+  patientDetail: {
+    id: 0,
+    wexpertId: "",
+    registeredAt: "",
+    type: "aesthetic",
+    name: "",
+    adminNote: {
+      note: "",
+      updatedAt: "",
+    },
+    sonographyCount: 0,
+    sonographies: [],
+    ruptureTriage: 0,
+    tcTriage: 0,
+    reportCount: 0,
+    analysisCompleted: false,
+  },
+};
 
 /**
  * 리포트 데이터를 가공하여 컴포넌트에서 사용할 수 있는 형태로 변환
  * reportData가 없거나 유효하지 않으면 기본값 제공
  */
-interface ProcessedReportData {
+interface GenerateReportDataProps {
   hospitalName: string;
   patientInformation: {
     chatNumber: string;
@@ -24,44 +68,12 @@ interface ProcessedReportData {
   assessment: string;
 }
 
-export const processReportData = (
-  reportData: ReportResponse | null | undefined,
-  nativeMessage: NativeDefaultMessage | null | undefined
-): ProcessedReportData => {
+const generateReportData = (
+  reportData: ReportResponse | undefined,
+  nativeMessage: NativeDefaultMessage | null
+): GenerateReportDataProps => {
   // reportData가 없거나 유효하지 않으면 기본값 사용
-  const data = reportData?.data || {
-    patientSummary: {
-      hospitalName: "",
-      code: "",
-      patientName: "",
-      analysisDateTime: "",
-    },
-    analysisSummary: {
-      implantPosition: "",
-      ruptureStatus: "",
-      surfaceType: "",
-      invasionToCapsuleExist: false,
-      invasionToLymphNodeExist: false,
-    },
-    recommendedTreatment: "",
-    patientDetail: {
-      id: 0,
-      wexpertId: "",
-      registeredAt: "",
-      type: "aesthetic",
-      name: "",
-      adminNote: {
-        note: "",
-        updatedAt: "",
-      },
-      sonographyCount: 0,
-      sonographies: [],
-      ruptureTriage: 0,
-      tcTriage: 0,
-      reportCount: 0,
-      analysisCompleted: false,
-    },
-  };
+  const data = checkTruthy(reportData) ? reportData.data : DEFAULT_REPORT_DATA;
 
   const {
     patientSummary,
@@ -69,23 +81,21 @@ export const processReportData = (
     recommendedTreatment,
     patientDetail,
   } = data;
+  const { hospitalName, analysisDateTime } = patientSummary;
+  const { name, type, sonographies } = patientDetail;
 
-  // 병원 이름 (기본값: 빈 문자열)
-  const hospitalName = patientSummary?.hospitalName || "";
+  const { chartNo, birthYear, birthMonth, birthDay } = nativeMessage ?? {};
 
   // 환자 정보 가공 (기본값 제공)
   const patientInformation = {
-    chatNumber: nativeMessage?.chartNo || "",
-    patientName: patientDetail?.name || "",
-    type: patientDetail?.type || "",
-    birth: formatBirthDate(
-      nativeMessage?.birthYear,
-      nativeMessage?.birthMonth,
-      nativeMessage?.birthDay
-    ),
-    analysisDate: patientSummary?.analysisDateTime
-      ? formatAnalysisDate(patientSummary.analysisDateTime)
-      : "",
+    chatNumber: checkTruthy(chartNo) ? chartNo : "",
+    patientName: name,
+    type: type,
+    birth:
+      checkFalsy(birthYear) && checkFalsy(birthMonth) && checkFalsy(birthDay)
+        ? ""
+        : formatBirthDate(birthYear, birthMonth, birthDay),
+    analysisDate: formatAnalysisDate(analysisDateTime),
   };
 
   // 분석 아이템 필터링 및 가공 (기본값: 빈 배열)
@@ -94,12 +104,9 @@ export const processReportData = (
     totalAnalysisImageCount,
     lymphNodeImageCount,
     ruptureImageCount,
-  } = processAnalysisItems(
-    patientDetail?.sonographies || [],
-    nativeMessage?.exportOptionType
-  );
+  } = getAnalysisInformation(sonographies, nativeMessage?.exportOptionType);
 
-  const assessment = nativeMessage?.assessment || "";
+  const assessment = nativeMessage?.assessment ?? "";
 
   return {
     hospitalName,
@@ -118,27 +125,49 @@ export const processReportData = (
  * 분석 아이템들을 필터링하고 통계를 계산
  * sonographies가 없거나 유효하지 않으면 기본값 제공
  */
-const processAnalysisItems = (
+const getAnalysisInformation = (
   sonographies: Sonography[],
   exportOptionType?: ExportOptionType
 ) => {
   const { totalAnalysisImageCount, lymphNodeImageCount, ruptureImageCount } =
     getAnalysisItemCount(sonographies);
 
-  const processedAnalysisItems = getAnalysisItems({
+  const analysisItems = generateAnalysisItems({
     onlyRuptureExist: exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE,
     sonographies: sonographies,
   });
 
   return {
-    analysisItems: processedAnalysisItems,
-    totalAnalysisImageCount: totalAnalysisImageCount,
-    lymphNodeImageCount: lymphNodeImageCount,
-    ruptureImageCount: ruptureImageCount,
+    analysisItems,
+    totalAnalysisImageCount,
+    lymphNodeImageCount,
+    ruptureImageCount,
   };
 };
 
-export const getAnalysisItems = ({
+const getAnalysisItemCount = (sonographies: Sonography[]) => {
+  const breastImplantImages = sonographies.filter(
+    (item: Sonography) => item.type === "BREAST_IMPLANT"
+  );
+  const lymphNodeImages = sonographies.filter(
+    (item: Sonography) => item.type === "LYMPH_NODE"
+  );
+  const ruptureImages = breastImplantImages.filter((item: Sonography) => {
+    return item.analysis.labels.some(
+      (label) =>
+        label.result_type === "rupture" && label.result_class === "exist"
+    );
+  });
+
+  return {
+    totalAnalysisImageCount: sonographies.length,
+    breastImplantImageCount: breastImplantImages.length,
+    lymphNodeImageCount: lymphNodeImages.length,
+    ruptureImageCount: ruptureImages.length,
+  };
+};
+
+const generateAnalysisItems = ({
   onlyRuptureExist,
   sonographies,
 }: {
@@ -185,24 +214,4 @@ export const getAnalysisItems = ({
   }
 };
 
-const getAnalysisItemCount = (sonographies: Sonography[]) => {
-  const breastImplantImages = sonographies.filter(
-    (item: Sonography) => item.type === "BREAST_IMPLANT"
-  );
-  const lymphNodeImages = sonographies.filter(
-    (item: Sonography) => item.type === "LYMPH_NODE"
-  );
-  const ruptureImages = breastImplantImages.filter((item: Sonography) => {
-    return item.analysis.labels.some(
-      (label) =>
-        label.result_type === "rupture" && label.result_class === "exist"
-    );
-  });
-
-  return {
-    totalAnalysisImageCount: sonographies.length,
-    breastImplantImageCount: breastImplantImages.length,
-    lymphNodeImageCount: lymphNodeImages.length,
-    ruptureImageCount: ruptureImages.length,
-  };
-};
+export { generateReportData, generateAnalysisItems };

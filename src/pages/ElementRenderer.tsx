@@ -6,7 +6,7 @@ import {
   PatientInformation,
   RecommendTreatment,
 } from "@/components";
-import { processReportData } from "@/utils/reportDataProcessor";
+import { generateReportData } from "@/utils/reportDataProcessor";
 import { ELEMENT } from "@/constants/element";
 import { ReportResponse } from "@/lib";
 import { checkFalsy } from "@/utils";
@@ -34,8 +34,9 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
     totalAnalysisImageCount,
     ruptureImageCount,
     assessment,
-  } = processReportData(reportData, nativeMessage);
+  } = generateReportData(reportData, nativeMessage);
 
+  // 1. 환자 정보
   if (element === ELEMENT.PATIENT_INFORMATION) {
     return (
       <PatientInformation
@@ -46,6 +47,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
     );
   }
 
+  // 2. AI 분석 요약
   if (element === ELEMENT.ANALYSIS_SUMMARY) {
     return (
       <AnalysisSummary
@@ -56,6 +58,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
     );
   }
 
+  // 3. AI 종합 결과 분석
   if (element === ELEMENT.RECOMMEND_TREATMENT) {
     return (
       <RecommendTreatment
@@ -66,6 +69,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
     );
   }
 
+  // 4. 분석 이미지 (요약)
   if (element === ELEMENT.ANALYSIS_VIEWER) {
     return (
       <AnalysisViewer
@@ -79,6 +83,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
     );
   }
 
+  // 4. 분석 이미지 (이미지 리스트)
   if (element.includes(ELEMENT.ANALYSIS_RESULT_COMMON)) {
     // element 형식: analysis-result-{index}
     const analysisResultIndex = Number(element.split("-")[2]);
@@ -98,6 +103,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
     );
   }
 
+  // 5. 담당 의사 소견
   if (element === ELEMENT.ASSESSMENT) {
     return (
       <Assessment

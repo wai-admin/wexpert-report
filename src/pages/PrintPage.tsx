@@ -7,23 +7,20 @@ import { Cover, ElementRenderer } from "@/pages";
 import { A4Template } from "@/components";
 
 const PrintPage = () => {
-  const { data: reportData, isFetching } = useReport();
-  // 표시 정보
-  const patientName = reportData?.data?.patientSummary?.patientName ?? "";
-  const hospitalName = reportData?.data?.patientSummary?.hospitalName ?? "";
-
   const printRef = useRef<HTMLDivElement>(null);
 
-  // 프린트 관련 상태
+  // Data Information
+  const { data: reportData, isFetching } = useReport();
+  const patientName = reportData?.data.patientSummary.patientName ?? "";
+  const hospitalName = reportData?.data.patientSummary.hospitalName ?? "";
+
+  // Handlers & State
   const { handlePrint } = usePrintHandler(printRef, patientName);
-  // 프린트 요청 상태 정보(출력, 미출력)
   const { isPrintRequested } = usePrintStore();
+  const { elementPageInfo, MeasureContainer } = useA4Handler();
 
   // Native에 로딩 상태 전송
   useWebViewLoading(isFetching);
-
-  // 페이지 정보 관리
-  const { elementPageInfo, MeasureContainer } = useA4Handler();
 
   // 인쇄 요청 시 자동 실행
   useEffect(() => {

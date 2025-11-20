@@ -17,7 +17,7 @@ import {
 } from "@/constants";
 import { useMessageStore } from "@/store";
 import { useReport } from "@/services/useReport";
-import { getAnalysisItems } from "@/utils/reportDataProcessor";
+import { generateAnalysisItems } from "@/utils/reportDataProcessor";
 
 interface ElementPageInfo {
   page: number;
@@ -54,7 +54,7 @@ const useA4Handler = () => {
     reportData: ReportResponse,
     nativeMessage: NativeDefaultMessage | null
   ) => {
-    const analysisItems = getAnalysisItems({
+    const analysisItems = generateAnalysisItems({
       onlyRuptureExist:
         nativeMessage?.exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE,
       sonographies: reportData.data.patientDetail.sonographies,
