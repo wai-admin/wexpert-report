@@ -16,8 +16,9 @@ const Cover = ({ hospitalName }: CoverProps) => {
   return (
     <div className="a4-page">
       <div className="a4-content">
-        <div style={{ marginTop: "36.7mm" }}>
-          <h1 className="cover-title-highlight">
+        <div style={{ marginTop: "25mm" }}>
+          <img src="/images/wexpert.png" className="cover-logo" />
+          <h1 className="cover-title-highlight" style={{ marginTop: "7mm" }}>
             {i18n("cover.title-highlight")}
           </h1>
           <h1 className="cover-title-normal">{i18n("cover.title-normal")}</h1>

@@ -1,7 +1,6 @@
 import { Sonography, ReportResponse, AnalysisSummary } from "@/lib/reportType";
 import { ExportOptionType, NativeDefaultMessage } from "@/lib";
-import { formatBirthDate } from "@/utils/common";
-import { formatAnalysisDate } from "@/utils/date";
+import { formatBirthDate, formatAnalysisDate } from "@/utils";
 
 /**
  * 리포트 데이터를 가공하여 컴포넌트에서 사용할 수 있는 형태로 변환

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { reportApi } from "@/services/api";
 import { QUERY_KEYS } from "@/lib/queryKeys";
 import { useMessageStore } from "@/store";
-import { getPatientId, hasValidPatientId } from "@/utils/common";
+import { getPatientId, hasValidPatientId } from "@/utils";
 
 /**
  * 리포트 데이터를 조회하는 커스텀 훅
