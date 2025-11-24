@@ -1,65 +1,29 @@
 import { useState } from "react";
-import { Button } from "@/components-common";
-import {
-  Divider,
-  ImageExportOption,
-  ChartNumber,
-  Name,
-  DateOfBirth,
-  PhysicianAssessment,
-} from "@/components";
-import { ImageExportOptionValues, ReportTab } from "@/types";
+import { ReportTabs } from "@/components";
+import { NewReport, ReportHistory } from "@/pages";
+import { ReportTabValues } from "@/types";
 
 interface OptionHandlerProps {
   onPrint: () => void;
 }
 
 const OptionHandler = ({ onPrint }: OptionHandlerProps) => {
-  const [selectedReportTab, setSelectedReportTab] = useState<ReportTab>(
-    ReportTab.NEW_REPORT
+  const [selectedReportTab, setSelectedReportTab] = useState<ReportTabValues>(
+    ReportTabValues.NEW_REPORT
   );
-  const [imageExportOption, setImageExportOption] =
-    useState<ImageExportOptionValues>(ImageExportOptionValues.ALL_IMAGE);
-  const [physicianAssessment, setPhysicianAssessment] = useState<string>("");
 
   return (
-    <div className="w-[var(--option-container-width)] h-screen flex flex-col p-[30px] bg-bg-base-alt gap-[26px] overflow-y-auto">
-      <div className="w-full flex border-b border-[rgba(255,255,255,0.5)]">
-        {Object.values(ReportTab).map((tab) => (
-          <button
-            className={`flex flex-1 justify-center ${
-              selectedReportTab === tab
-                ? "border-b-[2px] border-blue-300"
-                : "border-none border-text-tertiary"
-            } pb-[15px]`}
-            onClick={() => setSelectedReportTab(tab)}
-          >
-            <p
-              className={`text-[15px] font-pretendard font-semibold ${
-                selectedReportTab === tab
-                  ? "text-blue-300"
-                  : "text-text-tertiary"
-              }`}
-            >
-              {tab}
-            </p>
-          </button>
-        ))}
-      </div>
-      <ImageExportOption
-        checkedOption={imageExportOption}
-        onChange={setImageExportOption}
+    <div className="w-[var(--option-container-width)] h-screen flex flex-col p-[30px] bg-bg-base-alt gap-[20px] overflow-y-auto">
+      <ReportTabs
+        selectedReportTab={selectedReportTab}
+        setSelectedReportTab={setSelectedReportTab}
       />
-      <Divider />
-      <ChartNumber value="as" />
-      <Name value="as" />
-      <DateOfBirth year="as" month="as" day="as" />
-      <PhysicianAssessment
-        value={physicianAssessment}
-        onChange={setPhysicianAssessment}
-      />
-      <Divider />
-      <Button label="Export" onClick={onPrint} />
+      {selectedReportTab === ReportTabValues.NEW_REPORT && (
+        <NewReport onPrint={onPrint} />
+      )}
+      {selectedReportTab === ReportTabValues.REPORT_HISTORY && (
+        <ReportHistory onPrint={onPrint} />
+      )}
     </div>
   );
 };

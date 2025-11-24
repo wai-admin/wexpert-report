@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { NativeDefaultMessage } from "@/lib/nativeMessageType";
-import { ELEMENT } from "@/constants/element";
 
 interface MessageState {
   nativeMessage: NativeDefaultMessage | null;

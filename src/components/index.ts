@@ -23,3 +23,4 @@ export { default as ChartNumber } from "./option/new-report/ChartNumber";
 export { default as Name } from "./option/new-report/Name";
 export { default as DateOfBirth } from "./option/new-report/DateOfBirth";
 export { default as PhysicianAssessment } from "./option/new-report/PhysicianAssessment";
+export { default as ReportTabs } from "./option/ReportTabs";

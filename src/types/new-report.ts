@@ -3,7 +3,7 @@ export enum ImageExportOptionValues {
   RUPTURE_CASE = "rupture-case",
 }
 
-export enum ReportTab {
+export enum ReportTabValues {
   NEW_REPORT = "New Report",
   REPORT_HISTORY = "Report History",
 }
