@@ -37,13 +37,6 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
     if (hasKey(data, NATIVE_MESSAGE_KEY.INITIALIZED)) {
       setNativeMessage(data as NativeDefaultMessage);
 
-      if ((data as NativeDefaultMessage).assessment !== "") {
-        const assessmentEl = document.getElementById("assessment");
-        if (assessmentEl) {
-          assessmentEl.scrollIntoView({ behavior: "smooth" });
-        }
-      }
-
       setAccessToken((data as NativeDefaultMessage).accessToken);
     }
 
