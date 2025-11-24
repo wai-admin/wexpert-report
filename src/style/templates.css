@@ -84,6 +84,29 @@
   font-family: Pretendard;
 }
 
+/* Report Register */
+.report-register {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.report-print-page {
+  width: calc(100% - var(--option-container-width));
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: var(--option-container-width);
+}
+
+.report-option-container {
+  position: fixed;
+  right: 0;
+}
+
 /* 
  * 반응형 스타일
  * A4 너비 미만일 때 프린트 화면 정렬 필요
