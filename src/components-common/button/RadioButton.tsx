@@ -8,7 +8,7 @@ const RadioButton = ({ label, checked, onChange }: RadioButtonProps) => {
   return (
     <label
       className={`text-[16px] cursor-pointer font-pretendard flex items-center gap-[6px] ${
-        checked ? "text-white" : "text-text-tertiary"
+        checked ? "text-white" : "text-solid-lt"
       }`}
     >
       <input

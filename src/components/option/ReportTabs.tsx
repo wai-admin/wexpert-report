@@ -14,7 +14,7 @@ const ReportTabs = ({
   setSelectedReportTab,
 }: ReportTabsProps) => {
   return (
-    <div className="w-full flex border-b border-[rgba(255,255,255,0.5)]">
+    <div className="w-full flex">
       {Object.values(ReportTabValues).map((tab) => (
         <ReportTab
           key={tab}
@@ -39,13 +39,13 @@ const ReportTab = ({
       className={`flex flex-1 justify-center ${
         selectedReportTab === tab
           ? "border-b-[2px] border-blue-300"
-          : "border-none border-text-tertiary"
+          : "border-b-[1px] border-solid-lt"
       } pb-[15px]`}
       onClick={() => setSelectedReportTab(tab)}
     >
       <p
         className={`text-[15px] font-pretendard font-semibold ${
-          selectedReportTab === tab ? "text-blue-300" : "text-text-tertiary"
+          selectedReportTab === tab ? "text-blue-300" : "text-solid-lt"
         }`}
       >
         {tab}

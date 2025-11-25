@@ -7,14 +7,9 @@ import {
   DateOfBirth,
   PhysicianAssessment,
 } from "@/components";
-import { Button } from "@/components-common";
 import { ImageExportOptionValues } from "@/types";
 
-interface NewReportProps {
-  onPrint: () => void;
-}
-
-const NewReport = ({ onPrint }: NewReportProps) => {
+const NewReport = () => {
   const [imageExportOption, setImageExportOption] =
     useState<ImageExportOptionValues>(ImageExportOptionValues.ALL_IMAGE);
   const [physicianAssessment, setPhysicianAssessment] = useState<string>("");
@@ -33,8 +28,6 @@ const NewReport = ({ onPrint }: NewReportProps) => {
         value={physicianAssessment}
         onChange={setPhysicianAssessment}
       />
-      <Divider />
-      <Button label="Export" onClick={onPrint} />
     </div>
   );
 };

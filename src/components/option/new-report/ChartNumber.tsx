@@ -6,7 +6,7 @@ interface ChartNumberProps {
 
 const ChartNumber = ({ value }: ChartNumberProps) => {
   return (
-    <OptionField label="Chart Number">
+    <OptionField label="Chart number">
       <OptionDisabledField value={value} />
     </OptionField>
   );
