@@ -1,33 +1,40 @@
 import { useState } from "react";
-import { RadioIndicator } from "@/components-common";
+import { RadioIndicator, Button } from "@/components-common";
 
-const ReportHistory = () => {
+interface ReportHistoryProps {
+  onPrint: () => void;
+}
+
+const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   const [selectedReportHistory, setSelectedReportHistory] = useState<number>(0);
 
   return (
-    <div className="w-full flex flex-col">
-      {MOCK_REPORT_HISTORY.map((report, index) => {
-        const { id, date, exportOption } = report;
-        const isSelected = index === selectedReportHistory;
+    <div className="size-full flex flex-col justify-between gap-[10px]">
+      <div className="w-full flex flex-col flex-1 overflow-y-auto">
+        {MOCK_REPORT_HISTORY.map((report, index) => {
+          const { id, date, exportOption } = report;
+          const isSelected = index === selectedReportHistory;
 
-        return (
-          <div
-            key={id}
-            className="w-full h-[52px] flex justify-between items-center hover:bg-[rgb(49,51,53)] border-b-[1px] border-solid-lt px-[14px] cursor-pointer"
-            onClick={() => setSelectedReportHistory(index)}
-          >
-            <div className="flex items-center gap-[24px]">
-              <RadioIndicator checked={isSelected} />
-              <p className="text-[14px] font-pretendard text-text-tertiary">
-                {date}
+          return (
+            <div
+              key={id}
+              className="w-full min-h-[52px] flex justify-between items-center hover:bg-[rgb(49,51,53)] border-b-[1px] border-solid-lt px-[14px] cursor-pointer transition-colors duration-100"
+              onClick={() => setSelectedReportHistory(index)}
+            >
+              <div className="flex items-center gap-[24px]">
+                <RadioIndicator checked={isSelected} />
+                <p className="text-[14px] font-pretendard text-text-tertiary">
+                  {date}
+                </p>
+              </div>
+              <p className="text-[14px] font-pretendard text-white">
+                {exportOption}
               </p>
             </div>
-            <p className="text-[14px] font-pretendard text-white">
-              {exportOption}
-            </p>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
+      <Button label="Export" onClick={onPrint} />
     </div>
   );
 };

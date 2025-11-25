@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { ReportTabs } from "@/components";
-import { Button } from "@/components-common";
 import { NewReport, ReportHistory } from "@/pages";
 import { ReportTabValues } from "@/types";
 
@@ -18,21 +17,19 @@ const OptionHandler = ({ onPrint }: OptionHandlerProps) => {
     selectedReportTab === ReportTabValues.REPORT_HISTORY;
 
   return (
-    <div className="w-[var(--option-container-width)] h-screen flex flex-col justify-between p-[30px] bg-bg-base-alt">
+    <div
+      className={`w-[var(--option-container-width)] h-screen flex flex-col justify-between p-[30px] bg-bg-base-alt ${
+        selectedNewReportTab ? "gap-[20px]" : "gap-[0px]"
+      }`}
+    >
       <ReportTabs
         selectedReportTab={selectedReportTab}
         setSelectedReportTab={setSelectedReportTab}
       />
-      <div className="flex-1 overflow-y-auto">
-        {selectedNewReportTab && (
-          <div className="mt-[20px]">
-            <NewReport />
-          </div>
-        )}
-        {selectedReportHistoryTab && <ReportHistory />}
-      </div>
-      <div className="mt-[10px]">
-        <Button label="Export" onClick={onPrint} />
+      {/* TODO: min-h-0이 왜 필요한지 확인 */}
+      <div className="flex-1 min-h-0">
+        {selectedNewReportTab && <NewReport onPrint={onPrint} />}
+        {selectedReportHistoryTab && <ReportHistory onPrint={onPrint} />}
       </div>
     </div>
   );

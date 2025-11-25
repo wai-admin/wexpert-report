@@ -37,7 +37,7 @@ const OptionDisabledField = ({ value }: OptionDisabledFieldProps) => {
 };
 
 const Divider = () => {
-  return <div className="w-full h-[1px] bg-white" />;
+  return <div className="w-full min-h-[1px] bg-white" />;
 };
 
 export { OptionField, OptionDisabledField, Divider };
