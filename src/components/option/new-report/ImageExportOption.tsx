@@ -20,7 +20,7 @@ const ImageExportOption = ({
           onChange={() => onChange(ImageExportOptionValues.ALL_IMAGE)}
         />
         <RadioButton
-          label="Rupture Case"
+          label="Rupture Cases"
           checked={checkedOption === ImageExportOptionValues.RUPTURE_CASE}
           onChange={() => onChange(ImageExportOptionValues.RUPTURE_CASE)}
         />

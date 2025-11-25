@@ -1,8 +1,7 @@
 export interface NativeMessageData {
-  data: NativeDefaultMessage | NativePrintMessage;
+  data: NativeDefaultMessage;
 }
 
-// TODO: null 처리 필요
 export interface NativeDefaultMessage {
   accessToken: string;
   assessment: string;
@@ -13,10 +12,6 @@ export interface NativeDefaultMessage {
   exportOptionType: ExportOptionType;
   nativeVersion: string;
   id: number;
-}
-
-export interface NativePrintMessage {
-  requestPrint: boolean;
 }
 
 export enum ExportOptionType {
