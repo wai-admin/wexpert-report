@@ -21,7 +21,7 @@ const NewReport = ({ onPrint }: NewReportProps) => {
 
   return (
     <div className="size-full flex flex-col justify-between gap-[10px]">
-      <div className="w-full flex flex-col flex-1 gap-[26px] overflow-y-auto">
+      <div className="w-full flex flex-col flex-1 gap-[26px] overflow-y-auto overscroll-contain">
         <ImageExportOption
           checkedOption={imageExportOption}
           onChange={setImageExportOption}

@@ -12,7 +12,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
     <div className="size-full flex flex-col justify-between gap-[10px]">
       {MOCK_REPORT_HISTORY.length > 0 ? (
         <>
-          <div className="w-full flex flex-col flex-1 overflow-y-auto">
+          <div className="w-full flex flex-col flex-1 overflow-y-auto overscroll-contain">
             {MOCK_REPORT_HISTORY.map((report, index) => {
               const { id, date, exportOption } = report;
               const isSelected = index === selectedReportHistory;
@@ -61,74 +61,74 @@ const NoReportHistory = () => {
 };
 
 const MOCK_REPORT_HISTORY: any[] = [
-  // {
-  //   id: 1,
-  //   date: "2025/11/18 04:47 PM",
-  //   exportOption: "All Image",
-  // },
-  // {
-  //   id: 2,
-  //   date: "2025/11/18 04:47 PM",
-  //   exportOption: "Rupture Case",
-  // },
-  // {
-  //   id: 3,
-  //   date: "2025/11/18 04:47 PM",
-  //   exportOption: "Rupture Case",
-  // },
-  // {
-  //   id: 4,
-  //   date: "2025/11/18 04:47 PM",
-  //   exportOption: "All Image",
-  // },
-  // {
-  //   id: 5,
-  //   date: "2025/11/18 04:47 PM",
-  //   exportOption: "All Image",
-  // },
-  // {
-  //   id: 6,
-  //   date: "2025/11/18 04:47 PM",
-  //   exportOption: "All Image",
-  // },
-  // {
-  //   id: 7,
-  //   date: "2025/11/18 04:47 PM",
-  //   exportOption: "All Image",
-  // },
-  // {
-  //   id: 8,
-  //   date: "2025/11/18 04:47 PM",
-  //   exportOption: "All Image",
-  // },
-  // {
-  //   id: 9,
-  //   date: "2025/11/18 04:47 PM",
-  //   exportOption: "All Image",
-  // },
-  // {
-  //   id: 10,
-  //   date: "2025/11/18 04:47 PM",
-  //   exportOption: "All Image",
-  // },
-  // {
-  //   id: 11,
-  //   date: "2025/11/18 04:47 PM",
-  //   exportOption: "All Image",
-  // },
-  // {
-  //   id: 12,
-  //   date: "2025/11/18 04:47 PM",
-  //   exportOption: "All Image",
-  // },
-  // {
-  //   id: 13,
-  //   date: "2025/11/18 04:47 PM",
-  //   exportOption: "All Image",
-  // },
-  // {
-  //   id: 14,
-  //   date: "2025/11/18 04:47 PM",
-  //   exportOption: "All Image",
-  // },
+  {
+    id: 1,
+    date: "2025/11/18 04:47 PM",
+    exportOption: "All Image",
+  },
+  {
+    id: 2,
+    date: "2025/11/18 04:47 PM",
+    exportOption: "Rupture Case",
+  },
+  {
+    id: 3,
+    date: "2025/11/18 04:47 PM",
+    exportOption: "Rupture Case",
+  },
+  {
+    id: 4,
+    date: "2025/11/18 04:47 PM",
+    exportOption: "All Image",
+  },
+  {
+    id: 5,
+    date: "2025/11/18 04:47 PM",
+    exportOption: "All Image",
+  },
+  {
+    id: 6,
+    date: "2025/11/18 04:47 PM",
+    exportOption: "All Image",
+  },
+  {
+    id: 7,
+    date: "2025/11/18 04:47 PM",
+    exportOption: "All Image",
+  },
+  {
+    id: 8,
+    date: "2025/11/18 04:47 PM",
+    exportOption: "All Image",
+  },
+  {
+    id: 9,
+    date: "2025/11/18 04:47 PM",
+    exportOption: "All Image",
+  },
+  {
+    id: 10,
+    date: "2025/11/18 04:47 PM",
+    exportOption: "All Image",
+  },
+  {
+    id: 11,
+    date: "2025/11/18 04:47 PM",
+    exportOption: "All Image",
+  },
+  {
+    id: 12,
+    date: "2025/11/18 04:47 PM",
+    exportOption: "All Image",
+  },
+  {
+    id: 13,
+    date: "2025/11/18 04:47 PM",
+    exportOption: "All Image",
+  },
+  {
+    id: 14,
+    date: "2025/11/18 04:47 PM",
+    exportOption: "All Image",
+  },
 ];
