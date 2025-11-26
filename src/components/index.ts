@@ -17,10 +17,11 @@ export {
   OptionDisabledField,
   Divider,
 } from "./option/new-report/OptionField";
-
 export { default as ImageExportOption } from "./option/new-report/ImageExportOption";
 export { default as ChartNumber } from "./option/new-report/ChartNumber";
 export { default as Name } from "./option/new-report/Name";
 export { default as DateOfBirth } from "./option/new-report/DateOfBirth";
 export { default as PhysicianAssessment } from "./option/new-report/PhysicianAssessment";
+export { default as PrintGuide } from "./option/new-report/PrintGuide";
+
 export { default as ReportTabs } from "./option/ReportTabs";

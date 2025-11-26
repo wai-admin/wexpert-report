@@ -5,6 +5,7 @@ import {
   Name,
   DateOfBirth,
   PhysicianAssessment,
+  PrintGuide,
 } from "@/components";
 import { Button } from "@/components-common";
 
@@ -23,7 +24,10 @@ const NewReport = ({ onPrint }: NewReportProps) => {
         <DateOfBirth year="as" month="as" day="as" />
         <PhysicianAssessment />
       </div>
-      <Button label="Export" onClick={onPrint} />
+      <div className="w-full flex flex-col gap-[10px]">
+        <Button label="Export" onClick={onPrint} />
+        <PrintGuide />
+      </div>
     </div>
   );
 };

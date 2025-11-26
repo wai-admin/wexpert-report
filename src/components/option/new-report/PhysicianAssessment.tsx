@@ -9,7 +9,7 @@ const PhysicianAssessment = () => {
       label="Physician's Assessment"
       subLabel={`${physicianAssessment.length}/1000`}
     >
-      <div className="h-[120px] flex items-center bg-[rgba(65,65,65,1)] rounded-[6px] border border-[rgba(201,201,201,1)] px-[15px] py-[10px]">
+      <div className="h-[120px] flex items-center bg-[rgba(65,65,65,1)] rounded-[6px] border border-solid-lt px-[15px] py-[10px]">
         <textarea
           className="w-full h-full text-[16px] text-white font-pretendard resize-none bg-transparent outline-none border-none"
           // placeholder="Up to 1000 characters"

@@ -38,14 +38,14 @@ const ReportTab = ({
     <button
       className={`flex flex-1 justify-center ${
         selectedReportTab === tab
-          ? "border-b-[2px] border-blue-300"
+          ? "border-b-[4px] border-solid-focus"
           : "border-b-[1px] border-solid-lt"
       } pb-[15px]`}
       onClick={() => setSelectedReportTab(tab)}
     >
       <p
         className={`text-[15px] font-pretendard font-semibold ${
-          selectedReportTab === tab ? "text-blue-300" : "text-solid-lt"
+          selectedReportTab === tab ? "text-solid-focus" : "text-solid-lt"
         }`}
       >
         {tab}

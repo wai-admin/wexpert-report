@@ -10,7 +10,7 @@ const RadioIndicator = ({ checked }: RadioIndicatorProps) => {
       }`}
     >
       <div
-        className={`w-[12px] h-[12px] rounded-full ${
+        className={`w-[10px] h-[10px] rounded-full ${
           checked ? "bg-blue-300 scale-100" : "bg-transparent scale-0"
         } transition-scale duration-200`}
       />

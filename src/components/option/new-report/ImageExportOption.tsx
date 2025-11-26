@@ -10,14 +10,14 @@ const ImageExportOption = () => {
     <OptionField label="Image Export Option">
       <div className="flex flex-row items-center gap-[24px]">
         <RadioButton
-          label="All Images"
+          label="All Image"
           checked={imageExportOption === ImageExportOptionValues.ALL_IMAGE}
           onChange={() =>
             setImageExportOption(ImageExportOptionValues.ALL_IMAGE)
           }
         />
         <RadioButton
-          label="Rupture Cases"
+          label="Rupture Case"
           checked={imageExportOption === ImageExportOptionValues.RUPTURE_CASE}
           onChange={() =>
             setImageExportOption(ImageExportOptionValues.RUPTURE_CASE)

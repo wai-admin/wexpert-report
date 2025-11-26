@@ -8,7 +8,7 @@ interface DateOfBirthProps {
 
 const DateOfBirth = ({ year, month, day }: DateOfBirthProps) => {
   return (
-    <OptionField label="Date of birth">
+    <OptionField label="Date of Birth">
       <div className="w-full flex gap-[10px]">
         <OptionDisabledField value={year} />
         <OptionDisabledField value={month} />
