@@ -1,10 +1,8 @@
-import usePrintPageHandler from "@/hooks/usePrintPageHandler";
+interface HeaderProps {
+  hospitalName: string;
+}
 
-const Header = () => {
-  const { printPageData } = usePrintPageHandler();
-
-  const hospitalName = printPageData?.cover.hospitalName || "";
-
+const Header = ({ hospitalName }: HeaderProps) => {
   return (
     <div className="header">
       <p className="header-hospital-name">{hospitalName}</p>

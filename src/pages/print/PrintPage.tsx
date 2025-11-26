@@ -3,15 +3,19 @@ import useA4Handler from "@/hooks/useA4Handler";
 import { checkTruthy } from "@/utils";
 import { A4Template } from "@/components";
 import { Cover, ElementRenderer } from "@/pages";
-import { PrintPageData } from "@/types";
+import { PrintPageData, PrintPageOption } from "@/types";
 
 interface PrintPageProps {
   printRef: RefObject<HTMLDivElement | null>;
   printPageData: PrintPageData | null;
+  option: PrintPageOption;
 }
 
-const PrintPage = ({ printRef, printPageData }: PrintPageProps) => {
-  const { elementPageInfo, MeasureContainer } = useA4Handler();
+const PrintPage = ({ printRef, printPageData, option }: PrintPageProps) => {
+  const { elementPageInfo, MeasureContainer } = useA4Handler({
+    printPageData,
+    option,
+  });
 
   // Data Information
   const hospitalName = checkTruthy(printPageData)
@@ -29,7 +33,11 @@ const PrintPage = ({ printRef, printPageData }: PrintPageProps) => {
               const { page: pageNumber, elements } = page;
 
               return (
-                <A4Template key={`page-${pageNumber}`} pageNumber={pageNumber}>
+                <A4Template
+                  key={`page-${pageNumber}`}
+                  pageNumber={pageNumber}
+                  hospitalName={hospitalName}
+                >
                   {elements.map((element) => (
                     <ElementRenderer
                       key={element}

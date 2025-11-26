@@ -3,25 +3,30 @@ import { useReactToPrint } from "react-to-print";
 import { sendPrintStatus, checkTruthy, formatPdfFileName } from "@/utils";
 import { useMessageStore, usePrintStore } from "@/store";
 import { useReportUpload } from "@/services/useReportUpload";
-import usePrintPageHandler from "@/hooks/usePrintPageHandler";
 import { ReportData } from "@/lib";
 import { ImageExportOptionValues } from "@/types";
+
+interface UsePrintHandlerProps {
+  printRef: RefObject<HTMLDivElement | null>;
+  imageExportOption: ImageExportOptionValues;
+  physicianAssessment: string;
+  patientName: string;
+}
 
 /**
  * 인쇄 처리를 위한 커스텀 훅
  */
-export const usePrintHandler = (
-  printRef: RefObject<HTMLDivElement | null>,
-  patientName: string
-) => {
+export const usePrintHandler = ({
+  printRef,
+  imageExportOption,
+  physicianAssessment,
+  patientName,
+}: UsePrintHandlerProps) => {
   const { clearPrintRequest } = usePrintStore();
   const { nativeMessage } = useMessageStore();
   const { uploadReport } = useReportUpload();
-  const { printPageData, option } = usePrintPageHandler();
 
-  const fileName = `${
-    checkTruthy(patientName) ? patientName : "Unknown"
-  }_${formatPdfFileName(new Date())}`;
+  const fileName = `${patientName}_${formatPdfFileName(new Date())}`;
 
   const handlePrint = useReactToPrint({
     contentRef: printRef,
@@ -35,8 +40,8 @@ export const usePrintHandler = (
         const reportData = {
           patientId: nativeMessage.id || null,
           includeAllImages:
-            option.imageExportOption === ImageExportOptionValues.ALL_IMAGE,
-          doctorOpinion: printPageData?.physicianAssessment || null,
+            imageExportOption === ImageExportOptionValues.ALL_IMAGE,
+          doctorOpinion: physicianAssessment || null,
         } as ReportData;
 
         uploadReport({

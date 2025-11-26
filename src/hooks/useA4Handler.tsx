@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import usePrintPageHandler from "@/hooks/usePrintPageHandler";
 import {
   patientInformation,
   analysisSummary,
@@ -18,15 +17,23 @@ import {
 } from "@/constants";
 import { useMessageStore } from "@/store";
 import { generateAnalysisItems } from "@/utils/reportDataProcessor";
-import { ImageExportOptionValues, PrintPageData } from "@/types";
+import {
+  ImageExportOptionValues,
+  PrintPageData,
+  PrintPageOption,
+} from "@/types";
 
 interface ElementPageInfo {
   page: number;
   elements: string[];
 }
 
-const useA4Handler = () => {
-  const { printPageData, option } = usePrintPageHandler();
+interface UseA4HandlerProps {
+  printPageData: PrintPageData | null;
+  option: PrintPageOption;
+}
+
+const useA4Handler = ({ printPageData, option }: UseA4HandlerProps) => {
   const { nativeMessage } = useMessageStore();
 
   const measureRootRef = useRef<HTMLDivElement>(null);

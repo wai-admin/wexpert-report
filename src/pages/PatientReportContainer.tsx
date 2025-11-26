@@ -6,10 +6,14 @@ import usePrintPageHandler from "@/hooks/usePrintPageHandler";
 const PatientReportContainer = () => {
   const printRef = useRef<HTMLDivElement>(null);
   // Data Information
-  const { printPageData, isLoading } = usePrintPageHandler();
-  const patientName = printPageData?.patientDetail.patientName ?? "";
+  const { printPageData, option, isLoading } = usePrintPageHandler();
   // Handlers & State
-  const { handlePrint } = usePrintHandler(printRef, patientName);
+  const { handlePrint } = usePrintHandler({
+    printRef,
+    imageExportOption: option.imageExportOption,
+    physicianAssessment: printPageData?.physicianAssessment ?? "",
+    patientName: printPageData?.patientDetail.patientName ?? "",
+  });
 
   // Native에 로딩 상태 전송
   useWebViewLoading(isLoading);
@@ -19,7 +23,11 @@ const PatientReportContainer = () => {
   return (
     <div className="report-register">
       <div className="report-print-page">
-        <PrintPage printRef={printRef} printPageData={printPageData} />
+        <PrintPage
+          printRef={printRef}
+          printPageData={printPageData}
+          option={option}
+        />
       </div>
       <div className="report-option-container">
         <OptionHandler printPageData={printPageData} onPrint={handlePrint} />
