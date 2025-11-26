@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Divider,
   ImageExportOption,
@@ -8,7 +7,6 @@ import {
   PhysicianAssessment,
 } from "@/components";
 import { Button } from "@/components-common";
-import { ImageExportOptionValues } from "@/types";
 
 interface NewReportProps {
   onPrint: () => void;
