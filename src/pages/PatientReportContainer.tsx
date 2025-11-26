@@ -22,7 +22,7 @@ const PatientReportContainer = () => {
         <PrintPage printRef={printRef} printPageData={printPageData} />
       </div>
       <div className="report-option-container">
-        <OptionHandler onPrint={handlePrint} />
+        <OptionHandler printPageData={printPageData} onPrint={handlePrint} />
       </div>
     </div>
   );

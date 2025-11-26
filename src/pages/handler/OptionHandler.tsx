@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { ReportTabs } from "@/components";
 import { NewReport, ReportHistory } from "@/pages";
-import { ReportTabValues } from "@/types";
+import { PrintPageData, ReportTabValues } from "@/types";
 
 interface OptionHandlerProps {
+  printPageData: PrintPageData | null;
   onPrint: () => void;
 }
 
-const OptionHandler = ({ onPrint }: OptionHandlerProps) => {
+const OptionHandler = ({ printPageData, onPrint }: OptionHandlerProps) => {
   const [selectedReportTab, setSelectedReportTab] = useState<ReportTabValues>(
     ReportTabValues.NEW_REPORT
   );
@@ -28,7 +29,9 @@ const OptionHandler = ({ onPrint }: OptionHandlerProps) => {
       />
       {/* TODO: min-h-0이 왜 필요한지 확인 */}
       <div className="flex-1 min-h-0">
-        {selectedNewReportTab && <NewReport onPrint={onPrint} />}
+        {selectedNewReportTab && (
+          <NewReport printPageData={printPageData} onPrint={onPrint} />
+        )}
         {selectedReportHistoryTab && <ReportHistory onPrint={onPrint} />}
       </div>
     </div>

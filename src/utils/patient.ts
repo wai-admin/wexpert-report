@@ -103,6 +103,36 @@ function formatBirthDate(
   return formattedParts.join("/");
 }
 
+/**
+ * 포맷된 생년월일 문자열(YYYY/MM/DD 또는 YYYY/-/- 등)을 분리하여 객체로 반환
+ * @param formattedBirthDate - formatBirthDate 함수의 결과물 (예: "1990/01/15", "1990/-/-", "")
+ * @returns { birthYear: string, birthMonth: string, birthDay: string }
+ */
+function parseBirthDate(formattedBirthDate: string): {
+  birthYear: string;
+  birthMonth: string;
+  birthDay: string;
+} {
+  // 빈 문자열이면 모두 빈 문자열 반환
+  if (!formattedBirthDate || formattedBirthDate.trim() === "") {
+    return { birthYear: "", birthMonth: "", birthDay: "" };
+  }
+
+  // "/"로 분리
+  const parts = formattedBirthDate.split("/");
+
+  // 각 부분을 가져오고, "-"이면 빈 문자열로 변환
+  const birthYear = parts[0] && parts[0] !== "-" ? parts[0] : "";
+  const birthMonth = parts[1] && parts[1] !== "-" ? parts[1] : "";
+  const birthDay = parts[2] && parts[2] !== "-" ? parts[2] : "";
+
+  return {
+    birthYear,
+    birthMonth,
+    birthDay,
+  };
+}
+
 const getPatientType = (type: string) => {
   switch (type) {
     case "aesthetic":
@@ -204,6 +234,7 @@ export {
   getPatientId,
   hasValidPatientId,
   formatBirthDate,
+  parseBirthDate,
   getPatientType,
   getRuptureImageCount,
   getAnalysisItemCount,

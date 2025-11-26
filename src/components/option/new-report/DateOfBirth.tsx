@@ -1,18 +1,19 @@
 import { OptionField, OptionDisabledField } from "@/components";
+import { parseBirthDate } from "@/utils";
 
 interface DateOfBirthProps {
-  year: string;
-  month: string;
-  day: string;
+  birth: string;
 }
 
-const DateOfBirth = ({ year, month, day }: DateOfBirthProps) => {
+const DateOfBirth = ({ birth }: DateOfBirthProps) => {
+  const { birthYear, birthMonth, birthDay } = parseBirthDate(birth);
+
   return (
     <OptionField label="Date of Birth">
       <div className="w-full flex gap-[10px]">
-        <OptionDisabledField value={year} />
-        <OptionDisabledField value={month} />
-        <OptionDisabledField value={day} />
+        <OptionDisabledField value={birthYear} />
+        <OptionDisabledField value={birthMonth} />
+        <OptionDisabledField value={birthDay} />
       </div>
     </OptionField>
   );
