@@ -75,6 +75,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
       },
       option: {
         imageExportOption: imageExportOption,
+        sonographies: newReport.data.patientDetail.sonographies,
       },
       isLoading: isNewReportFetching,
       error: null,
@@ -85,6 +86,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
     printPageData: null,
     option: {
       imageExportOption: imageExportOption,
+      sonographies: [],
     },
     isLoading: false,
     error: null,

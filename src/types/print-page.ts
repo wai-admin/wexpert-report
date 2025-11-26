@@ -53,6 +53,7 @@ export interface PrintPageCover {
  */
 export interface PrintPageOption {
   imageExportOption: ImageExportOptionValues;
+  sonographies: Sonography[];
 }
 
 /**
