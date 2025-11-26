@@ -4,13 +4,8 @@ import {
   AnalysisSummary,
   ReportDetail,
 } from "@/lib/reportType";
-import { ExportOptionType, NativeDefaultMessage } from "@/lib";
-import {
-  checkTruthy,
-  formatBirthDate,
-  formatAnalysisDate,
-  checkFalsy,
-} from "@/utils";
+import { checkTruthy, formatAnalysisDate } from "@/utils";
+import { ImageExportOptionValues } from "@/types";
 
 const DEFAULT_REPORT_DATA: ReportDetail = {
   patientSummary: {
@@ -65,12 +60,11 @@ interface GenerateReportDataProps {
   totalAnalysisImageCount: number;
   lymphNodeImageCount: number;
   ruptureImageCount: number;
-  assessment: string;
 }
 
 const generateReportData = (
   reportData: ReportResponse | undefined,
-  nativeMessage: NativeDefaultMessage | null
+  imageExportOption: ImageExportOptionValues
 ): GenerateReportDataProps => {
   // reportData가 없거나 유효하지 않으면 기본값 사용
   const data = checkTruthy(reportData) ? reportData.data : DEFAULT_REPORT_DATA;
@@ -84,17 +78,12 @@ const generateReportData = (
   const { hospitalName, analysisDateTime } = patientSummary;
   const { name, type, sonographies } = patientDetail;
 
-  const { chartNo, birthYear, birthMonth, birthDay } = nativeMessage ?? {};
-
   // 환자 정보 가공 (기본값 제공)
   const patientInformation = {
-    chatNumber: checkTruthy(chartNo) ? chartNo : "",
+    chatNumber: "",
     patientName: name,
     type: type,
-    birth:
-      checkFalsy(birthYear) && checkFalsy(birthMonth) && checkFalsy(birthDay)
-        ? ""
-        : formatBirthDate(birthYear, birthMonth, birthDay),
+    birth: "",
     analysisDate: formatAnalysisDate(analysisDateTime),
   };
 
@@ -104,9 +93,7 @@ const generateReportData = (
     totalAnalysisImageCount,
     lymphNodeImageCount,
     ruptureImageCount,
-  } = getAnalysisInformation(sonographies, nativeMessage?.exportOptionType);
-
-  const assessment = nativeMessage?.assessment ?? "";
+  } = getAnalysisInformation(sonographies, imageExportOption);
 
   return {
     hospitalName,
@@ -117,7 +104,6 @@ const generateReportData = (
     totalAnalysisImageCount,
     lymphNodeImageCount,
     ruptureImageCount,
-    assessment,
   };
 };
 
@@ -127,13 +113,14 @@ const generateReportData = (
  */
 const getAnalysisInformation = (
   sonographies: Sonography[],
-  exportOptionType?: ExportOptionType
+  imageExportOption: ImageExportOptionValues
 ) => {
   const { totalAnalysisImageCount, lymphNodeImageCount, ruptureImageCount } =
     getAnalysisItemCount(sonographies);
 
   const analysisItems = generateAnalysisItems({
-    onlyRuptureExist: exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE,
+    onlyRuptureExist:
+      imageExportOption === ImageExportOptionValues.RUPTURE_CASE,
     sonographies: sonographies,
   });
 

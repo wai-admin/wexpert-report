@@ -6,15 +6,13 @@ import {
   PatientInformation,
   RecommendTreatment,
 } from "@/components";
-import { generateReportData } from "@/utils/reportDataProcessor";
 import { ELEMENT } from "@/constants/element";
-import { ReportResponse } from "@/lib";
+import { PrintPageData } from "@/types";
 import { checkFalsy } from "@/utils";
-import { useMessageStore } from "@/store";
 
 interface ElementRendererProps {
   element: string;
-  reportData: ReportResponse | undefined;
+  printPageData: PrintPageData;
 }
 
 /**
@@ -22,19 +20,14 @@ interface ElementRendererProps {
  * @description 각 요소에 해당하는 HTML이 존재하며 id 중복을 피하기 위해 요소 ID에 컨테이너 ID(ELEMENT.A4_CONTAINER)를 붙여서 사용
  * @description 해당 ID는 Native의 메시지 수신 시, 자동 스크롤 기능에 사용됨
  */
-const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
-  // 리포트 관련 커스텀 훅
-  const { nativeMessage } = useMessageStore();
-
+const ElementRenderer = ({ element, printPageData }: ElementRendererProps) => {
   const {
-    patientInformation,
+    patientDetail,
     analysisSummary,
-    recommendedTreatment,
-    analysisItems,
-    totalAnalysisImageCount,
-    ruptureImageCount,
-    assessment,
-  } = generateReportData(reportData, nativeMessage);
+    analysisResultByAI,
+    analysisImage,
+    physicianAssessment,
+  } = printPageData;
 
   // 1. 환자 정보
   if (element === ELEMENT.PATIENT_INFORMATION) {
@@ -42,7 +35,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
       <PatientInformation
         id={`${ELEMENT.A4_CONTAINER}-${element}`}
         key={element}
-        patientInformation={patientInformation}
+        patientDetail={patientDetail}
       />
     );
   }
@@ -64,7 +57,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
       <RecommendTreatment
         id={`${ELEMENT.A4_CONTAINER}-${element}`}
         key={element}
-        recommendedTreatment={recommendedTreatment}
+        recommendedTreatment={analysisResultByAI}
       />
     );
   }
@@ -75,10 +68,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
       <AnalysisViewer
         id={`${ELEMENT.A4_CONTAINER}-${element}`}
         key={element}
-        totalAnalysisImageCount={totalAnalysisImageCount}
-        ruptureImageCount={ruptureImageCount}
-        invasionToCapsuleExist={analysisSummary.invasionToCapsuleExist}
-        invasionToLymphNodeExist={analysisSummary.invasionToLymphNodeExist}
+        commentSummary={analysisImage.commentSummary}
       />
     );
   }
@@ -87,9 +77,8 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
   if (element.includes(ELEMENT.ANALYSIS_RESULT_COMMON)) {
     // element 형식: analysis-result-{index}
     const analysisResultIndex = Number(element.split("-")[2]);
-    const analysisItem = analysisItems[analysisResultIndex];
+    const analysisItem = analysisImage.analysisItems[analysisResultIndex];
 
-    // 예방 차원 (시나리오에 없음)
     if (checkFalsy(analysisItem)) {
       return <></>;
     }
@@ -109,7 +98,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
       <Assessment
         id={`${ELEMENT.A4_CONTAINER}-${element}`}
         key={element}
-        assessment={assessment}
+        assessment={physicianAssessment}
       />
     );
   }

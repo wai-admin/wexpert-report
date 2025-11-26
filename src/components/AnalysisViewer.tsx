@@ -1,22 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { NumberedList } from "@/components";
-import { getImageCommentSummary } from "@/utils";
 
 interface AnalysisViewerProps {
   id: string;
-  totalAnalysisImageCount: number;
-  ruptureImageCount: number;
-  invasionToCapsuleExist: boolean;
-  invasionToLymphNodeExist: boolean;
+  commentSummary: string;
 }
 
-const AnalysisViewer = (props: AnalysisViewerProps) => {
-  const { id, ...commentProps } = props;
+const AnalysisViewer = ({ id, commentSummary }: AnalysisViewerProps) => {
   const { t: i18n } = useTranslation();
-  const comment = getImageCommentSummary({
-    ...commentProps,
-    i18n: i18n,
-  });
 
   return (
     <div id={id} className="column">
@@ -24,7 +15,7 @@ const AnalysisViewer = (props: AnalysisViewerProps) => {
         number={4}
         title={i18n("numberedList.complication-images-attached")}
       />
-      <div className="comment-box-image">{comment}</div>
+      <div className="comment-box-image">{commentSummary}</div>
     </div>
   );
 };

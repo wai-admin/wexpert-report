@@ -7,7 +7,7 @@ import {
   analysisResult,
   assessment,
 } from "@/components/html";
-import { ExportOptionType, NativeDefaultMessage, ReportResponse } from "@/lib";
+import { NativeMessage } from "@/lib";
 import {
   ELEMENT,
   CONTENTS_MAX_HEIGHT,
@@ -16,16 +16,24 @@ import {
   getFeatureActivation,
 } from "@/constants";
 import { useMessageStore } from "@/store";
-import { useReport } from "@/services/useReport";
 import { generateAnalysisItems } from "@/utils/reportDataProcessor";
+import {
+  ImageExportOptionValues,
+  PrintPageData,
+  PrintPageOption,
+} from "@/types";
 
 interface ElementPageInfo {
   page: number;
   elements: string[];
 }
 
-const useA4Handler = () => {
-  const { data: reportData } = useReport();
+interface UseA4HandlerProps {
+  printPageData: PrintPageData | null;
+  option: PrintPageOption;
+}
+
+const useA4Handler = ({ printPageData, option }: UseA4HandlerProps) => {
   const { nativeMessage } = useMessageStore();
 
   const measureRootRef = useRef<HTMLDivElement>(null);
@@ -33,7 +41,7 @@ const useA4Handler = () => {
 
   // 데이터 초기화, 변경 시 페이지 생성 (A4 내부에 표시할 요소 목록 생성)
   useEffect(() => {
-    if (reportData) {
+    if (printPageData) {
       // 1. elementPageInfo 초기화
       setElementPageInfo([]);
 
@@ -43,21 +51,21 @@ const useA4Handler = () => {
       }
 
       // 3. 새로운 데이터로 페이지 생성
-      const a4Element = getA4Element(reportData, nativeMessage);
+      const a4Element = getA4Element(printPageData, nativeMessage);
       const generatedPages = getA4Data(a4Element);
       setElementPageInfo(generatedPages);
     }
-  }, [reportData, nativeMessage]);
+  }, [printPageData, nativeMessage]);
 
   // A4 내부에 표시할 요소 목록 생성
   const getA4Element = (
-    reportData: ReportResponse,
-    nativeMessage: NativeDefaultMessage | null
+    printPageData: PrintPageData,
+    nativeMessage: NativeMessage | null
   ) => {
     const analysisItems = generateAnalysisItems({
       onlyRuptureExist:
-        nativeMessage?.exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE,
-      sonographies: reportData.data.patientDetail.sonographies,
+        option?.imageExportOption === ImageExportOptionValues.RUPTURE_CASE,
+      sonographies: option?.sonographies ?? [],
     });
 
     return [
@@ -75,7 +83,7 @@ const useA4Handler = () => {
         type: ELEMENT.RECOMMEND_TREATMENT,
         data: recommendTreatment(
           ELEMENT.RECOMMEND_TREATMENT,
-          reportData.data.recommendedTreatment
+          printPageData?.analysisResultByAI ?? ""
         ),
         active: true,
       },
@@ -92,10 +100,13 @@ const useA4Handler = () => {
       })) || []),
       {
         type: ELEMENT.ASSESSMENT,
-        data: assessment(ELEMENT.ASSESSMENT, nativeMessage?.assessment || ""),
+        data: assessment(
+          ELEMENT.ASSESSMENT,
+          printPageData?.physicianAssessment ?? ""
+        ),
         active: getFeatureActivation(
           FEATURE.ASSESSMENT,
-          nativeMessage?.nativeVersion as NATIVE_VERSION | undefined
+          nativeMessage?.nativeVersion as NATIVE_VERSION
         ),
       },
     ];

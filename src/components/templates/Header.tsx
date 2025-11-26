@@ -1,10 +1,8 @@
-import { useReport } from "@/services/useReport";
+interface HeaderProps {
+  hospitalName: string;
+}
 
-const Header = () => {
-  const { data: reportData } = useReport();
-
-  const hospitalName = reportData?.data?.patientSummary?.hospitalName || "";
-
+const Header = ({ hospitalName }: HeaderProps) => {
   return (
     <div className="header">
       <p className="header-hospital-name">{hospitalName}</p>
