@@ -17,6 +17,7 @@ interface AnalysisResultProps {
 
 const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
   const { t: i18n } = useTranslation();
+  console.log("AnalysisResult item: ", item);
   const { type, analysis, imageUrl, originalFileName } = item;
 
   // 분석 결과

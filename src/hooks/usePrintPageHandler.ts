@@ -25,11 +25,12 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
    */
 
   const { nativeMessage } = useMessageStore();
-  console.log("usePrintPageHandler nativeMessage: ", nativeMessage);
   const { imageExportOption, physicianAssessment } = useNewReportStore();
   const { data: newReport, isFetching: isNewReportFetching } = useReport({
     enabled: nativeMessage?.reportMode === ReportOptionType.NEW_REPORT,
   });
+
+  console.log("usePrintPageHandler newReport: ", newReport);
 
   if (checkTruthy(newReport)) {
     return {
