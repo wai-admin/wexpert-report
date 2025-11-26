@@ -25,6 +25,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
    */
 
   const { nativeMessage } = useMessageStore();
+  console.log("usePrintPageHandler nativeMessage: ", nativeMessage);
   const { imageExportOption, physicianAssessment } = useNewReportStore();
   const { data: newReport, isFetching: isNewReportFetching } = useReport({
     enabled: nativeMessage?.reportMode === ReportOptionType.NEW_REPORT,

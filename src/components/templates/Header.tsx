@@ -1,9 +1,9 @@
-import { useReport } from "@/services/useReport";
+import usePrintPageHandler from "@/hooks/usePrintPageHandler";
 
 const Header = () => {
-  const { data: reportData } = useReport();
+  const { printPageData } = usePrintPageHandler();
 
-  const hospitalName = reportData?.data?.patientSummary?.hospitalName || "";
+  const hospitalName = printPageData?.cover.hospitalName || "";
 
   return (
     <div className="header">
