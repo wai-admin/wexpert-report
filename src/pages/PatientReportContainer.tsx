@@ -1,14 +1,15 @@
 import { useRef } from "react";
-import { usePrintHandler, useWebViewLoading } from "@/hooks";
+import { usePrintAction, useWebViewLoading } from "@/hooks";
 import { PrintPage, OptionHandler } from "@/pages";
 import usePrintPageHandler from "@/hooks/usePrintPageHandler";
 
+// WARNING: usePrintPageHandler 업데이트 시 전체 렌더링 주의 (개선 필요)
 const PatientReportContainer = () => {
   const printRef = useRef<HTMLDivElement>(null);
   // Data Information
   const { printPageData, option, isLoading } = usePrintPageHandler();
   // Handlers & State
-  const { handlePrint } = usePrintHandler({
+  const { handlePrint } = usePrintAction({
     printRef,
     imageExportOption: option.imageExportOption,
     physicianAssessment: printPageData?.physicianAssessment ?? "",

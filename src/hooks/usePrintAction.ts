@@ -6,7 +6,7 @@ import { useReportUpload } from "@/services/useReportUpload";
 import { ReportData } from "@/lib";
 import { ImageExportOptionValues } from "@/types";
 
-interface UsePrintHandlerProps {
+interface UsePrintActionProps {
   printRef: RefObject<HTMLDivElement | null>;
   imageExportOption: ImageExportOptionValues;
   physicianAssessment: string;
@@ -16,12 +16,12 @@ interface UsePrintHandlerProps {
 /**
  * 인쇄 처리를 위한 커스텀 훅
  */
-export const usePrintHandler = ({
+export const usePrintAction = ({
   printRef,
   imageExportOption,
   physicianAssessment,
   patientName,
-}: UsePrintHandlerProps) => {
+}: UsePrintActionProps) => {
   const { clearPrintRequest } = usePrintStore();
   const { nativeMessage } = useMessageStore();
   const { uploadReport } = useReportUpload();
