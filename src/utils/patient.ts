@@ -192,7 +192,8 @@ const generateAnalysisItems = ({
             label.result_type === "rupture" && label.result_class === "exist"
         )
       ),
-      ...lymphNodeLabels,
+      // TODO: 기획 회의 후 변경 가능성 있음.
+      // ...lymphNodeLabels,
     ];
   } else {
     return [...breastImplantLabels, ...lymphNodeLabels];
