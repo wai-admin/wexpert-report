@@ -7,7 +7,7 @@ import {
   analysisResult,
   assessment,
 } from "@/components/html";
-import { ExportOptionType, NativeDefaultMessage, ReportResponse } from "@/lib";
+import { NativeMessage, ReportResponse } from "@/lib";
 import {
   ELEMENT,
   CONTENTS_MAX_HEIGHT,
@@ -15,9 +15,10 @@ import {
   NATIVE_VERSION,
   getFeatureActivation,
 } from "@/constants";
-import { useMessageStore } from "@/store";
+import { useMessageStore, useNewReportStore } from "@/store";
 import { useReport } from "@/services/useReport";
 import { generateAnalysisItems } from "@/utils/reportDataProcessor";
+import { ImageExportOptionValues } from "@/types";
 
 interface ElementPageInfo {
   page: number;
@@ -25,8 +26,9 @@ interface ElementPageInfo {
 }
 
 const useA4Handler = () => {
-  const { data: reportData } = useReport();
+  const { data: reportData } = useReport({ enabled: true });
   const { nativeMessage } = useMessageStore();
+  const { imageExportOption, physicianAssessment } = useNewReportStore();
 
   const measureRootRef = useRef<HTMLDivElement>(null);
   const [elementPageInfo, setElementPageInfo] = useState<ElementPageInfo[]>([]);
@@ -52,11 +54,11 @@ const useA4Handler = () => {
   // A4 내부에 표시할 요소 목록 생성
   const getA4Element = (
     reportData: ReportResponse,
-    nativeMessage: NativeDefaultMessage | null
+    nativeMessage: NativeMessage | null
   ) => {
     const analysisItems = generateAnalysisItems({
       onlyRuptureExist:
-        nativeMessage?.exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE,
+        imageExportOption === ImageExportOptionValues.RUPTURE_CASE,
       sonographies: reportData.data.patientDetail.sonographies,
     });
 
@@ -92,10 +94,10 @@ const useA4Handler = () => {
       })) || []),
       {
         type: ELEMENT.ASSESSMENT,
-        data: assessment(ELEMENT.ASSESSMENT, nativeMessage?.assessment || ""),
+        data: assessment(ELEMENT.ASSESSMENT, physicianAssessment),
         active: getFeatureActivation(
           FEATURE.ASSESSMENT,
-          nativeMessage?.nativeVersion as NATIVE_VERSION | undefined
+          nativeMessage?.nativeVersion as NATIVE_VERSION
         ),
       },
     ];

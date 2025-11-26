@@ -3,7 +3,9 @@ import { useReactToPrint } from "react-to-print";
 import { sendPrintStatus, checkTruthy, formatPdfFileName } from "@/utils";
 import { useMessageStore, usePrintStore } from "@/store";
 import { useReportUpload } from "@/services/useReportUpload";
-import { ReportData, ExportOptionType } from "@/lib";
+import usePrintPageHandler from "@/hooks/usePrintPageHandler";
+import { ReportData } from "@/lib";
+import { ImageExportOptionValues } from "@/types";
 
 /**
  * 인쇄 처리를 위한 커스텀 훅
@@ -15,6 +17,7 @@ export const usePrintHandler = (
   const { clearPrintRequest } = usePrintStore();
   const { nativeMessage } = useMessageStore();
   const { uploadReport } = useReportUpload();
+  const { printPageData, option } = usePrintPageHandler();
 
   const fileName = `${
     checkTruthy(patientName) ? patientName : "Unknown"
@@ -32,12 +35,8 @@ export const usePrintHandler = (
         const reportData = {
           patientId: nativeMessage.id || null,
           includeAllImages:
-            nativeMessage.exportOptionType === ExportOptionType.ALL,
-          chartNumber: nativeMessage.chartNo || null,
-          birthYear: nativeMessage.birthYear || null,
-          birthMonth: nativeMessage.birthMonth || null,
-          birthDay: nativeMessage.birthDay || null,
-          doctorOpinion: nativeMessage.assessment || null,
+            option.imageExportOption === ImageExportOptionValues.ALL_IMAGE,
+          doctorOpinion: printPageData?.physicianAssessment || null,
         } as ReportData;
 
         uploadReport({

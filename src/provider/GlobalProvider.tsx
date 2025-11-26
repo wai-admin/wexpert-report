@@ -1,9 +1,6 @@
 import { useEffect, ReactNode } from "react";
 import { useMessageStore, useAuthStore } from "@/store";
-import {
-  NativeDefaultMessage,
-  NativeMessageData,
-} from "@/lib/nativeMessageType";
+import { NativeMessage, NativeMessageData } from "@/lib/nativeMessageType";
 import { hasKey } from "@/utils/common";
 import { NATIVE_MESSAGE_KEY } from "@/constants/bridge";
 import { sendInitialized } from "@/utils/bridge";
@@ -15,7 +12,6 @@ interface GlobalProviderProps {
 /**
  * ✅ 1. C#의 WebView2에게 초기화 메시지 전송 및 access token 수신
  * ✅ 2. C#의 WebView2에서 사용자 입력 정보 수신
- * ✅ 3. C#의 WebView2에서 프린트 이벤트 처리
  */
 const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const { setNativeMessage } = useMessageStore();
@@ -34,9 +30,9 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
 
     // 토큰 및 사용자 입력 정보 처리
     if (hasKey(data, NATIVE_MESSAGE_KEY.INITIALIZED)) {
-      setNativeMessage(data as NativeDefaultMessage);
+      setNativeMessage(data as NativeMessage);
 
-      setAccessToken((data as NativeDefaultMessage).accessToken);
+      setAccessToken((data as NativeMessage).accessToken);
     }
   };
 

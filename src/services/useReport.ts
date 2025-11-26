@@ -4,17 +4,19 @@ import { QUERY_KEYS } from "@/lib/queryKeys";
 import { useMessageStore } from "@/store";
 import { getPatientId, hasValidPatientId } from "@/utils";
 
-/**
- * 리포트 데이터를 조회하는 커스텀 훅
- */
-export const useReport = () => {
+interface useReportProps {
+  enabled?: boolean;
+}
+
+// 리포트 데이터를 조회하는 커스텀 훅
+export const useReport = ({ enabled = true }: useReportProps) => {
   const { nativeMessage } = useMessageStore();
   const patientId = getPatientId(nativeMessage);
 
   const query = useQuery({
     queryKey: QUERY_KEYS.REPORT.DETAIL(patientId),
     queryFn: () => reportApi.getReport(patientId),
-    enabled: hasValidPatientId(nativeMessage),
+    enabled: enabled && hasValidPatientId(nativeMessage),
     retry: (failureCount, error: any) => {
       // 실패 시 오류 로그
       console.error(`Report fetch failed (attempt ${failureCount + 1}):`, {

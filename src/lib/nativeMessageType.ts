@@ -1,17 +1,18 @@
 export interface NativeMessageData {
-  data: NativeDefaultMessage;
+  data: NativeMessage;
 }
 
-export interface NativeDefaultMessage {
+export interface NativeMessage {
   accessToken: string;
-  assessment: string;
-  birthDay: string;
-  birthMonth: string;
-  birthYear: string;
-  chartNo: string;
-  exportOptionType: ExportOptionType;
   nativeVersion: string;
   id: number;
+  reportMode: ReportOptionType;
+}
+
+export enum ReportOptionType {
+  ALL_REPORT_HISTORY = "all",
+  PATIENT_REPORT_HISTORY = "patient",
+  NEW_REPORT = "create",
 }
 
 export enum ExportOptionType {

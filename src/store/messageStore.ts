@@ -1,15 +1,15 @@
 import { create } from "zustand";
-import { NativeDefaultMessage } from "@/lib/nativeMessageType";
+import { NativeMessage } from "@/lib/nativeMessageType";
 
 interface MessageState {
-  nativeMessage: NativeDefaultMessage | null;
-  setNativeMessage: (message: NativeDefaultMessage) => void;
+  nativeMessage: NativeMessage | null;
+  setNativeMessage: (message: NativeMessage) => void;
   clearMessage: () => void;
 }
 
-export const useMessageStore = create<MessageState>((set, get) => ({
+export const useMessageStore = create<MessageState>((set) => ({
   nativeMessage: null,
-  setNativeMessage: (message: NativeDefaultMessage) => {
+  setNativeMessage: (message: NativeMessage) => {
     set({ nativeMessage: message });
   },
   clearMessage: () => set({ nativeMessage: null }),
