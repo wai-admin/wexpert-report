@@ -8,6 +8,7 @@ import {
 } from "@/components";
 import { ELEMENT } from "@/constants/element";
 import { PrintPageData } from "@/types";
+import { checkFalsy } from "@/utils";
 
 interface ElementRendererProps {
   element: string;
@@ -77,6 +78,10 @@ const ElementRenderer = ({ element, printPageData }: ElementRendererProps) => {
     // element 형식: analysis-result-{index}
     const analysisResultIndex = Number(element.split("-")[2]);
     const analysisItem = analysisImage.analysisItems[analysisResultIndex];
+
+    if (checkFalsy(analysisItem)) {
+      return <></>;
+    }
 
     return (
       <AnalysisResult
