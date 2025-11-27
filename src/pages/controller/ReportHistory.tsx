@@ -38,7 +38,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
             })}
           </div>
           <div className="w-full flex flex-col gap-[10px]">
-            <Button label="Reprint" onClick={onPrint} />
+            <Button label="Print" onClick={onPrint} />
             <PrintGuide />
           </div>
         </>

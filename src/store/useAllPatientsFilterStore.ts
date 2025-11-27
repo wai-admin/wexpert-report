@@ -1,13 +1,13 @@
 import { create } from "zustand";
 
-enum SortBy {
-  NAME = "name",
-  REPORT_CREATED_DATE = "reportCreatedDate",
+export enum SortBy {
+  NAME = "Name",
+  REPORT_CREATED_DATE = "Report created",
 }
 
-enum SortOrder {
-  ASC = "asc",
-  DESC = "desc",
+export enum SortOrder {
+  ASC = "Ascending",
+  DESC = "Descending",
 }
 
 interface AllPatientsFilterState {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, SearchInput, Pagination } from "@/components-common";
 import { PrintPageData } from "@/types";
-import { TableHeader, TableRows } from "@/pages";
+import { TableHeader, TableRows, SortContainer } from "@/pages";
 import { MOCK_REPORT_LIST } from "@/constants";
 import { useAllPatientsFilterStore } from "@/store";
 
@@ -23,6 +23,10 @@ const AllPatientsController = ({
     rowsPerPage,
     currentPage,
     setCurrentPage,
+    sortBy,
+    setSortBy,
+    sortOrder,
+    setSortOrder,
   } = useAllPatientsFilterStore();
 
   const onSearch = () => {
@@ -45,7 +49,7 @@ const AllPatientsController = ({
             onClear={clearSearchKeyword}
           />
         </div>
-        <Button width="w-[150px]" label="Reprint" onClick={onPrint} />
+        <Button width="w-[150px]" label="Print" onClick={onPrint} />
       </div>
       <div className="w-full flex flex-col gap-[20px]">
         {/* Report List Header */}
@@ -53,15 +57,12 @@ const AllPatientsController = ({
           <p className="font-pretendard text-[16px] text-white font-medium">
             Report List
           </p>
-          <button className="flex gap-[5px]">
-            <p className="font-pretendard text-[16px] text-text-tertiary">
-              Sort
-            </p>
-            <img
-              src="/images/arrow-dropdown-icon.png"
-              className="w-[17px] h-[17px]"
-            />
-          </button>
+          <SortContainer
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+          />
         </div>
         {/* Table */}
         <div className="w-full flex flex-col gap-[14px]">
