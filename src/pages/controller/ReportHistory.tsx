@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { RadioIndicator, Button } from "@/components-common";
+import { RadioIndicator, Button, LoadingSpinner } from "@/components-common";
 import { PrintGuide } from "@/components";
 import { usePatientReportList } from "@/services/usePatientReportList";
 import { convertISOToLocal } from "@/utils";
@@ -11,11 +11,15 @@ interface ReportHistoryProps {
 const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
 
-  const { data } = usePatientReportList({ enabled: true });
+  const { data, isLoading } = usePatientReportList({ enabled: true });
 
   console.log("ReportHistory patientReportList: ", data);
 
   const patientReportList = data?.data ?? [];
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="size-full flex flex-col justify-between gap-[10px]">
