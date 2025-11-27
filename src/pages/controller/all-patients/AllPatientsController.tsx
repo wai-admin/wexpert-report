@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { Button, SearchInput, Pagination } from "@/components-common";
 import { PrintPageData } from "@/types";
-import { TableHeader, TableRows, SortContainer } from "@/pages";
+import {
+  TableHeader,
+  TableRows,
+  SortContainer,
+  RowsPerPageContainer,
+} from "@/pages";
 import { MOCK_REPORT_LIST } from "@/constants";
 import { useAllPatientsFilterStore } from "@/store";
 
@@ -21,6 +26,7 @@ const AllPatientsController = ({
     setSearchKeyword,
     clearSearchKeyword,
     rowsPerPage,
+    setRowsPerPage,
     currentPage,
     setCurrentPage,
     sortBy,
@@ -75,20 +81,10 @@ const AllPatientsController = ({
           </div>
           {/* Pagination Footer */}
           <div className="w-full flex items-center justify-between">
-            <div className="flex items-center gap-[16px]">
-              <p className="font-pretendard text-[16px] text-[rgba(136,141,150,1)]">
-                Rows per page:
-              </p>
-              <button className="flex items-center gap-[5px]">
-                <p className="font-pretendard text-[16px] text-text-secondary">
-                  {rowsPerPage}
-                </p>
-                <img
-                  src="/images/arrow-normal-icon.png"
-                  className="w-[22px] h-[22px] rotate-90"
-                />
-              </button>
-            </div>
+            <RowsPerPageContainer
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+            />
             <Pagination
               totalItems={MOCK_REPORT_LIST.length}
               itemsPerPage={rowsPerPage}
