@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
-import { Button, SearchInput } from "@/components-common";
+import { Button, SearchInput, Pagination } from "@/components-common";
 import { PrintPageData } from "@/types";
 import { TableHeader, TableRows } from "@/pages";
+import { MOCK_REPORT_LIST } from "@/constants";
 
 interface AllPatientsControllerProps {
   printPageData: PrintPageData | null;
@@ -76,25 +77,13 @@ const AllPatientsController = ({
                 />
               </button>
             </div>
-            <div className="flex items-center gap-[10px]">
-              <p className="font-pretendard text-[16px] text-text-secondary">
-                1-20 of 1
-              </p>
-              <div className="flex gap-[5px]">
-                <button className="grayscale">
-                  <img
-                    src="/images/arrow-normal-icon.png"
-                    className="w-[22px] h-[22px] rotate-180"
-                  />
-                </button>
-                <button className="g">
-                  <img
-                    src="/images/arrow-normal-icon.png"
-                    className="w-[22px] h-[22px]"
-                  />
-                </button>
-              </div>
-            </div>
+
+            <Pagination
+              totalItems={MOCK_REPORT_LIST.length}
+              itemsPerPage={20}
+              currentPage={1}
+              onPageChange={() => {}}
+            />
           </div>
         </div>
       </div>
