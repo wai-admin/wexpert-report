@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ReportTabs } from "@/components";
 import { NewReport, ReportHistory } from "@/pages";
 import { PrintPageData, ReportTabValues } from "@/types";
@@ -16,10 +16,16 @@ const PatientController = ({
   onPrint,
 }: PatientControllerProps) => {
   const [selectedReportTab, setSelectedReportTab] = useState<ReportTabValues>(
-    reportMode === ReportOptionType.NEW_REPORT
-      ? ReportTabValues.NEW_REPORT
-      : ReportTabValues.REPORT_HISTORY
+    ReportTabValues.NEW_REPORT
   );
+
+  useEffect(() => {
+    setSelectedReportTab(
+      reportMode === ReportOptionType.NEW_REPORT
+        ? ReportTabValues.NEW_REPORT
+        : ReportTabValues.REPORT_HISTORY
+    );
+  }, [reportMode]);
 
   const selectedNewReportMode = reportMode === ReportOptionType.NEW_REPORT;
   const selectedReportHistoryMode =
