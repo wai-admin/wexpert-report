@@ -42,6 +42,8 @@ const parseAsUTC = (isoString: string): Date | string => {
  * UTC 기준 문자열을 로컬 시간 문자열로 변환
  */
 const convertISOToLocal = (isoString: string, onlyDate?: boolean): string => {
+  if (checkFalsy(isoString)) return "";
+
   const date = parseAsUTC(isoString);
   return format(date, onlyDate ? "yyyy/MM/dd" : "yyyy/MM/dd HH:mm:ss"); // 로컬 타임존 기준으로 포맷
 };
