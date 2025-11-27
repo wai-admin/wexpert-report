@@ -1,8 +1,9 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Button, SearchInput, Pagination } from "@/components-common";
 import { PrintPageData } from "@/types";
 import { TableHeader, TableRows } from "@/pages";
 import { MOCK_REPORT_LIST } from "@/constants";
+import { useAllPatientsFilterStore } from "@/store";
 
 interface AllPatientsControllerProps {
   printPageData: PrintPageData | null;
@@ -14,10 +15,18 @@ const AllPatientsController = ({
   onPrint,
 }: AllPatientsControllerProps) => {
   const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
-  const inputRef = useRef<HTMLInputElement>(null);
+
+  const {
+    searchKeyword,
+    setSearchKeyword,
+    clearSearchKeyword,
+    rowsPerPage,
+    currentPage,
+    setCurrentPage,
+  } = useAllPatientsFilterStore();
 
   const onSearch = () => {
-    console.log("onSearch: ", inputRef.current?.value, printPageData);
+    console.log("onSearch: ", printPageData);
   };
 
   return (
@@ -29,9 +38,11 @@ const AllPatientsController = ({
             Search
           </p>
           <SearchInput
-            inputRef={inputRef}
+            value={searchKeyword}
             placeholder="Enter search keywords"
+            onChange={setSearchKeyword}
             onSearch={onSearch}
+            onClear={clearSearchKeyword}
           />
         </div>
         <Button width="w-[150px]" label="Reprint" onClick={onPrint} />
@@ -69,7 +80,7 @@ const AllPatientsController = ({
               </p>
               <button className="flex items-center gap-[5px]">
                 <p className="font-pretendard text-[16px] text-text-secondary">
-                  20
+                  {rowsPerPage}
                 </p>
                 <img
                   src="/images/arrow-normal-icon.png"
@@ -77,12 +88,11 @@ const AllPatientsController = ({
                 />
               </button>
             </div>
-
             <Pagination
               totalItems={MOCK_REPORT_LIST.length}
-              itemsPerPage={20}
-              currentPage={1}
-              onPageChange={() => {}}
+              itemsPerPage={rowsPerPage}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}
             />
           </div>
         </div>

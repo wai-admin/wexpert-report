@@ -28,7 +28,7 @@ const Pagination = ({
   if (totalPages <= 1) return <></>;
 
   return (
-    <nav className="flex items-center justify-center">
+    <nav className="flex items-center justify-center gap-[6px]">
       {/* 노출된 리포트 갯수 표시 */}
       <p className="font-pretendard text-[16px] text-text-secondary">
         {Math.min((currentPage - 1) * itemsPerPage + 1, totalItems)}-
