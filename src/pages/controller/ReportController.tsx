@@ -15,7 +15,7 @@ const ReportController = ({
 }: ReportControllerProps) => {
   return (
     <div
-      className={`h-screen p-[30px] bg-bg-base-alt ${
+      className={`h-screen bg-bg-base-alt ${
         reportMode === ReportOptionType.ALL_REPORT_HISTORY
           ? "w-[var(--all-report-controller-width)]"
           : "w-[var(--patient-report-controller-width)]"
