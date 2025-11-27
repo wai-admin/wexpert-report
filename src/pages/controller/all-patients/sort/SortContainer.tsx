@@ -27,7 +27,11 @@ const SortContainer = ({
         <p className="font-pretendard text-[16px] text-text-tertiary">Sort</p>
         <img
           src="/images/arrow-dropdown-icon.png"
-          className="w-[17px] h-[17px]"
+          width={17}
+          height={17}
+          className={` transition-all duration-200 ${
+            isOpenSortDropdown ? "-rotate-180" : ""
+          }`}
         />
       </button>
       {isOpenSortDropdown && (
