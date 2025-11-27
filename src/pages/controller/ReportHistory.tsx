@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { RadioIndicator, Button } from "@/components-common";
 import { PrintGuide } from "@/components";
+import { usePatientReportList } from "@/services/usePatientReportList";
 
 interface ReportHistoryProps {
   onPrint: () => void;
@@ -8,6 +9,10 @@ interface ReportHistoryProps {
 
 const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
+
+  const { data: patientReportList } = usePatientReportList({ enabled: true });
+
+  console.log("ReportHistory patientReportList: ", patientReportList);
 
   return (
     <div className="size-full flex flex-col justify-between gap-[10px]">
