@@ -27,7 +27,11 @@ const ReportController = ({
           onPrint={onPrint}
         />
       ) : (
-        <PatientController printPageData={printPageData} onPrint={onPrint} />
+        <PatientController
+          printPageData={printPageData}
+          reportMode={reportMode}
+          onPrint={onPrint}
+        />
       )}
     </div>
   );
