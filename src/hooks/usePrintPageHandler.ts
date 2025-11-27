@@ -9,6 +9,7 @@ import {
   getImageCommentSummary,
   getRuptureImageCount,
   generateAnalysisItems,
+  convertISOToLocal,
 } from "@/utils";
 
 const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
@@ -39,9 +40,12 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
           hospitalName: newReport.data.patientSummary.hospitalName,
         },
         patientDetail: {
-          chartNumber: "", // TODO: chartNumber
+          chartNumber: newReport.data.patientDetail.chartNumber ?? "",
           patientName: newReport.data.patientSummary.patientName,
-          birth: "", // TODO: formatBirthDate(birthYear, birthMonth, birthDay)
+          birth: convertISOToLocal(
+            newReport.data.patientDetail.birthDate ?? "",
+            true
+          ),
           patientType: getPatientType(newReport.data.patientDetail.type),
           analysisDate: formatAnalysisDate(
             newReport.data.patientSummary.analysisDateTime
