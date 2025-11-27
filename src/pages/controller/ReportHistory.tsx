@@ -7,7 +7,7 @@ interface ReportHistoryProps {
 }
 
 const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
-  const [selectedReportHistory, setSelectedReportHistory] = useState<number>(0);
+  const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
 
   return (
     <div className="size-full flex flex-col justify-between gap-[10px]">
@@ -16,13 +16,13 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
           <div className="w-full flex flex-col flex-1 overflow-y-auto overscroll-contain">
             {MOCK_REPORT_HISTORY.map((report, index) => {
               const { id, date, exportOption } = report;
-              const isSelected = index === selectedReportHistory;
+              const isSelected = index === selectedReportIndex;
 
               return (
                 <div
                   key={id}
                   className="w-full min-h-[52px] flex justify-between items-center hover:bg-[rgb(49,51,53)] border-b-[1px] border-solid-lt px-[14px] cursor-pointer transition-colors duration-100"
-                  onClick={() => setSelectedReportHistory(index)}
+                  onClick={() => setSelectedReportIndex(index)}
                 >
                   <div className="flex items-center gap-[24px]">
                     <RadioIndicator checked={isSelected} />
