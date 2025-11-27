@@ -2,6 +2,7 @@ import { useState } from "react";
 import { RadioIndicator, Button } from "@/components-common";
 import { PrintGuide } from "@/components";
 import { usePatientReportList } from "@/services/usePatientReportList";
+import { convertISOToLocal } from "@/utils";
 
 interface ReportHistoryProps {
   onPrint: () => void;
@@ -10,18 +11,25 @@ interface ReportHistoryProps {
 const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
 
-  const { data: patientReportList } = usePatientReportList({ enabled: true });
+  const { data } = usePatientReportList({ enabled: true });
 
-  console.log("ReportHistory patientReportList: ", patientReportList);
+  console.log("ReportHistory patientReportList: ", data);
+
+  const patientReportList = data?.data ?? [];
 
   return (
     <div className="size-full flex flex-col justify-between gap-[10px]">
-      {MOCK_REPORT_HISTORY.length > 0 ? (
+      {patientReportList.length > 0 ? (
         <div className="size-full flex flex-col">
           <TableHeader />
           <div className="w-full flex flex-col flex-1 overflow-y-auto overscroll-contain">
-            {MOCK_REPORT_HISTORY.map((report, index) => {
-              const { id, date, exportOption } = report;
+            {patientReportList.map((report, index) => {
+              const { id, createdAt, includeAllImages } = report;
+              const date = convertISOToLocal(createdAt, false);
+              const exportOption = includeAllImages
+                ? "All Image"
+                : "Rupture Case";
+
               const isSelected = index === selectedReportIndex;
 
               return (
@@ -95,76 +103,3 @@ const TableHeader = () => {
     </div>
   );
 };
-
-const MOCK_REPORT_HISTORY: any[] = [
-  {
-    id: 1,
-    date: "2025/11/18 04:47 PM",
-    exportOption: "All Image",
-  },
-  {
-    id: 2,
-    date: "2025/11/18 04:47 PM",
-    exportOption: "Rupture Case",
-  },
-  {
-    id: 3,
-    date: "2025/11/18 04:47 PM",
-    exportOption: "Rupture Case",
-  },
-  {
-    id: 4,
-    date: "2025/11/18 04:47 PM",
-    exportOption: "All Image",
-  },
-  {
-    id: 5,
-    date: "2025/11/18 04:47 PM",
-    exportOption: "All Image",
-  },
-  {
-    id: 6,
-    date: "2025/11/18 04:47 PM",
-    exportOption: "All Image",
-  },
-  {
-    id: 7,
-    date: "2025/11/18 04:47 PM",
-    exportOption: "All Image",
-  },
-  {
-    id: 8,
-    date: "2025/11/18 04:47 PM",
-    exportOption: "All Image",
-  },
-  {
-    id: 9,
-    date: "2025/11/18 04:47 PM",
-    exportOption: "All Image",
-  },
-  {
-    id: 10,
-    date: "2025/11/18 04:47 PM",
-    exportOption: "All Image",
-  },
-  {
-    id: 11,
-    date: "2025/11/18 04:47 PM",
-    exportOption: "All Image",
-  },
-  {
-    id: 12,
-    date: "2025/11/18 04:47 PM",
-    exportOption: "All Image",
-  },
-  {
-    id: 13,
-    date: "2025/11/18 04:47 PM",
-    exportOption: "All Image",
-  },
-  {
-    id: 14,
-    date: "2025/11/18 04:47 PM",
-    exportOption: "All Image",
-  },
-];
