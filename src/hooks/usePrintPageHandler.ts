@@ -40,12 +40,15 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
           hospitalName: newReport.data.patientSummary.hospitalName,
         },
         patientDetail: {
-          chartNumber: newReport.data.patientDetail.chartNumber ?? "",
-          patientName: newReport.data.patientSummary.patientName,
-          birth: convertISOToLocal(
-            newReport.data.patientDetail.birthDate ?? "",
-            true
-          ),
+          chartNumber: checkTruthy(newReport.data.patientDetail.chartNumber)
+            ? newReport.data.patientDetail.chartNumber
+            : "-",
+          patientName: checkTruthy(newReport.data.patientSummary.patientName)
+            ? newReport.data.patientSummary.patientName
+            : "-",
+          birth: checkTruthy(newReport.data.patientDetail.birthDate)
+            ? convertISOToLocal(newReport.data.patientDetail.birthDate, true)
+            : "-",
           patientType: getPatientType(newReport.data.patientDetail.type),
           analysisDate: formatAnalysisDate(
             newReport.data.patientSummary.analysisDateTime
