@@ -22,7 +22,7 @@ const PatientController = ({
 
   return (
     <div
-      className={`size-full flex flex-col justify-between ${
+      className={`size-full flex flex-col justify-between p-[30px] ${
         selectedNewReportTab ? "gap-[20px]" : "gap-[0px]"
       }`}
     >
@@ -30,7 +30,6 @@ const PatientController = ({
         selectedReportTab={selectedReportTab}
         setSelectedReportTab={setSelectedReportTab}
       />
-      {/* TODO: min-h-0이 왜 필요한지 확인 */}
       <div className="flex-1 min-h-0">
         {selectedNewReportTab && (
           <NewReport printPageData={printPageData} onPrint={onPrint} />

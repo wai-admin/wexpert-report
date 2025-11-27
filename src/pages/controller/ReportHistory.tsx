@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { RadioIndicator, Button } from "@/components-common";
+import { PrintGuide } from "@/components";
 
 interface ReportHistoryProps {
   onPrint: () => void;
@@ -36,7 +37,10 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
               );
             })}
           </div>
-          <Button label="Export" onClick={onPrint} />
+          <div className="w-full flex flex-col gap-[10px]">
+            <Button label="Reprint" onClick={onPrint} />
+            <PrintGuide />
+          </div>
         </>
       ) : (
         <NoReportHistory />
