@@ -17,7 +17,7 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
     >
-      <p className="text-[16px] text-white font-pretendard font-medium">
+      <p className="text-[14px] text-white font-pretendard font-medium">
         {label}
       </p>
     </button>

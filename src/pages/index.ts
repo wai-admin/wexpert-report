@@ -12,3 +12,5 @@ export { default as AllPatientsController } from "./controller/all-patients/AllP
 export { default as TableHeader } from "./controller/all-patients/table/TableHeader";
 export { default as TableRows } from "./controller/all-patients/table/TableRows";
 export { default as TableCell } from "./controller/all-patients/table/TableCell";
+
+export { default as SortContainer } from "./controller/all-patients/sort/SortContainer";
