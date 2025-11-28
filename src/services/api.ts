@@ -22,9 +22,9 @@ export const reportApi = {
     );
   },
   // 모든 환자 리포트 리스트 조회
-  getAllPatientReportList: () => {
+  getAllPatientReportList: (searchParams: URLSearchParams) => {
     return apiFetch.get<AllPatientReportListResponse>(
-      ENDPOINTS.REPORT.GET_ALL_PATIENT_REPORT_LIST()
+      ENDPOINTS.REPORT.GET_ALL_PATIENT_REPORT_LIST(searchParams)
     );
   },
   // 특정 환자 리포트 상세 조회

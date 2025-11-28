@@ -15,9 +15,18 @@ export const useAllPatientReportList = () => {
     sortOrder: sortOrder === SortOrder.ASC ? "ASC" : "DESC",
   };
 
+  // URL 파라미터 구성
+  const searchParams = new URLSearchParams({
+    query: params.query,
+    page: params.page.toString(),
+    limit: params.limit.toString(),
+    sortBy: params.sortBy,
+    sortOrder: params.sortOrder,
+  });
+
   const query = useQuery({
     queryKey: QUERY_KEYS.REPORT.ALL_PATIENT_LIST(params),
-    queryFn: () => reportApi.getAllPatientReportList(),
+    queryFn: () => reportApi.getAllPatientReportList(searchParams),
     retry: (failureCount, error: any) => {
       // 실패 시 오류 로그
       console.error(`Report fetch failed (attempt ${failureCount + 1}):`, {
