@@ -10,6 +10,9 @@ const REPORT_ENDPOINTS = {
   // 특정 환자 리포트 리스트 조회
   GET_PATIENT_REPORT_LIST: (patientId: string) =>
     `/v1/analysis/${patientId}/reports`,
+  // 특정 환자 리포트 상세 조회
+  GET_PATIENT_REPORT_DETAIL: (patientId: string, reportId: string) =>
+    `/v1/analysis/${patientId}/reports/${reportId}`,
   // 리포트 수정
   UPLOAD_REPORT: "/v1/analysis/report",
 } as const;
