@@ -46,7 +46,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
   });
 
   // Report History 모드 - 같은 쿼리 키로 캐시된 데이터 사용
-  const { data: reportHistoryDetail, isFetching: isHistoryFetching } =
+  const { data: reportHistoryDetail, isFetching: isHistoryDetailFetching } =
     usePatientReportDetail({
       reportId: selectedReportId ?? "",
       enabled: selectedReportTab === ReportTabValues.REPORT_HISTORY,
@@ -128,7 +128,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
           reportHistoryDetail.data.report.patientDetail.sonographies,
         reportMode: nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT,
       },
-      isLoading: isHistoryFetching,
+      isLoading: isHistoryDetailFetching,
       error: null,
     };
   }

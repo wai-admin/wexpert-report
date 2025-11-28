@@ -7,7 +7,7 @@ import {
   PhysicianAssessment,
   PrintGuide,
 } from "@/components";
-import { Button, LoadingSpinner } from "@/components-common";
+import { Button } from "@/components-common";
 import { PrintPageData } from "@/types";
 
 interface NewReportProps {
@@ -16,11 +16,7 @@ interface NewReportProps {
   onPrint: () => void;
 }
 
-const NewReport = ({ printPageData, isLoading, onPrint }: NewReportProps) => {
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-
+const NewReport = ({ printPageData, onPrint }: NewReportProps) => {
   return (
     <div className="size-full flex flex-col justify-between gap-[10px]">
       <div className="w-full flex flex-col flex-1 gap-[26px] overflow-y-auto overscroll-contain">
