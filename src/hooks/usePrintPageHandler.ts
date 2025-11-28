@@ -52,8 +52,16 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
       enabled: selectedReportTab === ReportTabValues.REPORT_HISTORY,
     });
 
-  console.log("usePrintPageHandler: newReport", newReport);
-  console.log("usePrintPageHandler: reportHistoryDetail", reportHistoryDetail);
+  console.log(
+    "usePrintPageHandler: newReport/isLoading",
+    newReport,
+    isNewReportFetching
+  );
+  console.log(
+    "usePrintPageHandler: reportHistoryDetail/isLoading",
+    reportHistoryDetail,
+    isHistoryDetailFetching
+  );
 
   if (checkTruthy(reportHistoryDetail)) {
     return {
