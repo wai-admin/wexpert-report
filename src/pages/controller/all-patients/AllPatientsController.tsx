@@ -49,8 +49,9 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
   };
 
   console.log(
-    "AllPatientsController: allPatientReportListData",
-    allPatientReportListData
+    "AllPatientsController: allPatientReportListData & isAllPatientReportListLoading",
+    allPatientReportListData,
+    isAllPatientReportListLoading
   );
 
   if (isAllPatientReportListLoading) {
