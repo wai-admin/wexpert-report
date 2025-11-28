@@ -13,6 +13,10 @@ interface UsePrintActionProps {
   patientName: string;
 }
 
+export interface PrintOptions {
+  shouldUploadReport?: boolean;
+}
+
 /**
  * 인쇄 처리를 위한 커스텀 훅
  */
@@ -28,15 +32,23 @@ export const usePrintAction = ({
 
   const fileName = `${patientName}_${formatPdfFileName(new Date())}`;
 
-  const handlePrint = useReactToPrint({
+  // 현재 인쇄 옵션을 저장할 ref
+  const printOptionsRef = { shouldUploadReport: true };
+
+  const handlePrintInternal = useReactToPrint({
     contentRef: printRef,
     documentTitle: fileName,
     onBeforePrint: async () => {
       // Native에게 인쇄 요청 메시지 전송
       sendPrintStatus(true);
 
-      // 리포트 업로드
-      if (checkTruthy(nativeMessage)) {
+      console.log(
+        "usePrintAction: handlePrintInternal: printOptionsRef",
+        printOptionsRef
+      );
+
+      // 리포트 업로드 (옵션에 따라 분기)
+      if (printOptionsRef.shouldUploadReport && checkTruthy(nativeMessage)) {
         const reportData = {
           patientId: nativeMessage.id || null,
           includeAllImages:
@@ -75,6 +87,12 @@ export const usePrintAction = ({
       }
     `,
   });
+
+  // 옵션을 받을 수 있는 래퍼 함수
+  const handlePrint = (options?: PrintOptions) => {
+    printOptionsRef.shouldUploadReport = options?.shouldUploadReport ?? true;
+    handlePrintInternal();
+  };
 
   return { handlePrint };
 };
