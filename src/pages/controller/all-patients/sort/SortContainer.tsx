@@ -35,7 +35,7 @@ const SortContainer = ({
         />
       </button>
       {isOpenSortDropdown && (
-        <div className="absolute right-0 top-full w-[130px] bg-bg-base-alt border border-solid-lt rounded-[6px]">
+        <div className="absolute right-0 top-full w-[130px] bg-bg-base-alt border border-solid-lt rounded-[6px] z-10">
           <SortByBox sortBy={sortBy} setSortBy={setSortBy} />
           <div className="w-full min-h-[1px] bg-[rgba(145,145,148,0.5)]" />
           <SortOrderBox sortOrder={sortOrder} setSortOrder={setSortOrder} />
