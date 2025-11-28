@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
-import { PatientReportContainer } from "@/pages";
+import { ReportContainer } from "@/pages";
 
 const GlobalRoutes = () => {
   return (
     <Routes>
-      <Route path="*" element={<PatientReportContainer />} />
+      <Route path="*" element={<ReportContainer />} />
     </Routes>
   );
 };

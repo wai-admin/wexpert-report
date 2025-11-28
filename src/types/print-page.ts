@@ -1,3 +1,4 @@
+import { ReportOptionType } from "@/lib/nativeMessageType";
 import { ImageExportOptionValues } from "./new-report";
 import { Sonography } from "@/lib/reportType";
 
@@ -54,6 +55,7 @@ export interface PrintPageCover {
 export interface PrintPageOption {
   imageExportOption: ImageExportOptionValues;
   sonographies: Sonography[];
+  reportMode: ReportOptionType;
 }
 
 /**

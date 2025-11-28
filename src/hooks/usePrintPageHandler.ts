@@ -80,6 +80,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
       option: {
         imageExportOption: imageExportOption,
         sonographies: newReport.data.patientDetail.sonographies,
+        reportMode: nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT,
       },
       isLoading: isNewReportFetching,
       error: null,
@@ -91,6 +92,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
     option: {
       imageExportOption: imageExportOption,
       sonographies: [],
+      reportMode: nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT,
     },
     isLoading: false,
     error: null,

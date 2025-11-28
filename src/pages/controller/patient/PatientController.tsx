@@ -3,12 +3,15 @@ import { ReportTabs } from "@/components";
 import { NewReport, ReportHistory } from "@/pages";
 import { PrintPageData, ReportTabValues } from "@/types";
 
-interface OptionHandlerProps {
+interface PatientControllerProps {
   printPageData: PrintPageData | null;
   onPrint: () => void;
 }
 
-const OptionHandler = ({ printPageData, onPrint }: OptionHandlerProps) => {
+const PatientController = ({
+  printPageData,
+  onPrint,
+}: PatientControllerProps) => {
   const [selectedReportTab, setSelectedReportTab] = useState<ReportTabValues>(
     ReportTabValues.NEW_REPORT
   );
@@ -19,7 +22,7 @@ const OptionHandler = ({ printPageData, onPrint }: OptionHandlerProps) => {
 
   return (
     <div
-      className={`w-[var(--option-container-width)] h-screen flex flex-col justify-between p-[30px] bg-bg-base-alt ${
+      className={`size-full flex flex-col justify-between ${
         selectedNewReportTab ? "gap-[20px]" : "gap-[0px]"
       }`}
     >
@@ -38,4 +41,4 @@ const OptionHandler = ({ printPageData, onPrint }: OptionHandlerProps) => {
   );
 };
 
-export default OptionHandler;
+export default PatientController;

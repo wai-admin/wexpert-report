@@ -30,8 +30,9 @@
   /* 페이지 간격 */
   --page-gap: 2.7mm;
 
-  /* 옵션 컨테이너 너비 */
-  --option-container-width: 420px;
+  /* 리포트 컨트롤러 너비 */
+  --patient-report-controller-width: 420px;
+  --all-report-controller-width: 790px;
 }
 
 html,

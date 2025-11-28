@@ -16,7 +16,7 @@ import {
   getFeatureActivation,
 } from "@/constants";
 import { useMessageStore } from "@/store";
-import { generateAnalysisItems } from "@/utils/reportDataProcessor";
+import { generateAnalysisItems } from "@/utils";
 import {
   ImageExportOptionValues,
   PrintPageData,
