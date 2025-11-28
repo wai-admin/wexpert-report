@@ -11,11 +11,11 @@ const DateOfBirth = ({ birth }: DateOfBirthProps) => {
   return (
     <OptionField label="Date of Birth">
       <div className="w-full flex gap-[10px]">
-        <OptionDisabledField value={checkTruthy(birthYear) ? birthYear : "-"} />
         <OptionDisabledField
           value={checkTruthy(birthMonth) ? birthMonth : "-"}
         />
         <OptionDisabledField value={checkTruthy(birthDay) ? birthDay : "-"} />
+        <OptionDisabledField value={checkTruthy(birthYear) ? birthYear : "-"} />
       </div>
     </OptionField>
   );
