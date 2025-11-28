@@ -2,6 +2,7 @@ import { RefObject } from "react";
 import useA4Handler from "@/hooks/useA4Handler";
 import { checkTruthy } from "@/utils";
 import { A4Template } from "@/components";
+import { LoadingSpinner } from "@/components-common";
 import { Cover, ElementRenderer } from "@/pages";
 import { PrintPageData, PrintPageOption } from "@/types";
 
@@ -9,13 +10,23 @@ interface PrintPageProps {
   printRef: RefObject<HTMLDivElement | null>;
   printPageData: PrintPageData | null;
   option: PrintPageOption;
+  isLoading: boolean;
 }
 
-const PrintPage = ({ printRef, printPageData, option }: PrintPageProps) => {
+const PrintPage = ({
+  printRef,
+  printPageData,
+  option,
+  isLoading,
+}: PrintPageProps) => {
   const { elementPageInfo, MeasureContainer } = useA4Handler({
     printPageData,
     option,
   });
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   // Data Information
   const hospitalName = checkTruthy(printPageData)

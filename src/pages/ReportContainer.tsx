@@ -42,6 +42,7 @@ const ReportContainer = () => {
           printRef={printRef}
           printPageData={printPageData}
           option={option}
+          isLoading={isLoading}
         />
       </div>
       <div className="fixed right-0 top-0">
