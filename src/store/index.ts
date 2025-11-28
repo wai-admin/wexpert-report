@@ -3,5 +3,5 @@ export * from "./useMessageStore";
 export * from "./usePrintStore";
 export * from "./useNewReportStore";
 export * from "./useAllPatientsFilterStore";
-export * from "./useReportHistoryStore";
+export * from "./useSelectedReportStore";
 export * from "./usePatientControllerStore";
