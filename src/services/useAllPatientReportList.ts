@@ -11,8 +11,8 @@ export const useAllPatientReportList = () => {
     query: searchKeyword,
     page: currentPage,
     limit: rowsPerPage,
-    sortBy: sortBy === SortBy.NAME ? "PATIENT_NAME" : "REPORT_CREATED_AT",
-    sortOrder: sortOrder === SortOrder.ASC ? "ASC" : "DESC",
+    sort_by: sortBy === SortBy.NAME ? "PATIENT_NAME" : "REPORT_CREATED_AT",
+    order: sortOrder === SortOrder.ASC ? "ASC" : "DESC",
   };
 
   // URL 파라미터 구성
@@ -20,8 +20,8 @@ export const useAllPatientReportList = () => {
     query: params.query,
     page: params.page.toString(),
     limit: params.limit.toString(),
-    sortBy: params.sortBy,
-    sortOrder: params.sortOrder,
+    sort_by: params.sort_by,
+    order: params.order,
   });
 
   const query = useQuery({
