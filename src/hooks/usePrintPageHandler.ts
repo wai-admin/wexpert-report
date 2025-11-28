@@ -46,15 +46,92 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
   });
 
   // Report History 모드 - 같은 쿼리 키로 캐시된 데이터 사용
-  const { data: reportHistoryDetail } = usePatientReportDetail({
-    reportId: selectedReportId ?? "",
-    enabled:
-      checkTruthy(selectedReportId) &&
-      selectedReportTab === ReportTabValues.REPORT_HISTORY,
-  });
+  const { data: reportHistoryDetail, isFetching: isHistoryFetching } =
+    usePatientReportDetail({
+      reportId: selectedReportId ?? "",
+      enabled: selectedReportTab === ReportTabValues.REPORT_HISTORY,
+    });
 
   console.log("usePrintPageHandler: newReport", newReport);
   console.log("usePrintPageHandler: reportHistoryDetail", reportHistoryDetail);
+
+  if (checkTruthy(reportHistoryDetail)) {
+    return {
+      printPageData: {
+        cover: {
+          hospitalName:
+            reportHistoryDetail.data.report.patientSummary.hospitalName,
+        },
+        patientDetail: {
+          chartNumber: checkTruthy(
+            reportHistoryDetail.data.report.patientSummary.chartNumber
+          )
+            ? reportHistoryDetail.data.report.patientSummary.chartNumber
+            : "-",
+          patientName: checkTruthy(
+            reportHistoryDetail.data.report.patientSummary.patientName
+          )
+            ? reportHistoryDetail.data.report.patientSummary.patientName
+            : "-",
+          birth: checkTruthy(
+            reportHistoryDetail.data.report.patientDetail.birthDate
+          )
+            ? convertISOToLocal(
+                reportHistoryDetail.data.report.patientDetail.birthDate,
+                true
+              )
+            : "-",
+          patientType: getPatientType(
+            reportHistoryDetail.data.report.patientDetail.type
+          ),
+          analysisDate: formatAnalysisDate(
+            reportHistoryDetail.data.report.patientSummary.analysisDateTime
+          ),
+        },
+        analysisSummary: {
+          implantPosition:
+            reportHistoryDetail.data.report.analysisSummary.implantPosition,
+          surfaceType:
+            reportHistoryDetail.data.report.analysisSummary.surfaceType,
+          ruptureStatus:
+            reportHistoryDetail.data.report.analysisSummary.ruptureStatus,
+        },
+        analysisResultByAI:
+          reportHistoryDetail.data.report.recommendedTreatment,
+        analysisImage: {
+          commentSummary: getImageCommentSummary({
+            totalAnalysisImageCount:
+              reportHistoryDetail.data.report.patientDetail.sonographyCount,
+            ruptureImageCount: getRuptureImageCount(
+              reportHistoryDetail.data.report.patientDetail.sonographies
+            ),
+            invasionToCapsuleExist:
+              reportHistoryDetail.data.report.analysisSummary
+                .invasionToCapsuleExist,
+            invasionToLymphNodeExist:
+              reportHistoryDetail.data.report.analysisSummary
+                .invasionToLymphNodeExist,
+          }),
+          analysisItems: generateAnalysisItems({
+            onlyRuptureExist: !reportHistoryDetail.data.includeAllImages,
+            sonographies:
+              reportHistoryDetail.data.report.patientDetail.sonographies,
+          }),
+        },
+        physicianAssessment: reportHistoryDetail.data.doctorOpinion,
+      },
+      option: {
+        imageExportOption: reportHistoryDetail.data.includeAllImages
+          ? ImageExportOptionValues.ALL_IMAGE
+          : ImageExportOptionValues.RUPTURE_CASE,
+        sonographies:
+          reportHistoryDetail.data.report.patientDetail.sonographies,
+        reportMode: nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT,
+      },
+      isLoading: isHistoryFetching,
+      error: null,
+    };
+  }
 
   if (checkTruthy(newReport)) {
     return {

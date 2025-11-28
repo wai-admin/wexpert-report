@@ -9,10 +9,11 @@ interface PatientSummary {
 
 // 분석 요약
 interface AnalysisSummary {
-  imageId: string;
-  progress: "inProgress" | "success" | "failure";
-  ruptureTriage: boolean;
-  tcTriage: boolean;
+  implantPosition: string;
+  surfaceType: string;
+  ruptureStatus: string;
+  invasionToCapsuleExist: boolean;
+  invasionToLymphNodeExist: boolean;
 }
 
 // 환자 상세 정보
@@ -87,5 +88,5 @@ export interface PatientReportDetailData {
 }
 
 export interface PatientReportDetailResponse {
-  data: PatientReportDetailData[];
+  data: PatientReportDetailData;
 }
