@@ -13,7 +13,6 @@ import {
   SortContainer,
   RowsPerPageContainer,
 } from "@/pages";
-import { MOCK_REPORT_LIST } from "@/constants";
 import { useAllPatientsFilterStore } from "@/store";
 import { PrintOptions } from "@/hooks/usePrintAction";
 
@@ -110,7 +109,7 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
               setRowsPerPage={setRowsPerPage}
             />
             <Pagination
-              totalItems={MOCK_REPORT_LIST.length}
+              totalItems={allPatientReportListData.total}
               itemsPerPage={rowsPerPage}
               currentPage={currentPage}
               onPageChange={setCurrentPage}
