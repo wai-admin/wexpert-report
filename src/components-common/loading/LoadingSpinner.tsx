@@ -1,7 +1,10 @@
 const LoadingSpinner = () => {
   return (
     <div className="size-full flex flex-col justify-center items-center">
-      <div className="size-10 rounded-full border-2 border-solid-lt border-transparent border-t-solid-lt animate-spin" />
+      <div className="relative size-10">
+        <div className="absolute w-full h-full border-[4px] border-component-blue rounded-full"></div>
+        <div className="absolute w-full h-full border-[4px] border-solid-lt-solid rounded-full animate-spin border-t-transparent"></div>
+      </div>
     </div>
   );
 };

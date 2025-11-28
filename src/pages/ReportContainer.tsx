@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { usePrintAction } from "@/hooks";
+import { usePrintAction, useWebViewLoading } from "@/hooks";
 import { useMessageStore } from "@/store";
 import { PrintPage, ReportController } from "@/pages";
 import usePrintPageHandler from "@/hooks/usePrintPageHandler";
@@ -20,7 +20,11 @@ const ReportContainer = () => {
     patientName: printPageData?.patientDetail.patientName ?? "",
   });
 
-  console.log("PrintPage Data Information: ", printPageData);
+  // Native에 로딩 상태 전송
+  useWebViewLoading(isLoading);
+
+  console.log("ReportContainer: PrintPage Data Information", printPageData);
+  console.log("ReportContainer: Loading Status", isLoading);
   const reportMode = nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT;
 
   return (

@@ -75,6 +75,8 @@ export default {
         "text-primary": "rgba(255, 255, 255, 1)",
         "text-secondary": "rgba(212, 214, 220, 1)",
         "text-tertiary": "rgba(185, 189, 199, 1)",
+
+        "component-blue": "rgba(71, 160, 255, 1)",
       },
       screens: {
         mobile: "0px",
