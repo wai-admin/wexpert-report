@@ -5,4 +5,3 @@ export * from "./feature";
 export * from "./endpoints";
 export * from "./bridge";
 export * from "./all-patients-table-column";
-export * from "./mock";
