@@ -30,7 +30,7 @@ const TableHeader = () => {
               <img
                 src="/images/arrow-sort-icon.png"
                 className={`w-[16px] h-[16px] ${
-                  isSortedASC ? "rotate-180" : ""
+                  isSortedASC ? "" : "rotate-180"
                 }`}
               />
             )}
