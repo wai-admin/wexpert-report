@@ -1,11 +1,20 @@
 import { create } from "zustand";
 
-interface ReportHistoryState {
+interface SelectedReportState {
   selectedReportId: string | null;
-  setSelectedReportId: (id: string | null) => void;
+  selectedPatientId: string | null;
+  setSelectedReport: (
+    reportId: string | null,
+    patientId: string | null
+  ) => void;
 }
 
-export const useReportHistoryStore = create<ReportHistoryState>((set) => ({
+export const useSelectedReportStore = create<SelectedReportState>((set) => ({
   selectedReportId: null,
-  setSelectedReportId: (id) => set({ selectedReportId: id }),
+  selectedPatientId: null,
+  setSelectedReport: (reportId, patientId) =>
+    set({ selectedReportId: reportId, selectedPatientId: patientId }),
 }));
+
+// 기존 호환성을 위한 alias
+export const useReportHistoryStore = useSelectedReportStore;

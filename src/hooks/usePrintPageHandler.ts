@@ -2,7 +2,7 @@ import { useReport } from "@/services/useReport";
 import {
   useMessageStore,
   useNewReportStore,
-  useReportHistoryStore,
+  useSelectedReportStore,
   usePatientControllerStore,
 } from "@/store";
 import {
@@ -37,7 +37,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
 
   const { nativeMessage } = useMessageStore();
   const { imageExportOption, physicianAssessment } = useNewReportStore();
-  const { selectedReportId } = useReportHistoryStore();
+  const { selectedReportId, selectedPatientId } = useSelectedReportStore();
   const { selectedReportTab } = usePatientControllerStore();
 
   // New Report 모드
@@ -49,7 +49,20 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
   const { data: reportHistoryDetail, isFetching: isHistoryDetailFetching } =
     usePatientReportDetail({
       reportId: selectedReportId ?? "",
-      enabled: selectedReportTab === ReportTabValues.REPORT_HISTORY,
+      patientId: selectedPatientId ?? undefined,
+      enabled:
+        checkTruthy(selectedReportId) &&
+        selectedReportTab === ReportTabValues.REPORT_HISTORY,
+    });
+
+  // All Patients 모드 - 선택된 리포트 상세 구독
+  const { data: allPatientsReportDetail, isFetching: isAllPatientsFetching } =
+    usePatientReportDetail({
+      reportId: selectedReportId ?? "",
+      patientId: selectedPatientId ?? undefined,
+      enabled:
+        checkTruthy(selectedReportId) &&
+        nativeMessage?.reportMode === ReportOptionType.ALL_REPORT_HISTORY,
     });
 
   console.log(
@@ -63,80 +76,82 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
     isHistoryDetailFetching
   );
 
-  if (checkTruthy(reportHistoryDetail)) {
+  // Report History & All Patients 모드 공통 처리
+  const selectedDetail =
+    nativeMessage?.reportMode === ReportOptionType.ALL_REPORT_HISTORY
+      ? allPatientsReportDetail
+      : reportHistoryDetail;
+  const isFetching =
+    nativeMessage?.reportMode === ReportOptionType.ALL_REPORT_HISTORY
+      ? isAllPatientsFetching
+      : isHistoryDetailFetching;
+
+  if (checkTruthy(selectedDetail)) {
     return {
       printPageData: {
         cover: {
-          hospitalName:
-            reportHistoryDetail.data.report.patientSummary.hospitalName,
+          hospitalName: selectedDetail.data.report.patientSummary.hospitalName,
         },
         patientDetail: {
           chartNumber: checkTruthy(
-            reportHistoryDetail.data.report.patientSummary.chartNumber
+            selectedDetail.data.report.patientSummary.chartNumber
           )
-            ? reportHistoryDetail.data.report.patientSummary.chartNumber
+            ? selectedDetail.data.report.patientSummary.chartNumber
             : "-",
           patientName: checkTruthy(
-            reportHistoryDetail.data.report.patientSummary.patientName
+            selectedDetail.data.report.patientSummary.patientName
           )
-            ? reportHistoryDetail.data.report.patientSummary.patientName
+            ? selectedDetail.data.report.patientSummary.patientName
             : "-",
-          birth: checkTruthy(
-            reportHistoryDetail.data.report.patientDetail.birthDate
-          )
+          birth: checkTruthy(selectedDetail.data.report.patientDetail.birthDate)
             ? convertISOToLocal(
-                reportHistoryDetail.data.report.patientDetail.birthDate,
+                selectedDetail.data.report.patientDetail.birthDate,
                 true
               )
             : "-",
           patientType: getPatientType(
-            reportHistoryDetail.data.report.patientDetail.type
+            selectedDetail.data.report.patientDetail.type
           ),
           analysisDate: formatAnalysisDate(
-            reportHistoryDetail.data.report.patientSummary.analysisDateTime
+            selectedDetail.data.report.patientSummary.analysisDateTime
           ),
         },
         analysisSummary: {
           implantPosition:
-            reportHistoryDetail.data.report.analysisSummary.implantPosition,
-          surfaceType:
-            reportHistoryDetail.data.report.analysisSummary.surfaceType,
+            selectedDetail.data.report.analysisSummary.implantPosition,
+          surfaceType: selectedDetail.data.report.analysisSummary.surfaceType,
           ruptureStatus:
-            reportHistoryDetail.data.report.analysisSummary.ruptureStatus,
+            selectedDetail.data.report.analysisSummary.ruptureStatus,
         },
-        analysisResultByAI:
-          reportHistoryDetail.data.report.recommendedTreatment,
+        analysisResultByAI: selectedDetail.data.report.recommendedTreatment,
         analysisImage: {
           commentSummary: getImageCommentSummary({
             totalAnalysisImageCount:
-              reportHistoryDetail.data.report.patientDetail.sonographyCount,
+              selectedDetail.data.report.patientDetail.sonographyCount,
             ruptureImageCount: getRuptureImageCount(
-              reportHistoryDetail.data.report.patientDetail.sonographies
+              selectedDetail.data.report.patientDetail.sonographies
             ),
             invasionToCapsuleExist:
-              reportHistoryDetail.data.report.analysisSummary
-                .invasionToCapsuleExist,
+              selectedDetail.data.report.analysisSummary.invasionToCapsuleExist,
             invasionToLymphNodeExist:
-              reportHistoryDetail.data.report.analysisSummary
+              selectedDetail.data.report.analysisSummary
                 .invasionToLymphNodeExist,
           }),
           analysisItems: generateAnalysisItems({
-            onlyRuptureExist: !reportHistoryDetail.data.includeAllImages,
-            sonographies:
-              reportHistoryDetail.data.report.patientDetail.sonographies,
+            onlyRuptureExist: !selectedDetail.data.includeAllImages,
+            sonographies: selectedDetail.data.report.patientDetail.sonographies,
           }),
         },
-        physicianAssessment: reportHistoryDetail.data.doctorOpinion,
+        physicianAssessment: selectedDetail.data.doctorOpinion,
       },
       option: {
-        imageExportOption: reportHistoryDetail.data.includeAllImages
+        imageExportOption: selectedDetail.data.includeAllImages
           ? ImageExportOptionValues.ALL_IMAGE
           : ImageExportOptionValues.RUPTURE_CASE,
-        sonographies:
-          reportHistoryDetail.data.report.patientDetail.sonographies,
+        sonographies: selectedDetail.data.report.patientDetail.sonographies,
         reportMode: nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT,
       },
-      isLoading: isHistoryDetailFetching,
+      isLoading: isFetching,
       error: null,
     };
   }

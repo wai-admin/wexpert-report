@@ -6,15 +6,20 @@ import { checkTruthy, getPatientId, hasValidPatientId } from "@/utils";
 
 interface usePatientReportDetailProps {
   reportId: string;
+  patientId?: string; // 옵션으로 외부에서 제공 가능
   enabled?: boolean;
 }
 
 export const usePatientReportDetail = ({
   reportId,
+  patientId: externalPatientId,
   enabled = true,
 }: usePatientReportDetailProps) => {
   const { nativeMessage } = useMessageStore();
-  const patientId = getPatientId(nativeMessage);
+  const messagePatientId = getPatientId(nativeMessage);
+
+  // 외부에서 제공된 patientId 우선, 없으면 nativeMessage에서 추출
+  const patientId = externalPatientId ?? messagePatientId;
 
   const query = useQuery({
     queryKey: QUERY_KEYS.REPORT.PATIENT_DETAIL(patientId, reportId),

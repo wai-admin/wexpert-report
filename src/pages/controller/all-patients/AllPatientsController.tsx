@@ -6,8 +6,6 @@ import {
   LoadingIndicator,
 } from "@/components-common";
 import { useAllPatientReportList } from "@/services/useAllPatientReportList";
-import { usePatientReportDetail } from "@/services/usePatientReportDetail";
-import { checkTruthy } from "@/utils";
 import { NoReportHistory } from "@/components";
 import {
   TableHeader,
@@ -15,7 +13,7 @@ import {
   SortContainer,
   RowsPerPageContainer,
 } from "@/pages";
-import { useAllPatientsFilterStore } from "@/store";
+import { useAllPatientsFilterStore, useSelectedReportStore } from "@/store";
 import { PrintOptions } from "@/hooks/usePrintAction";
 
 interface AllPatientsControllerProps {
@@ -24,6 +22,7 @@ interface AllPatientsControllerProps {
 
 const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
   const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
+  const { setSelectedReport } = useSelectedReportStore();
 
   const {
     setSearchKeyword,
@@ -50,10 +49,11 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
     data: [],
   };
 
-  usePatientReportDetail({
-    reportId: allPatientReportListData.data[selectedReportIndex]?.id.toString(),
-    enabled: checkTruthy(allPatientReportListData.data),
-  });
+  // 선택된 리포트가 바뀔 때마다 Zustand에 저장 (All Patients에서는 patientId가 없음)
+  const selectedReport = allPatientReportListData.data[selectedReportIndex];
+  if (selectedReport) {
+    setSelectedReport(selectedReport.id.toString(), null);
+  }
 
   console.log(
     "AllPatientsController: allPatientReportListData & isAllPatientReportListLoading",
