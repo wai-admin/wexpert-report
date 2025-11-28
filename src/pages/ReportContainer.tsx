@@ -4,6 +4,7 @@ import { useMessageStore } from "@/store";
 import { PrintPage, ReportController } from "@/pages";
 import usePrintPageHandler from "@/hooks/usePrintPageHandler";
 import { ReportOptionType } from "@/lib";
+import { LoadingIndicator } from "@/components-common";
 
 // WARNING: usePrintPageHandler 업데이트 시 전체 렌더링 주의 (개선 필요)
 const ReportContainer = () => {
@@ -29,6 +30,7 @@ const ReportContainer = () => {
 
   return (
     <div className="size-full flex justify-center relative">
+      <LoadingIndicator isLoading={isLoading} full={true} />
       <div
         className={`h-full flex justify-center items-center
           ${
@@ -42,7 +44,6 @@ const ReportContainer = () => {
           printRef={printRef}
           printPageData={printPageData}
           option={option}
-          isLoading={isLoading}
         />
       </div>
       <div className="fixed right-0 top-0">

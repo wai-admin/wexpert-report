@@ -8,4 +8,4 @@ export { default as SearchInput } from "./search/SearchInput";
 
 export { default as Pagination } from "./pagination/Pagination";
 
-export { default as LoadingSpinner } from "./loading/LoadingSpinner";
+export { default as LoadingIndicator } from "./loading/LoadingIndicator";

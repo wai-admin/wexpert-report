@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { RadioIndicator, Button, LoadingSpinner } from "@/components-common";
+import { RadioIndicator, Button, LoadingIndicator } from "@/components-common";
 import { PrintGuide } from "@/components";
 import { usePatientReportList } from "@/services/usePatientReportList";
 import { convertISOToLocal, hasValidPatientId, checkTruthy } from "@/utils";
@@ -24,10 +24,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
 
   console.log("ReportHistory: patientReportList", patientReportList);
 
-  const {
-    data: patientReportDetailData,
-    // isLoading: isPatientReportDetailLoading,
-  } = usePatientReportDetail({
+  const { data: patientReportDetailData } = usePatientReportDetail({
     reportId: patientReportList[selectedReportIndex]?.id.toString(),
     enabled: checkTruthy(patientReportList),
   });
@@ -44,55 +41,52 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   };
 
   if (isPatientReportListLoading) {
-    return <LoadingSpinner />;
+    return <LoadingIndicator />;
+  }
+
+  const hasPatientReportList = patientReportList.length > 0;
+  if (hasPatientReportList === false) {
+    return <NoReportHistory />;
   }
 
   return (
     <div className="size-full flex flex-col justify-between gap-[10px]">
-      {patientReportList.length > 0 ? (
-        <div className="size-full flex flex-col">
-          <TableHeader />
-          <div className="w-full flex flex-col flex-1 overflow-y-auto overscroll-contain">
-            {patientReportList.map((report, index) => {
-              const { id, createdAt, includeAllImages } = report;
-              const date = convertISOToLocal(createdAt, false);
-              const exportOption = includeAllImages
-                ? "All Image"
-                : "Rupture Case";
+      <TableHeader />
+      <div className="w-full flex flex-col flex-1 overflow-y-auto overscroll-contain">
+        {patientReportList.map((report, index) => {
+          const { id, createdAt, includeAllImages } = report;
+          const date = convertISOToLocal(createdAt, false);
+          const exportOption = includeAllImages ? "All Image" : "Rupture Case";
 
-              const isSelected = index === selectedReportIndex;
+          const isSelected = index === selectedReportIndex;
 
-              return (
-                <div
-                  key={id}
-                  className="w-full min-h-[52px] flex justify-between items-center hover:bg-[rgb(49,51,53)] border-b-[1px] border-solid-lt cursor-pointer transition-colors duration-100"
-                  onClick={() => handleSelectReport(index)}
-                >
-                  <div className="w-[50px] flex justify-center">
-                    <RadioIndicator checked={isSelected} />
-                  </div>
-                  <div className="w-[160px] flex justify-center">
-                    <p className="text-[14px] font-pretendard text-text-tertiary">
-                      {date}
-                    </p>
-                  </div>
-                  <div className="w-[160px] flex justify-center">
-                    <p className="text-[14px] font-pretendard text-white">
-                      {exportOption}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="w-full flex flex-col gap-[10px]">
-            <Button label="Print" onClick={onPrint} />
-            <PrintGuide />
-          </div>
-        </div>
-      ) : (
-        <NoReportHistory />
-      )}
+          return (
+            <div
+              key={id}
+              className="w-full min-h-[52px] flex justify-between items-center hover:bg-[rgb(49,51,53)] border-b-[1px] border-solid-lt cursor-pointer transition-colors duration-100"
+              onClick={() => handleSelectReport(index)}
+            >
+              <div className="w-[50px] flex justify-center">
+                <RadioIndicator checked={isSelected} />
+              </div>
+              <div className="w-[160px] flex justify-center">
+                <p className="text-[14px] font-pretendard text-text-tertiary">
+                  {date}
+                </p>
+              </div>
+              <div className="w-[160px] flex justify-center">
+                <p className="text-[14px] font-pretendard text-white">
+                  {exportOption}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="w-full flex flex-col gap-[10px]">
+        <Button label="Print" onClick={onPrint} />
+        <PrintGuide />
+      </div>
     </div>
   );
 };
