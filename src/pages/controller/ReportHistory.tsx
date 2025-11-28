@@ -5,9 +5,10 @@ import { usePatientReportList } from "@/services/usePatientReportList";
 import { convertISOToLocal, hasValidPatientId, checkTruthy } from "@/utils";
 import { useMessageStore, useReportHistoryStore } from "@/store";
 import { usePatientReportDetail } from "@/services/usePatientReportDetail";
+import { PrintOptions } from "@/hooks/usePrintAction";
 
 interface ReportHistoryProps {
-  onPrint: () => void;
+  onPrint: (options?: PrintOptions) => void;
 }
 
 const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
@@ -84,7 +85,10 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
         })}
       </div>
       <div className="w-full flex flex-col gap-[10px]">
-        <Button label="Print" onClick={onPrint} />
+        <Button
+          label="Print"
+          onClick={() => onPrint({ shouldUploadReport: false })}
+        />
         <PrintGuide />
       </div>
     </div>

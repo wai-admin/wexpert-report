@@ -9,10 +9,11 @@ import {
 } from "@/pages";
 import { MOCK_REPORT_LIST } from "@/constants";
 import { useAllPatientsFilterStore } from "@/store";
+import { PrintOptions } from "@/hooks/usePrintAction";
 
 interface AllPatientsControllerProps {
   printPageData: PrintPageData | null;
-  onPrint: () => void;
+  onPrint: (options?: PrintOptions) => void;
 }
 
 const AllPatientsController = ({
@@ -55,7 +56,11 @@ const AllPatientsController = ({
             onClear={clearSearchKeyword}
           />
         </div>
-        <Button width="w-[150px]" label="Print" onClick={onPrint} />
+        <Button
+          width="w-[150px]"
+          label="Print"
+          onClick={() => onPrint({ shouldUploadReport: false })}
+        />
       </div>
       <div className="w-full flex flex-col gap-[20px]">
         {/* Report List Header */}

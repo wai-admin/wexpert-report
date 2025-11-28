@@ -9,11 +9,12 @@ import {
 } from "@/components";
 import { Button } from "@/components-common";
 import { PrintPageData } from "@/types";
+import { PrintOptions } from "@/hooks/usePrintAction";
 
 interface NewReportProps {
   printPageData: PrintPageData | null;
   isLoading: boolean;
-  onPrint: () => void;
+  onPrint: (options?: PrintOptions) => void;
 }
 
 const NewReport = ({ printPageData, onPrint }: NewReportProps) => {
@@ -28,7 +29,10 @@ const NewReport = ({ printPageData, onPrint }: NewReportProps) => {
         <PhysicianAssessment />
       </div>
       <div className="w-full flex flex-col gap-[10px]">
-        <Button label="Export" onClick={onPrint} />
+        <Button
+          label="Export"
+          onClick={() => onPrint({ shouldUploadReport: true })}
+        />
         <PrintGuide />
       </div>
     </div>
