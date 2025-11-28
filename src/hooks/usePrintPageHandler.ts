@@ -1,6 +1,15 @@
 import { useReport } from "@/services/useReport";
-import { useMessageStore, useNewReportStore } from "@/store";
-import { ImageExportOptionValues, UsePrintPageHandlerReturn } from "@/types";
+import {
+  useMessageStore,
+  useNewReportStore,
+  useReportHistoryStore,
+  usePatientControllerStore,
+} from "@/store";
+import {
+  ImageExportOptionValues,
+  ReportTabValues,
+  UsePrintPageHandlerReturn,
+} from "@/types";
 import { ReportOptionType } from "@/lib/nativeMessageType";
 import {
   checkTruthy,
@@ -11,6 +20,7 @@ import {
   generateAnalysisItems,
   convertISOToLocal,
 } from "@/utils";
+import { usePatientReportDetail } from "@/services/usePatientReportDetail";
 
 const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
   /**
@@ -27,11 +37,24 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
 
   const { nativeMessage } = useMessageStore();
   const { imageExportOption, physicianAssessment } = useNewReportStore();
+  const { selectedReportId } = useReportHistoryStore();
+  const { selectedReportTab } = usePatientControllerStore();
+
+  // New Report 모드
   const { data: newReport, isFetching: isNewReportFetching } = useReport({
-    enabled: nativeMessage?.reportMode === ReportOptionType.NEW_REPORT,
+    enabled: selectedReportTab === ReportTabValues.NEW_REPORT,
   });
 
-  console.log("usePrintPageHandler newReport: ", newReport);
+  // Report History 모드 - 같은 쿼리 키로 캐시된 데이터 사용
+  const { data: reportHistoryDetail } = usePatientReportDetail({
+    reportId: selectedReportId ?? "",
+    enabled:
+      checkTruthy(selectedReportId) &&
+      selectedReportTab === ReportTabValues.REPORT_HISTORY,
+  });
+
+  console.log("usePrintPageHandler: newReport", newReport);
+  console.log("usePrintPageHandler: reportHistoryDetail", reportHistoryDetail);
 
   if (checkTruthy(newReport)) {
     return {

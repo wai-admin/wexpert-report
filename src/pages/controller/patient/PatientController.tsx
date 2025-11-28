@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { ReportTabs } from "@/components";
 import { NewReport, ReportHistory } from "@/pages";
 import { PrintPageData, ReportTabValues } from "@/types";
 import { ReportOptionType } from "@/lib/nativeMessageType";
+import { usePatientControllerStore } from "@/store";
 
 interface PatientControllerProps {
   printPageData: PrintPageData | null;
@@ -17,9 +18,8 @@ const PatientController = ({
   isLoading,
   onPrint,
 }: PatientControllerProps) => {
-  const [selectedReportTab, setSelectedReportTab] = useState<ReportTabValues>(
-    ReportTabValues.NEW_REPORT
-  );
+  const { selectedReportTab, setSelectedReportTab } =
+    usePatientControllerStore();
 
   useEffect(() => {
     setSelectedReportTab(
