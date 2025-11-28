@@ -5,12 +5,14 @@ import { ReportOptionType } from "@/lib/nativeMessageType";
 interface ReportControllerProps {
   printPageData: PrintPageData | null;
   reportMode: ReportOptionType;
+  isLoading: boolean;
   onPrint: () => void;
 }
 
 const ReportController = ({
   printPageData,
   reportMode,
+  isLoading,
   onPrint,
 }: ReportControllerProps) => {
   return (
@@ -30,6 +32,7 @@ const ReportController = ({
         <PatientController
           printPageData={printPageData}
           reportMode={reportMode}
+          isLoading={isLoading}
           onPrint={onPrint}
         />
       )}

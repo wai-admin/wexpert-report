@@ -7,12 +7,14 @@ import { ReportOptionType } from "@/lib/nativeMessageType";
 interface PatientControllerProps {
   printPageData: PrintPageData | null;
   reportMode: ReportOptionType;
+  isLoading: boolean;
   onPrint: () => void;
 }
 
 const PatientController = ({
   printPageData,
   reportMode,
+  isLoading,
   onPrint,
 }: PatientControllerProps) => {
   const [selectedReportTab, setSelectedReportTab] = useState<ReportTabValues>(
@@ -52,7 +54,11 @@ const PatientController = ({
       )}
       <div className="flex-1 min-h-0">
         {selectedNewReportTab && (
-          <NewReport printPageData={printPageData} onPrint={onPrint} />
+          <NewReport
+            printPageData={printPageData}
+            isLoading={isLoading}
+            onPrint={onPrint}
+          />
         )}
         {selectedReportHistoryTab && <ReportHistory onPrint={onPrint} />}
       </div>
