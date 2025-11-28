@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { RadioIndicator, Button, LoadingIndicator } from "@/components-common";
-import { PrintGuide } from "@/components";
+import { PrintGuide, NoReportHistory } from "@/components";
 import { usePatientReportList } from "@/services/usePatientReportList";
 import { convertISOToLocal, hasValidPatientId, checkTruthy } from "@/utils";
 import { useMessageStore, useReportHistoryStore } from "@/store";
@@ -96,20 +96,6 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
 };
 
 export default ReportHistory;
-
-const NoReportHistory = () => {
-  return (
-    <div className="size-full flex flex-col items-center justify-center gap-[5px]">
-      <p className="text-[16px] font-pretendard text-text-tertiary">
-        There are no exported reports.
-      </p>
-      <p className="text-[16px] font-pretendard text-solid-lt text-center">
-        Please click ‘Export’ in the ‘New Export’ tab <br /> to create your
-        first report.
-      </p>
-    </div>
-  );
-};
 
 // TODO: 해당 페이지 Table 리팩토링
 const TableHeader = () => {

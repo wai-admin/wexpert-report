@@ -1,8 +1,9 @@
 import { RadioIndicator } from "@/components-common";
 import { checkTruthy } from "@/utils/common";
+import { AllPatientReportListDetailData } from "@/lib/allPatientReportListType";
 
 interface RenderProps {
-  report: any;
+  report: AllPatientReportListDetailData;
   isSelected: boolean;
 }
 
@@ -31,7 +32,7 @@ const ALL_PATIENTS_TABLE_COLUMNS = [
     width: 170,
     render: ({ report }: RenderProps) => (
       <p className="font-pretendard text-[14px] text-text-secondary">
-        {checkTruthy(report.name) ? report.name : "-"}
+        {checkTruthy(report.patientName) ? report.patientName : "-"}
       </p>
     ),
   },
@@ -41,7 +42,7 @@ const ALL_PATIENTS_TABLE_COLUMNS = [
     width: 170,
     render: ({ report }: RenderProps) => (
       <p className="font-pretendard text-[14px] text-text-secondary">
-        {checkTruthy(report.birthDate) ? report.birthDate : "-"}
+        {checkTruthy(report.patientBirthDate) ? report.patientBirthDate : "-"}
       </p>
     ),
   },
@@ -51,7 +52,7 @@ const ALL_PATIENTS_TABLE_COLUMNS = [
     width: 170,
     render: ({ report }: RenderProps) => (
       <p className="font-pretendard text-[14px] text-text-secondary">
-        {checkTruthy(report.reportCreatedDate) ? report.reportCreatedDate : "-"}
+        {checkTruthy(report.createdAt) ? report.createdAt : "-"}
       </p>
     ),
   },
