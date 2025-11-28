@@ -23,6 +23,6 @@ export interface AllPatientReportListParams {
   query: string;
   page: number;
   limit: number;
-  sortBy: "REPORT_CREATED_AT" | "PATIENT_NAME";
-  sortOrder: "ASC" | "DESC";
+  sort_by: "REPORT_CREATED_AT" | "PATIENT_NAME";
+  order: "ASC" | "DESC";
 }
