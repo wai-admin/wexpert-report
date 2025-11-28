@@ -8,13 +8,21 @@ export const QUERY_KEYS = {
     DETAIL: (patientId: string) => ["report", "detail", patientId] as const,
     PATIENT_LIST: (patientId: string) =>
       ["report", "patient", "list", patientId] as const,
+    ALL_PATIENT_LIST: (params: AllPatientReportListParams) =>
+      ["report", "all", "list", params] as const,
     PATIENT_DETAIL: (patientId: string, reportId: string) =>
       ["report", "patient", "detail", patientId, reportId] as const,
     UPLOAD: () => ["report", "upload"] as const,
   },
 } as const;
 
-/**
- * Query Key 타입 정의
- */
+// Query Key 타입 정의
 export type QueryKeys = typeof QUERY_KEYS;
+
+export interface AllPatientReportListParams {
+  query: string;
+  page: number;
+  limit: number;
+  sortBy: "REPORT_CREATED_AT" | "PATIENT_NAME";
+  sortOrder: "ASC" | "DESC";
+}

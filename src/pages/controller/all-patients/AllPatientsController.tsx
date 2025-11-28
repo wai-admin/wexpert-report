@@ -1,6 +1,12 @@
 import { useState } from "react";
-import { Button, SearchInput, Pagination } from "@/components-common";
-import { PrintPageData } from "@/types";
+import {
+  Button,
+  SearchInput,
+  Pagination,
+  LoadingIndicator,
+} from "@/components-common";
+import { useAllPatientReportList } from "@/services/useAllPatientReportList";
+import { NoReportHistory } from "@/components";
 import {
   TableHeader,
   TableRows,
@@ -12,20 +18,14 @@ import { useAllPatientsFilterStore } from "@/store";
 import { PrintOptions } from "@/hooks/usePrintAction";
 
 interface AllPatientsControllerProps {
-  printPageData: PrintPageData | null;
   onPrint: (options?: PrintOptions) => void;
 }
 
-const AllPatientsController = ({
-  printPageData,
-  onPrint,
-}: AllPatientsControllerProps) => {
+const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
   const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
 
   const {
-    searchKeyword,
     setSearchKeyword,
-    clearSearchKeyword,
     rowsPerPage,
     setRowsPerPage,
     currentPage,
@@ -36,9 +36,30 @@ const AllPatientsController = ({
     setSortOrder,
   } = useAllPatientsFilterStore();
 
-  const onSearch = () => {
-    console.log("onSearch: ", printPageData);
+  const {
+    data: allPatientReportListResponse,
+    isLoading: isAllPatientReportListLoading,
+  } = useAllPatientReportList();
+  const allPatientReportListData = allPatientReportListResponse?.data ?? {
+    page: 0,
+    limit: 0,
+    total: 0,
+    hasNext: false,
+    data: [],
   };
+
+  console.log(
+    "AllPatientsController: allPatientReportListData",
+    allPatientReportListData
+  );
+
+  if (isAllPatientReportListLoading) {
+    return <LoadingIndicator />;
+  }
+
+  if (allPatientReportListData.data.length <= 0) {
+    return <NoReportHistory />;
+  }
 
   return (
     <div className="size-full flex flex-col p-[30px] gap-[25px] overflow-y-auto overscroll-contain">
@@ -49,11 +70,8 @@ const AllPatientsController = ({
             Search
           </p>
           <SearchInput
-            value={searchKeyword}
             placeholder="Enter search keywords"
-            onChange={setSearchKeyword}
-            onSearch={onSearch}
-            onClear={clearSearchKeyword}
+            onSearch={setSearchKeyword}
           />
         </div>
         <Button
@@ -80,6 +98,7 @@ const AllPatientsController = ({
           <div className="w-full flex flex-col">
             <TableHeader />
             <TableRows
+              allPatientReportList={allPatientReportListData.data}
               selectedIndex={selectedReportIndex}
               setSelectedIndex={setSelectedReportIndex}
             />

@@ -25,3 +25,5 @@ export { default as PhysicianAssessment } from "./option/new-report/PhysicianAss
 export { default as PrintGuide } from "./option/new-report/PrintGuide";
 
 export { default as ReportTabs } from "./option/ReportTabs";
+
+export { default as NoReportHistory } from "./report/NoReportHistory";

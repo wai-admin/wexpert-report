@@ -23,10 +23,7 @@ const ReportController = ({
       }`}
     >
       {reportMode === ReportOptionType.ALL_REPORT_HISTORY ? (
-        <AllPatientsController
-          printPageData={printPageData}
-          onPrint={onPrint}
-        />
+        <AllPatientsController onPrint={onPrint} />
       ) : (
         <PatientController
           printPageData={printPageData}
