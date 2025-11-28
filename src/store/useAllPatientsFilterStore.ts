@@ -33,7 +33,7 @@ const useAllPatientsFilterStore = create<AllPatientsFilterState>((set) => ({
   setCurrentPage: (page) => set({ currentPage: page }),
 
   rowsPerPage: 20,
-  setRowsPerPage: (rowsPerPage: number) => set({ rowsPerPage }),
+  setRowsPerPage: (rowsPerPage: number) => set({ rowsPerPage, currentPage: 1 }),
 
   sortBy: SortBy.NAME,
   setSortBy: (sortBy: SortBy) => set({ sortBy }),
