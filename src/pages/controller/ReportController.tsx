@@ -1,18 +1,17 @@
 import { AllPatientsController, PatientController } from "@/pages";
 import { PrintPageData } from "@/types";
 import { ReportOptionType } from "@/lib/nativeMessageType";
+import { PrintOptions } from "@/hooks/usePrintAction";
 
 interface ReportControllerProps {
   printPageData: PrintPageData | null;
   reportMode: ReportOptionType;
-  isLoading: boolean;
-  onPrint: () => void;
+  onPrint: (options?: PrintOptions) => void;
 }
 
 const ReportController = ({
   printPageData,
   reportMode,
-  isLoading,
   onPrint,
 }: ReportControllerProps) => {
   return (
@@ -32,7 +31,6 @@ const ReportController = ({
         <PatientController
           printPageData={printPageData}
           reportMode={reportMode}
-          isLoading={isLoading}
           onPrint={onPrint}
         />
       )}

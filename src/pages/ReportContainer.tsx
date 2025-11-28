@@ -50,7 +50,6 @@ const ReportContainer = () => {
         <ReportController
           printPageData={printPageData}
           reportMode={reportMode}
-          isLoading={isLoading}
           onPrint={handlePrint}
         />
       </div>

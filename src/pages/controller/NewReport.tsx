@@ -13,7 +13,6 @@ import { PrintOptions } from "@/hooks/usePrintAction";
 
 interface NewReportProps {
   printPageData: PrintPageData | null;
-  isLoading: boolean;
   onPrint: (options?: PrintOptions) => void;
 }
 
