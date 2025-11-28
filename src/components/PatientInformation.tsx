@@ -1,34 +1,15 @@
 import { NumberedList } from "@/components";
 import { useTranslation } from "react-i18next";
+import { PrintPagePatientDetail } from "@/types";
 
 interface PatientInformationProps {
   id: string;
-  patientInformation: {
-    chatNumber: string;
-    patientName: string;
-    birth: string;
-    type: string;
-    analysisDate: string;
-  };
+  patientDetail: PrintPagePatientDetail;
 }
-const PatientInformation = ({
-  id,
-  patientInformation,
-}: PatientInformationProps) => {
+const PatientInformation = ({ id, patientDetail }: PatientInformationProps) => {
   const { t: i18n } = useTranslation();
-  const { chatNumber, patientName, birth, type, analysisDate } =
-    patientInformation;
-
-  const getPatientType = (type: string) => {
-    switch (type) {
-      case "aesthetic":
-        return i18n("patient-type.aesthetic");
-      case "reconstructive":
-        return i18n("patient-type.reconstructive");
-      case "both":
-        return i18n("patient-type.both");
-    }
-  };
+  const { chartNumber, patientName, birth, patientType, analysisDate } =
+    patientDetail;
 
   return (
     <div id={id} className="column">
@@ -42,7 +23,7 @@ const PatientInformation = ({
             <td className="td-label">
               {i18n("patient-information.chart-number")}
             </td>
-            <td className="td-value">{chatNumber}</td>
+            <td className="td-value">{chartNumber}</td>
           </tr>
           <tr>
             <td className="td-label">{i18n("patient-information.name")}</td>
@@ -56,7 +37,7 @@ const PatientInformation = ({
           </tr>
           <tr>
             <td className="td-label">{i18n("patient-information.type")}</td>
-            <td className="td-value">{getPatientType(type)}</td>
+            <td className="td-value">{patientType}</td>
           </tr>
           <tr>
             <td className="td-label">

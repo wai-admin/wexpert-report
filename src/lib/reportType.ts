@@ -69,6 +69,8 @@ interface PatientDetail {
   tcTriage: number;
   reportCount: number;
   analysisCompleted: boolean;
+  birthDate: string | null;
+  chartNumber: string | null;
 }
 
 // 전체 응답 타입

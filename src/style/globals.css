@@ -5,6 +5,7 @@
 @import "./components/table.css";
 @import "./components/input.css";
 @import "./components/analysis.css";
+@import "./tailwind.css";
 
 /* CSS 변수 정의 */
 :root {
@@ -28,6 +29,10 @@
 
   /* 페이지 간격 */
   --page-gap: 2.7mm;
+
+  /* 리포트 컨트롤러 너비 */
+  --patient-report-controller-width: 440px;
+  --all-report-controller-width: 790px;
 }
 
 html,

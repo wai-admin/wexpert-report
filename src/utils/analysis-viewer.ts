@@ -5,7 +5,6 @@ interface GetImageCommentSummaryProps {
   ruptureImageCount: number;
   invasionToCapsuleExist: boolean;
   invasionToLymphNodeExist: boolean;
-  i18n: any;
 }
 
 interface GetImageStatusProps {
@@ -32,57 +31,40 @@ interface GetAnalysisResultExistProps {
   analysis: SonographyAnalysis;
 }
 
-const getImageCommentSummary = (props: GetImageCommentSummaryProps) => {
-  const {
-    totalAnalysisImageCount,
-    ruptureImageCount,
-    invasionToCapsuleExist,
-    invasionToLymphNodeExist,
-    i18n,
-  } = props;
+const getImageCommentSummary = ({
+  totalAnalysisImageCount,
+  ruptureImageCount,
+  invasionToCapsuleExist,
+  invasionToLymphNodeExist,
+}: GetImageCommentSummaryProps) => {
   const hasRupture = ruptureImageCount > 0;
 
   // 파열 O, 실리콘 피막 침범 O, 림프절 침범 O
   if (hasRupture && invasionToLymphNodeExist && invasionToCapsuleExist) {
-    return i18n(
-      "complication-images-attached.rupture-comment-with-capsule-and-ln",
-      {
-        totalAnalysisImageCount,
-        ruptureImageCount,
-      }
-    );
+    return `총 ${totalAnalysisImageCount}장의 이미지 중 ${ruptureImageCount}장에서 파열이 감지되었으며, 실리콘의 피막 및 림프절 침범이 함께 확인되었습니다.`;
   }
 
   // 파열 O, 실리콘 피막 침범 X, 림프절 침범 O
   if (hasRupture && invasionToLymphNodeExist && !invasionToCapsuleExist) {
-    return i18n("complication-images-attached.rupture-comment-with-ln", {
-      totalAnalysisImageCount,
-      ruptureImageCount,
-    });
+    return `총 ${totalAnalysisImageCount}장의 이미지 중 ${ruptureImageCount}장에서 파열이 감지되었으며, 실리콘의 림프절 침범이 함께 확인되었습니다.`;
   }
 
   // 파열 O, 실리콘 피막 침범 O, 림프절 침범 X
   if (hasRupture && !invasionToLymphNodeExist && invasionToCapsuleExist) {
-    return i18n("complication-images-attached.rupture-comment-with-capsule", {
-      totalAnalysisImageCount,
-      ruptureImageCount,
-    });
+    return `총 ${totalAnalysisImageCount}장의 이미지 중 ${ruptureImageCount}장에서 파열이 감지되었으며, 실리콘의 피막 침범이 함께 확인되었습니다.`;
   }
 
   // 파열 O, 실리콘 피막 침범 X, 림프절 침범 X
   if (hasRupture && !invasionToLymphNodeExist && !invasionToCapsuleExist) {
-    return i18n("complication-images-attached.only-rupture-comment", {
-      totalAnalysisImageCount,
-      ruptureImageCount,
-    });
+    return `총 ${totalAnalysisImageCount}장의 이미지 중 ${ruptureImageCount}장에서 파열이 감지되었습니다.`;
   }
 
   // 파열 X
   if (!hasRupture) {
-    return i18n("complication-images-attached.no-rupture-comment", {
-      totalAnalysisImageCount,
-    });
+    return `총 ${totalAnalysisImageCount}장의 이미지를 분석한 결과, 파열이 확인되지 않았습니다.`;
   }
+
+  return "";
 };
 
 const getEachImageComment = (props: GetEachImageCommentProps) => {

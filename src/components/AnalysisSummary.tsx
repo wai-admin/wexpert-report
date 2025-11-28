@@ -1,11 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { NumberedList } from "@/components";
-import { AnalysisSummary as AnalysisSummaryType } from "@/lib/reportType";
+import { PrintPageAnalysisSummary } from "@/types";
 import { checkFalsy } from "@/utils/common";
 
 interface AnalysisSummaryProps {
   id: string;
-  analysisSummary: AnalysisSummaryType;
+  analysisSummary: PrintPageAnalysisSummary;
 }
 
 const AnalysisSummary = ({ id, analysisSummary }: AnalysisSummaryProps) => {

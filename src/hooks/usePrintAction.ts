@@ -3,22 +3,30 @@ import { useReactToPrint } from "react-to-print";
 import { sendPrintStatus, checkTruthy, formatPdfFileName } from "@/utils";
 import { useMessageStore, usePrintStore } from "@/store";
 import { useReportUpload } from "@/services/useReportUpload";
-import { ReportData, ExportOptionType } from "@/lib";
+import { ReportData } from "@/lib";
+import { ImageExportOptionValues } from "@/types";
+
+interface UsePrintActionProps {
+  printRef: RefObject<HTMLDivElement | null>;
+  imageExportOption: ImageExportOptionValues;
+  physicianAssessment: string;
+  patientName: string;
+}
 
 /**
  * 인쇄 처리를 위한 커스텀 훅
  */
-export const usePrintHandler = (
-  printRef: RefObject<HTMLDivElement | null>,
-  patientName: string
-) => {
+export const usePrintAction = ({
+  printRef,
+  imageExportOption,
+  physicianAssessment,
+  patientName,
+}: UsePrintActionProps) => {
   const { clearPrintRequest } = usePrintStore();
   const { nativeMessage } = useMessageStore();
   const { uploadReport } = useReportUpload();
 
-  const fileName = `${
-    checkTruthy(patientName) ? patientName : "Unknown"
-  }_${formatPdfFileName(new Date())}`;
+  const fileName = `${patientName}_${formatPdfFileName(new Date())}`;
 
   const handlePrint = useReactToPrint({
     contentRef: printRef,
@@ -32,12 +40,8 @@ export const usePrintHandler = (
         const reportData = {
           patientId: nativeMessage.id || null,
           includeAllImages:
-            nativeMessage.exportOptionType === ExportOptionType.ALL,
-          chartNumber: nativeMessage.chartNo || null,
-          birthYear: nativeMessage.birthYear || null,
-          birthMonth: nativeMessage.birthMonth || null,
-          birthDay: nativeMessage.birthDay || null,
-          doctorOpinion: nativeMessage.assessment || null,
+            imageExportOption === ImageExportOptionValues.ALL_IMAGE,
+          doctorOpinion: physicianAssessment || null,
         } as ReportData;
 
         uploadReport({

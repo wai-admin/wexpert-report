@@ -6,6 +6,8 @@ export const QUERY_KEYS = {
   // 리포트 정보 관련
   REPORT: {
     DETAIL: (patientId: string) => ["report", "detail", patientId] as const,
+    PATIENT_LIST: (patientId: string) =>
+      ["report", "patient", "list", patientId] as const,
     UPLOAD: () => ["report", "upload"] as const,
   },
 } as const;
