@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { reportApi } from "@/services/api";
 import { QUERY_KEYS } from "@/lib/queryKeys";
 import { useMessageStore } from "@/store";
-import { getPatientId, hasValidPatientId } from "@/utils";
+import { checkTruthy, getPatientId, hasValidPatientId } from "@/utils";
 
 interface usePatientReportDetailProps {
   reportId: string;
@@ -19,7 +19,8 @@ export const usePatientReportDetail = ({
   const query = useQuery({
     queryKey: QUERY_KEYS.REPORT.PATIENT_DETAIL(patientId, reportId),
     queryFn: () => reportApi.getPatientReportDetail(patientId, reportId),
-    enabled: enabled && hasValidPatientId(nativeMessage),
+    enabled:
+      enabled && hasValidPatientId(nativeMessage) && checkTruthy(reportId),
     staleTime: 1 * 60 * 1000, // 1분 동안은 신선한 것으로 간주
     retry: (failureCount, error: any) => {
       // 실패 시 오류 로그
