@@ -11,7 +11,8 @@ const REPORT_ENDPOINTS = {
   GET_PATIENT_REPORT_LIST: (patientId: string) =>
     `/v1/analysis/${patientId}/reports`,
   // 모든 환자 리포트 리스트 조회
-  GET_ALL_PATIENT_REPORT_LIST: () => `/v1/analysis/reports`,
+  GET_ALL_PATIENT_REPORT_LIST: (searchParams: URLSearchParams) =>
+    `/v1/analysis/reports?${searchParams.toString()}`,
   // 특정 환자 리포트 상세 조회
   GET_PATIENT_REPORT_DETAIL: (patientId: string, reportId: string) =>
     `/v1/analysis/${patientId}/reports/${reportId}`,
