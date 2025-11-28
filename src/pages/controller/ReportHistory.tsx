@@ -3,7 +3,7 @@ import { RadioIndicator, Button, LoadingSpinner } from "@/components-common";
 import { PrintGuide } from "@/components";
 import { usePatientReportList } from "@/services/usePatientReportList";
 import { convertISOToLocal, hasValidPatientId, checkTruthy } from "@/utils";
-import { useMessageStore } from "@/store";
+import { useMessageStore, useReportHistoryStore } from "@/store";
 import { usePatientReportDetail } from "@/services/usePatientReportDetail";
 
 interface ReportHistoryProps {
@@ -12,6 +12,7 @@ interface ReportHistoryProps {
 
 const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
+  const { setSelectedReportId } = useReportHistoryStore();
   const { nativeMessage } = useMessageStore();
   const hasPatientContext = hasValidPatientId(nativeMessage);
 
@@ -36,6 +37,12 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
     patientReportDetailData
   );
 
+  const handleSelectReport = (index: number) => {
+    setSelectedReportIndex(index);
+    const reportId = patientReportList[index]?.id.toString();
+    setSelectedReportId(reportId);
+  };
+
   if (isPatientReportListLoading) {
     return <LoadingSpinner />;
   }
@@ -59,7 +66,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
                 <div
                   key={id}
                   className="w-full min-h-[52px] flex justify-between items-center hover:bg-[rgb(49,51,53)] border-b-[1px] border-solid-lt cursor-pointer transition-colors duration-100"
-                  onClick={() => setSelectedReportIndex(index)}
+                  onClick={() => handleSelectReport(index)}
                 >
                   <div className="w-[50px] flex justify-center">
                     <RadioIndicator checked={isSelected} />
