@@ -14,12 +14,15 @@ const TableRows = ({
   selectedReportIndex,
   setSelectedReportIndex,
 }: TableRowsProps) => {
-  const { setSelectedReportId } = useReportHistoryStore();
+  const { setSelectedReportId, setSelectedPatientId } = useReportHistoryStore();
 
   const handleSelectReport = (index: number) => {
     setSelectedReportIndex(index);
     const reportId = allPatientReportList[index]?.id.toString();
     setSelectedReportId(reportId);
+    // TODO: patientId 필요하지만 api 응답 값에 없음
+    const patientId = allPatientReportList[index]?.patientId.toString();
+    setSelectedPatientId(patientId);
   };
 
   return (

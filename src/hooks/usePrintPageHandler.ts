@@ -19,6 +19,7 @@ import {
   getRuptureImageCount,
   generateAnalysisItems,
   convertISOToLocal,
+  getPatientId,
 } from "@/utils";
 import { usePatientReportDetail } from "@/services/usePatientReportDetail";
 
@@ -37,7 +38,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
 
   const { nativeMessage } = useMessageStore();
   const { imageExportOption, physicianAssessment } = useNewReportStore();
-  const { selectedReportId } = useReportHistoryStore();
+  const { selectedReportId, selectedPatientId } = useReportHistoryStore();
   const { selectedReportTab } = usePatientControllerStore();
 
   // New Report 모드
@@ -45,10 +46,17 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
     enabled: selectedReportTab === ReportTabValues.NEW_REPORT,
   });
 
+  // TODO: 예외 처리
+  const patientId =
+    nativeMessage?.reportMode === ReportOptionType.ALL_REPORT_HISTORY
+      ? selectedPatientId ?? ""
+      : getPatientId(nativeMessage);
+
   // Report History 모드 - 같은 쿼리 키로 캐시된 데이터 사용
   const { data: reportHistoryDetail, isFetching: isHistoryDetailFetching } =
     usePatientReportDetail({
       reportId: selectedReportId ?? "",
+      patientId: patientId ?? "",
       enabled: selectedReportTab === ReportTabValues.REPORT_HISTORY,
     });
 

@@ -1,26 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 import { reportApi } from "@/services/api";
 import { QUERY_KEYS } from "@/lib/queryKeys";
-import { useMessageStore } from "@/store";
-import { checkTruthy, getPatientId, hasValidPatientId } from "@/utils";
+import { checkTruthy } from "@/utils";
 
 interface usePatientReportDetailProps {
   reportId: string;
+  patientId: string;
   enabled?: boolean;
 }
 
 export const usePatientReportDetail = ({
   reportId,
+  patientId,
   enabled = true,
 }: usePatientReportDetailProps) => {
-  const { nativeMessage } = useMessageStore();
-  const patientId = getPatientId(nativeMessage);
-
   const query = useQuery({
     queryKey: QUERY_KEYS.REPORT.PATIENT_DETAIL(patientId, reportId),
     queryFn: () => reportApi.getPatientReportDetail(patientId, reportId),
-    enabled:
-      enabled && hasValidPatientId(nativeMessage) && checkTruthy(reportId),
+    enabled: enabled && checkTruthy(patientId) && checkTruthy(reportId),
     // TODO: prod에서 statleTime 활성화하기 (캐시)
     // staleTime: 1 * 60 * 1000, // 1분 동안은 신선한 것으로 간주
     retry: (failureCount, error: any) => {
