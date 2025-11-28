@@ -25,15 +25,10 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
 
   console.log("ReportHistory: patientReportList", patientReportList);
 
-  const { data: patientReportDetailData } = usePatientReportDetail({
+  usePatientReportDetail({
     reportId: patientReportList[selectedReportIndex]?.id.toString(),
     enabled: checkTruthy(patientReportList),
   });
-
-  console.log(
-    "ReportHistory: patientReportDetailData",
-    patientReportDetailData
-  );
 
   const handleSelectReport = (index: number) => {
     setSelectedReportIndex(index);
