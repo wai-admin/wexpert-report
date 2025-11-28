@@ -99,8 +99,8 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
             <TableHeader />
             <TableRows
               allPatientReportList={allPatientReportListData.data}
-              selectedIndex={selectedReportIndex}
-              setSelectedIndex={setSelectedReportIndex}
+              selectedReportIndex={selectedReportIndex}
+              setSelectedReportIndex={setSelectedReportIndex}
             />
           </div>
           {/* Pagination Footer */}
