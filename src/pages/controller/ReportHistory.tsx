@@ -2,7 +2,8 @@ import { useState } from "react";
 import { RadioIndicator, Button, LoadingSpinner } from "@/components-common";
 import { PrintGuide } from "@/components";
 import { usePatientReportList } from "@/services/usePatientReportList";
-import { convertISOToLocal } from "@/utils";
+import { convertISOToLocal, hasValidPatientId } from "@/utils";
+import { useMessageStore } from "@/store";
 
 interface ReportHistoryProps {
   onPrint: () => void;
@@ -10,8 +11,12 @@ interface ReportHistoryProps {
 
 const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
+  const { nativeMessage } = useMessageStore();
+  const hasPatientContext = hasValidPatientId(nativeMessage);
 
-  const { data, isLoading } = usePatientReportList({ enabled: true });
+  const { data, isLoading } = usePatientReportList({
+    enabled: hasPatientContext,
+  });
 
   console.log("ReportHistory patientReportList: ", data);
 
