@@ -56,7 +56,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
       <div className="w-full flex flex-col flex-1 overflow-y-auto overscroll-contain">
         {patientReportList.map((report, index) => {
           const { id, createdAt, includeAllImages } = report;
-          const date = convertISOToLocal(createdAt, false);
+          const date = convertISOToLocal(createdAt, false, true);
           const exportOption = includeAllImages ? "All Image" : "Rupture Case";
 
           const isSelected = index === selectedReportIndex;

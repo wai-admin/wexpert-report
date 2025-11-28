@@ -1,5 +1,5 @@
 import { RadioIndicator } from "@/components-common";
-import { checkTruthy } from "@/utils/common";
+import { checkTruthy, convertISOToLocal } from "@/utils";
 import { AllPatientReportListDetailData } from "@/lib/allPatientReportListType";
 
 interface RenderProps {
@@ -42,7 +42,9 @@ const ALL_PATIENTS_TABLE_COLUMNS = [
     width: 170,
     render: ({ report }: RenderProps) => (
       <p className="font-pretendard text-[14px] text-text-secondary">
-        {checkTruthy(report.patientBirthDate) ? report.patientBirthDate : "-"}
+        {checkTruthy(report.patientBirthDate)
+          ? convertISOToLocal(report.patientBirthDate, true, true)
+          : "-"}
       </p>
     ),
   },
@@ -52,7 +54,9 @@ const ALL_PATIENTS_TABLE_COLUMNS = [
     width: 170,
     render: ({ report }: RenderProps) => (
       <p className="font-pretendard text-[14px] text-text-secondary">
-        {checkTruthy(report.createdAt) ? report.createdAt : "-"}
+        {checkTruthy(report.createdAt)
+          ? convertISOToLocal(report.createdAt, false, true)
+          : "-"}
       </p>
     ),
   },
