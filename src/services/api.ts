@@ -4,6 +4,7 @@ import {
   ReportUploadRequest,
   ReportUploadResponse,
   PatientReportListResponse,
+  PatientReportDetailResponse,
 } from "@/lib";
 import { ENDPOINTS } from "@/constants/endpoints";
 
@@ -17,6 +18,12 @@ export const reportApi = {
   getPatientReportList: (patientId: string) => {
     return apiFetch.get<PatientReportListResponse>(
       ENDPOINTS.REPORT.GET_PATIENT_REPORT_LIST(patientId)
+    );
+  },
+  // 특정 환자 리포트 상세 조회
+  getPatientReportDetail: (patientId: string, reportId: string) => {
+    return apiFetch.get<PatientReportDetailResponse>(
+      ENDPOINTS.REPORT.GET_PATIENT_REPORT_DETAIL(patientId, reportId)
     );
   },
   // 리포트 업로드

@@ -8,6 +8,8 @@ export const QUERY_KEYS = {
     DETAIL: (patientId: string) => ["report", "detail", patientId] as const,
     PATIENT_LIST: (patientId: string) =>
       ["report", "patient", "list", patientId] as const,
+    PATIENT_DETAIL: (patientId: string, reportId: string) =>
+      ["report", "patient", "detail", patientId, reportId] as const,
     UPLOAD: () => ["report", "upload"] as const,
   },
 } as const;

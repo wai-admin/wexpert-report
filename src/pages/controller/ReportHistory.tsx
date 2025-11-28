@@ -2,8 +2,9 @@ import { useState } from "react";
 import { RadioIndicator, Button, LoadingSpinner } from "@/components-common";
 import { PrintGuide } from "@/components";
 import { usePatientReportList } from "@/services/usePatientReportList";
-import { convertISOToLocal, hasValidPatientId } from "@/utils";
+import { convertISOToLocal, hasValidPatientId, checkTruthy } from "@/utils";
 import { useMessageStore } from "@/store";
+import { usePatientReportDetail } from "@/services/usePatientReportDetail";
 
 interface ReportHistoryProps {
   onPrint: () => void;
@@ -14,15 +15,23 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   const { nativeMessage } = useMessageStore();
   const hasPatientContext = hasValidPatientId(nativeMessage);
 
-  const { data, isLoading } = usePatientReportList({
-    enabled: hasPatientContext,
+  const { data: patientReportListData, isLoading: isPatientReportListLoading } =
+    usePatientReportList({
+      enabled: hasPatientContext,
+    });
+  const patientReportList = patientReportListData?.data ?? [];
+
+  const {
+    data: patientReportDetailData,
+    // isLoading: isPatientReportDetailLoading,
+  } = usePatientReportDetail({
+    reportId: patientReportList[selectedReportIndex].id.toString(),
+    enabled: checkTruthy(patientReportList),
   });
 
-  console.log("ReportHistory patientReportList: ", data);
+  console.log("patientReportDetailData: ", patientReportDetailData);
 
-  const patientReportList = data?.data ?? [];
-
-  if (isLoading) {
+  if (isPatientReportListLoading) {
     return <LoadingSpinner />;
   }
 
