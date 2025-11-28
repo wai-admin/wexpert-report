@@ -21,15 +21,20 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
     });
   const patientReportList = patientReportListData?.data ?? [];
 
+  console.log("ReportHistory: patientReportList", patientReportList);
+
   const {
     data: patientReportDetailData,
     // isLoading: isPatientReportDetailLoading,
   } = usePatientReportDetail({
-    reportId: patientReportList[selectedReportIndex].id.toString(),
+    reportId: patientReportList[selectedReportIndex]?.id.toString(),
     enabled: checkTruthy(patientReportList),
   });
 
-  console.log("patientReportDetailData: ", patientReportDetailData);
+  console.log(
+    "ReportHistory: patientReportDetailData",
+    patientReportDetailData
+  );
 
   if (isPatientReportListLoading) {
     return <LoadingSpinner />;
