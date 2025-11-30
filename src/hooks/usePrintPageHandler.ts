@@ -212,8 +212,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
       imageExportOption: imageExportOption,
       sonographies: [],
       // 개발 환경에서 테스트 시 해당 값 변경 필요
-      reportMode:
-        nativeMessage?.reportMode ?? ReportOptionType.ALL_REPORT_HISTORY,
+      reportMode: nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT,
     },
     // 개발 환경에서는 false, 프로덕션에서는 true
     isLoading: import.meta.env.PROD,
