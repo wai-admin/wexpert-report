@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { usePrintAction, useWebViewLoading } from "@/hooks";
-import { useMessageStore, useLoadingStore } from "@/store";
-import { PrintPage, ReportController } from "@/pages";
+import { useMessageStore, useLoadingStore, useReportListStore } from "@/store";
+import { PrintPage, ReportController, NoPrintPage } from "@/pages";
 import usePrintPageHandler from "@/hooks/usePrintPageHandler";
 import { ReportOptionType } from "@/lib";
 import { LoadingIndicator } from "@/components-common";
@@ -14,6 +14,8 @@ const ReportContainer = () => {
   const { nativeMessage } = useMessageStore();
   // Loading Status
   const { isLoading } = useLoadingStore();
+  // Report List Empty Status
+  const { isReportListEmpty } = useReportListStore();
   // Data Information
   const { printPageData, option } = usePrintPageHandler();
   // Handlers & State
@@ -28,7 +30,8 @@ const ReportContainer = () => {
   useWebViewLoading(isLoading);
 
   console.log("ReportContainer: PrintPage Data Information", printPageData);
-  const reportMode = nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT;
+  const reportMode =
+    nativeMessage?.reportMode ?? ReportOptionType.ALL_REPORT_HISTORY;
 
   return (
     <div className="size-full flex justify-start relative">
@@ -43,12 +46,16 @@ const ReportContainer = () => {
           }
           `}
       >
-        <PrintPage
-          printRef={printRef}
-          scrollRef={scrollRef}
-          printPageData={printPageData}
-          option={option}
-        />
+        {isReportListEmpty ? (
+          <NoPrintPage />
+        ) : (
+          <PrintPage
+            printRef={printRef}
+            scrollRef={scrollRef}
+            printPageData={printPageData}
+            option={option}
+          />
+        )}
       </div>
       <div className="fixed right-0 top-0">
         <ReportController

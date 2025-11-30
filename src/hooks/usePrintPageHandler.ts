@@ -3,7 +3,7 @@ import { useReport } from "@/services/useReport";
 import {
   useMessageStore,
   useNewReportStore,
-  useReportHistoryStore,
+  useReportListStore,
   usePatientControllerStore,
   useLoadingStore,
 } from "@/store";
@@ -39,7 +39,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
 
   const { nativeMessage } = useMessageStore();
   const { imageExportOption, physicianAssessment } = useNewReportStore();
-  const { selectedReportId } = useReportHistoryStore();
+  const { selectedReportId } = useReportListStore();
   const { selectedReportTab } = usePatientControllerStore();
   const { setLoading } = useLoadingStore();
 
@@ -212,7 +212,8 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
       imageExportOption: imageExportOption,
       sonographies: [],
       // 개발 환경에서 테스트 시 해당 값 변경 필요
-      reportMode: nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT,
+      reportMode:
+        nativeMessage?.reportMode ?? ReportOptionType.ALL_REPORT_HISTORY,
     },
     // 개발 환경에서는 false, 프로덕션에서는 true
     isLoading: import.meta.env.PROD,

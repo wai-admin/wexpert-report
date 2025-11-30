@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button, SearchInput, Pagination } from "@/components-common";
 import { useAllPatientReportList } from "@/services/useAllPatientReportList";
-import { NoReportHistory } from "@/components";
 import {
   TableHeader,
   TableRows,
@@ -53,9 +52,7 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
     return <></>;
   }
 
-  if (allPatientReportListData.data.length <= 0) {
-    return <NoReportHistory />;
-  }
+  const hasAllPatientReportList = allPatientReportListData.total > 0;
 
   return (
     <div className="size-full flex flex-col p-[30px] gap-[25px] overflow-hidden">
@@ -94,11 +91,15 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
         <div className="w-full flex flex-col flex-1 gap-[14px] overflow-hidden">
           <div className="w-full flex flex-col flex-1 overflow-hidden">
             <TableHeader />
-            <TableRows
-              allPatientReportList={allPatientReportListData.data}
-              selectedReportIndex={selectedReportIndex}
-              setSelectedReportIndex={setSelectedReportIndex}
-            />
+            {hasAllPatientReportList ? (
+              <TableRows
+                allPatientReportList={allPatientReportListData.data}
+                selectedReportIndex={selectedReportIndex}
+                setSelectedReportIndex={setSelectedReportIndex}
+              />
+            ) : (
+              <NoReportList />
+            )}
           </div>
           {/* Pagination Footer */}
           <div className="w-full flex items-center justify-between">
@@ -120,3 +121,13 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
 };
 
 export default AllPatientsController;
+
+const NoReportList = () => {
+  return (
+    <div className="w-full flex flex-1 border-b border-b-solid-dk items-center justify-center overflow-hidden">
+      <p className="text-[16px] font-pretendard text-text-tertiary">
+        There are no exported reports.
+      </p>
+    </div>
+  );
+};

@@ -4,7 +4,7 @@ import { checkTruthy } from "@/utils";
 import { A4Template } from "@/components";
 import { Cover, ElementRenderer } from "@/pages";
 import { PrintPageData, PrintPageOption } from "@/types";
-import { useReportHistoryStore } from "@/store";
+import { useReportListStore } from "@/store";
 
 interface PrintPageProps {
   printRef: RefObject<HTMLDivElement | null>;
@@ -19,7 +19,7 @@ const PrintPage = ({
   printPageData,
   option,
 }: PrintPageProps) => {
-  const { selectedReportId } = useReportHistoryStore();
+  const { selectedReportId } = useReportListStore();
 
   const { elementPageInfo, MeasureContainer } = useA4Handler({
     printPageData,
