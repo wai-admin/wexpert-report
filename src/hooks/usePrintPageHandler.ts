@@ -207,7 +207,8 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
       reportMode: nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT,
     },
     // 개발 환경에서는 false, 프로덕션에서는 true
-    isLoading: import.meta.env.PROD,
+    isLoading: false,
+    // isLoading: import.meta.env.PROD,
     error: null,
   };
 };
