@@ -20,9 +20,10 @@ const PrintPage = ({ printRef, printPageData, option }: PrintPageProps) => {
     option,
   });
 
+  // 새로운 리포트 선택 시 스크롤 초기화 (Report History 모드에 해당)
   useEffect(() => {
-    if (checkTruthy(selectedReportId)) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    if (checkTruthy(selectedReportId) && checkTruthy(printRef.current)) {
+      printRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [[selectedReportId]]);
 

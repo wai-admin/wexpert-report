@@ -24,10 +24,11 @@
 .print-preview-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   position: relative;
   min-height: 100vh;
+  padding: 20px 0;
 }
 
 /* A4 Template */
