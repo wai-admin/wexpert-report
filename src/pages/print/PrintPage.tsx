@@ -8,11 +8,17 @@ import { useReportHistoryStore } from "@/store";
 
 interface PrintPageProps {
   printRef: RefObject<HTMLDivElement | null>;
+  scrollRef: RefObject<HTMLDivElement | null>;
   printPageData: PrintPageData | null;
   option: PrintPageOption;
 }
 
-const PrintPage = ({ printRef, printPageData, option }: PrintPageProps) => {
+const PrintPage = ({
+  printRef,
+  scrollRef,
+  printPageData,
+  option,
+}: PrintPageProps) => {
   const { selectedReportId } = useReportHistoryStore();
 
   const { elementPageInfo, MeasureContainer } = useA4Handler({
@@ -22,11 +28,10 @@ const PrintPage = ({ printRef, printPageData, option }: PrintPageProps) => {
 
   // 새로운 리포트 선택 시 스크롤 초기화 (Report History 모드에 해당)
   useEffect(() => {
-    if (checkTruthy(selectedReportId) && checkTruthy(printRef.current)) {
-      printRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    if (checkTruthy(selectedReportId) && checkTruthy(scrollRef.current)) {
+      scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [[selectedReportId]]);
-
   // Data Information
   const hospitalName = checkTruthy(printPageData)
     ? printPageData.cover.hospitalName
