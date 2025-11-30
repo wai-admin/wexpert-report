@@ -63,7 +63,7 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
   }
 
   return (
-    <div className="size-full flex flex-col p-[30px] gap-[25px] overflow-y-auto overscroll-contain">
+    <div className="size-full flex flex-col p-[30px] gap-[25px] overflow-hidden">
       <div className="w-full flex justify-between items-end">
         {/* Search Header */}
         <div className="flex flex-col flex-1 gap-[20px]">
@@ -82,7 +82,7 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
           onClick={() => onPrint({ shouldUploadReport: false })}
         />
       </div>
-      <div className="w-full flex flex-col gap-[20px]">
+      <div className="w-full flex flex-col flex-1 gap-[20px] overflow-hidden">
         {/* Report List Header */}
         <div className="w-full flex justify-between items-center">
           <p className="font-pretendard text-[16px] text-white font-medium">
@@ -96,8 +96,8 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
           />
         </div>
         {/* Table */}
-        <div className="w-full flex flex-col gap-[14px]">
-          <div className="w-full flex flex-col">
+        <div className="w-full flex flex-col flex-1 gap-[14px] overflow-hidden">
+          <div className="w-full flex flex-col flex-1 overflow-hidden">
             <TableHeader />
             <TableRows
               allPatientReportList={allPatientReportListData.data}
