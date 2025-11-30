@@ -28,6 +28,8 @@ export default defineConfig(() => ({
           // state: ["zustand"],
         },
       },
+      // Service Worker를 빌드에서 제외하지 않도록 설정
+      external: [],
     },
   },
   resolve: {
@@ -36,4 +38,6 @@ export default defineConfig(() => ({
     },
     extensions: [".js", ".jsx", ".ts", ".tsx"],
   },
+  // Service Worker 파일이 public 폴더에 있으므로 자동으로 dist로 복사됨
+  publicDir: "public",
 }));
