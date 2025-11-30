@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { useReport } from "@/services/useReport";
 import {
   useMessageStore,
   useNewReportStore,
   useReportHistoryStore,
   usePatientControllerStore,
+  useLoadingStore,
 } from "@/store";
 import {
   ImageExportOptionValues,
@@ -39,6 +41,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
   const { imageExportOption, physicianAssessment } = useNewReportStore();
   const { selectedReportId } = useReportHistoryStore();
   const { selectedReportTab } = usePatientControllerStore();
+  const { setLoading } = useLoadingStore();
 
   // New Report 모드
   const { data: newReport, isFetching: isNewReportFetching } = useReport({
@@ -51,6 +54,10 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
       reportId: selectedReportId ?? "",
       enabled: selectedReportTab === ReportTabValues.REPORT_HISTORY,
     });
+
+  useEffect(() => {
+    setLoading(isNewReportFetching || isHistoryDetailFetching);
+  }, [isNewReportFetching, isHistoryDetailFetching]);
 
   console.log(
     "usePrintPageHandler: newReport/isLoading",
@@ -136,7 +143,8 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
           reportHistoryDetail.data.report.patientDetail.sonographies,
         reportMode: nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT,
       },
-      isLoading: isHistoryDetailFetching,
+      // 개발 환경에서는 false, 프로덕션에서는 true
+      isLoading: import.meta.env.PROD,
       error: null,
     };
   }
