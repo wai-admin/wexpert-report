@@ -9,6 +9,7 @@ import { LoadingIndicator } from "@/components-common";
 // WARNING: usePrintPageHandler 업데이트 시 전체 렌더링 주의 (개선 필요)
 const ReportContainer = () => {
   const printRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   //Bridge Message
   const { nativeMessage } = useMessageStore();
   // Data Information
@@ -32,6 +33,7 @@ const ReportContainer = () => {
     <div className="size-full flex justify-start relative">
       <LoadingIndicator isLoading={isLoading} full={true} />
       <div
+        ref={scrollRef}
         className={`h-full flex justify-center overflow-y-scroll
           ${
             reportMode === ReportOptionType.ALL_REPORT_HISTORY
@@ -42,6 +44,7 @@ const ReportContainer = () => {
       >
         <PrintPage
           printRef={printRef}
+          scrollRef={scrollRef}
           printPageData={printPageData}
           option={option}
         />
