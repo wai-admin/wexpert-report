@@ -1,13 +1,9 @@
 import { useState, useEffect } from "react";
 import { RadioIndicator, Button } from "@/components-common";
-import { PrintGuide, NoReportHistory } from "@/components";
+import { PrintGuide } from "@/components";
 import { usePatientReportList } from "@/services/usePatientReportList";
-import { convertISOToLocal, hasValidPatientId } from "@/utils";
-import {
-  useMessageStore,
-  useReportHistoryStore,
-  useLoadingStore,
-} from "@/store";
+import { convertISOToLocal, hasValidPatientId, checkTruthy } from "@/utils";
+import { useMessageStore, useReportListStore, useLoadingStore } from "@/store";
 import { PrintOptions } from "@/hooks/usePrintAction";
 
 interface ReportHistoryProps {
@@ -17,7 +13,7 @@ interface ReportHistoryProps {
 const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
 
-  const { setSelectedReportId } = useReportHistoryStore();
+  const { setSelectedReportId, setIsReportListEmpty } = useReportListStore();
   const { nativeMessage } = useMessageStore();
   const { setLoading } = useLoadingStore();
 
@@ -31,13 +27,18 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
 
   // 리스트 로드 성공 시 또는 selectedReportIndex 변경 시 selectedReportId 업데이트
   useEffect(() => {
-    if (patientReportList.length > 0) {
-      const reportId = patientReportList[selectedReportIndex]?.id.toString();
-      if (reportId) {
-        setSelectedReportId(reportId);
+    if (checkTruthy(patientReportListData)) {
+      const hasReportList = patientReportListData.data.length > 0;
+      if (hasReportList) {
+        const reportId = patientReportList[selectedReportIndex]?.id.toString();
+        if (reportId) {
+          setSelectedReportId(reportId);
+        }
+      } else {
+        setIsReportListEmpty(true);
       }
     }
-  }, [patientReportList, selectedReportIndex, setSelectedReportId]);
+  }, [patientReportListData, selectedReportIndex, setSelectedReportId]);
 
   useEffect(() => {
     setLoading(isPatientReportListLoading);
@@ -50,7 +51,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
 
   const hasPatientReportList = patientReportList.length > 0;
   if (hasPatientReportList === false) {
-    return <NoReportHistory />;
+    return <NoReportList />;
   }
 
   return (
@@ -117,6 +118,20 @@ const TableHeader = () => {
           Export Option
         </p>
       </div>
+    </div>
+  );
+};
+
+const NoReportList = () => {
+  return (
+    <div className="size-full flex flex-col items-center justify-center gap-[5px]">
+      <p className="text-[16px] font-pretendard text-text-tertiary">
+        There are no exported reports.
+      </p>
+      <p className="text-[16px] font-pretendard text-solid-lt text-center">
+        Please click ‘Export’ in the ‘New Export’ tab <br /> to create your
+        first report.
+      </p>
     </div>
   );
 };

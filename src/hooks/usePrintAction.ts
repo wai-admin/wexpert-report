@@ -1,7 +1,7 @@
 import { RefObject } from "react";
 import { useReactToPrint } from "react-to-print";
 import { sendPrintStatus, checkTruthy, formatPdfFileName } from "@/utils";
-import { useMessageStore, usePrintStore } from "@/store";
+import { useMessageStore } from "@/store";
 import { useReportUpload } from "@/services/useReportUpload";
 import { ReportData } from "@/lib";
 import { ImageExportOptionValues } from "@/types";
@@ -26,7 +26,6 @@ export const usePrintAction = ({
   physicianAssessment,
   patientName,
 }: UsePrintActionProps) => {
-  const { clearPrintRequest } = usePrintStore();
   const { nativeMessage } = useMessageStore();
   const { uploadReport } = useReportUpload();
 
@@ -65,8 +64,6 @@ export const usePrintAction = ({
       return Promise.resolve();
     },
     onAfterPrint: () => {
-      // 인쇄 요청 상태 초기화 (상태 관리를 위해 별도로 초기화)
-      clearPrintRequest();
       // Native에게 인쇄 완료 메시지 전송
       sendPrintStatus(false);
     },

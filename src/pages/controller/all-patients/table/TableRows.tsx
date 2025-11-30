@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { TableCell } from "@/pages";
 import { ALL_PATIENTS_TABLE_COLUMNS } from "@/constants";
 import { AllPatientReportListDetailData } from "@/lib/allPatientReportListType";
-import { useReportHistoryStore } from "@/store";
+import { useReportListStore } from "@/store";
 
 interface TableRowsProps {
   allPatientReportList: AllPatientReportListDetailData[];
@@ -15,15 +15,19 @@ const TableRows = ({
   selectedReportIndex,
   setSelectedReportIndex,
 }: TableRowsProps) => {
-  const { setSelectedReportId } = useReportHistoryStore();
+  const { setSelectedReportId, setIsReportListEmpty } = useReportListStore();
 
   // 리스트 로드 성공 시 또는 selectedReportIndex 변경 시 selectedReportId 업데이트
   useEffect(() => {
-    if (allPatientReportList.length > 0) {
+    const hasReportList = allPatientReportList.length > 0;
+
+    if (hasReportList) {
       const reportId = allPatientReportList[selectedReportIndex]?.id.toString();
       if (reportId) {
         setSelectedReportId(reportId);
       }
+    } else {
+      setIsReportListEmpty(true);
     }
   }, [allPatientReportList, selectedReportIndex, setSelectedReportId]);
 

@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 interface LoadingIndicatorProps {
   isLoading?: boolean;
   full?: boolean;
@@ -9,25 +7,13 @@ const LoadingIndicator = ({
   isLoading = true,
   full = false,
 }: LoadingIndicatorProps) => {
-  // isLoading = true, full = true 일 때 스크롤을 막음
-  useEffect(() => {
-    if (full && isLoading) {
-      document.body.style.overflow = "hidden";
-
-      // cleanup: 로딩이 끝나거나 컴포넌트가 언마운트될 때 스크롤 복원
-      return () => {
-        document.body.style.overflow = "";
-      };
-    }
-  }, [full, isLoading]);
-
   if (isLoading === false) {
     return null;
   }
 
   if (full) {
     return (
-      <div className="fixed w-screen h-screen flex justify-center items-center bg-[rgba(0,0,0,0.5)] z-50">
+      <div className="fixed w-screen h-screen flex justify-center items-center bg-[rgba(0,0,0,0.25)] z-50">
         <LoadingSpinner />
       </div>
     );
