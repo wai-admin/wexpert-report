@@ -23,7 +23,11 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
     });
   const patientReportList = patientReportListData?.data ?? [];
 
-  console.log("ReportHistory: patientReportList", patientReportList);
+  console.log(
+    "ReportHistory: patientReportList, isLoading",
+    patientReportList,
+    isPatientReportListLoading
+  );
 
   usePatientReportDetail({
     reportId: patientReportList[selectedReportIndex]?.id.toString(),
