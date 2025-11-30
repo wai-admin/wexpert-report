@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RadioIndicator, Button, LoadingIndicator } from "@/components-common";
 import { PrintGuide, NoReportHistory } from "@/components";
 import { usePatientReportList } from "@/services/usePatientReportList";
-import { convertISOToLocal, hasValidPatientId, checkTruthy } from "@/utils";
+import { convertISOToLocal, hasValidPatientId } from "@/utils";
 import { useMessageStore, useReportHistoryStore } from "@/store";
-import { usePatientReportDetail } from "@/services/usePatientReportDetail";
 import { PrintOptions } from "@/hooks/usePrintAction";
 
 interface ReportHistoryProps {
@@ -23,22 +22,15 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
     });
   const patientReportList = patientReportListData?.data ?? [];
 
-  console.log(
-    "ReportHistory: patientReportList, isLoading",
-    patientReportList,
-    isPatientReportListLoading
-  );
-
-  usePatientReportDetail({
-    reportId: patientReportList[selectedReportIndex]?.id.toString(),
-    enabled: checkTruthy(patientReportList),
-  });
-
-  const handleSelectReport = (index: number) => {
-    setSelectedReportIndex(index);
-    const reportId = patientReportList[index]?.id.toString();
-    setSelectedReportId(reportId);
-  };
+  // 리스트 로드 성공 시 또는 selectedReportIndex 변경 시 selectedReportId 업데이트
+  useEffect(() => {
+    if (patientReportList.length > 0) {
+      const reportId = patientReportList[selectedReportIndex]?.id.toString();
+      if (reportId) {
+        setSelectedReportId(reportId);
+      }
+    }
+  }, [patientReportList, selectedReportIndex, setSelectedReportId]);
 
   if (isPatientReportListLoading) {
     return <LoadingIndicator />;
@@ -64,7 +56,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
             <div
               key={id}
               className="w-full min-h-[52px] flex justify-between items-center hover:bg-[rgb(49,51,53)] border-b-[1px] border-solid-lt cursor-pointer transition-colors duration-100"
-              onClick={() => handleSelectReport(index)}
+              onClick={() => setSelectedReportIndex(index)}
             >
               <div className="w-[50px] flex justify-center">
                 <RadioIndicator checked={isSelected} />
