@@ -30,8 +30,7 @@ const ReportContainer = () => {
   useWebViewLoading(isLoading);
 
   console.log("ReportContainer: PrintPage Data Information", printPageData);
-  const reportMode =
-    nativeMessage?.reportMode ?? ReportOptionType.ALL_REPORT_HISTORY;
+  const reportMode = nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT;
 
   return (
     <div className="size-full flex justify-start relative">

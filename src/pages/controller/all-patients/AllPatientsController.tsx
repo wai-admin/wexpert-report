@@ -35,6 +35,10 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
     data: allPatientReportListResponse,
     isFetching: isAllPatientReportListLoading,
   } = useAllPatientReportList();
+  console.log(
+    "AllPatientsController: allPatientReportListData",
+    allPatientReportListResponse
+  );
   const allPatientReportListData = allPatientReportListResponse?.data ?? {
     page: 0,
     limit: 0,

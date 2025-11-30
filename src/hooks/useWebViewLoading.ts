@@ -7,7 +7,6 @@ import { sendLoadingStatus } from "@/utils/bridge";
  */
 export const useWebViewLoading = (isFetching: boolean) => {
   useEffect(() => {
-    console.log("Loading Status: ", isFetching);
     sendLoadingStatus(isFetching);
   }, [isFetching]);
 };
