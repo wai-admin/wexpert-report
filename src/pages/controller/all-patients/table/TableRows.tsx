@@ -28,7 +28,7 @@ const TableRows = ({
   }, [allPatientReportList, selectedReportIndex, setSelectedReportId]);
 
   return (
-    <div className="w-full h-[460px] border-b border-b-solid-dk overflow-y-auto overscroll-contain">
+    <div className="w-full flex-1 border-b border-b-solid-dk overflow-y-auto overscroll-contain">
       {allPatientReportList.map(
         (report: AllPatientReportListDetailData, index: number) => {
           const isSelected = index === selectedReportIndex;
