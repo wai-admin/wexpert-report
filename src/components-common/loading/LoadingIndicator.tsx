@@ -12,11 +12,13 @@ const LoadingIndicator = ({
   }
 
   if (full) {
-    <div className="fixed w-screen h-screen flex justify-center items-center bg-[rgba(0,0,0,0.5)] z-50">
-      <LoadingSpinner />
-    </div>;
+    return (
+      <div className="fixed w-screen h-screen flex justify-center items-center bg-[rgba(0,0,0,0.5)] z-50">
+        <LoadingSpinner />
+      </div>
+    );
   } else {
-    <LoadingSpinner />;
+    return <LoadingSpinner />;
   }
 };
 
