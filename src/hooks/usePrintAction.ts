@@ -41,11 +41,6 @@ export const usePrintAction = ({
       // Native에게 인쇄 요청 메시지 전송
       sendPrintStatus(true);
 
-      console.log(
-        "usePrintAction: handlePrintInternal: printOptionsRef",
-        printOptionsRef
-      );
-
       // 리포트 업로드 (옵션에 따라 분기)
       if (printOptionsRef.shouldUploadReport && checkTruthy(nativeMessage)) {
         const reportData = {
