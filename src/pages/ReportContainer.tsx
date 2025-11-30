@@ -29,14 +29,14 @@ const ReportContainer = () => {
   const reportMode = nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT;
 
   return (
-    <div className="size-full flex justify-center relative">
+    <div className="size-full flex justify-start relative">
       <LoadingIndicator isLoading={isLoading} full={true} />
       <div
-        className={`h-full flex justify-center items-center
+        className={`h-full flex justify-center overflow-y-scroll
           ${
             reportMode === ReportOptionType.ALL_REPORT_HISTORY
-              ? "w-[calc(100%-var(--all-report-controller-width))] pr-[var(--all-report-controller-width)]"
-              : "w-[calc(100%-var(--patient-report-controller-width))] pr-[var(--patient-report-controller-width)]"
+              ? "w-[calc(100%-var(--all-report-controller-width))]"
+              : "w-[calc(100%-var(--patient-report-controller-width))]"
           }
           `}
       >
