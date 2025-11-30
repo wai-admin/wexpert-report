@@ -55,7 +55,7 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
   );
 
   if (isAllPatientReportListLoading) {
-    return <LoadingIndicator />;
+    return <LoadingIndicator full={true} />;
   }
 
   if (allPatientReportListData.data.length <= 0) {

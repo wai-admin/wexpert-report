@@ -33,7 +33,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   }, [patientReportList, selectedReportIndex, setSelectedReportId]);
 
   if (isPatientReportListLoading) {
-    return <LoadingIndicator />;
+    return <LoadingIndicator full={true} />;
   }
 
   const hasPatientReportList = patientReportList.length > 0;
