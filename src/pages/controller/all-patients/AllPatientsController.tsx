@@ -6,8 +6,6 @@ import {
   LoadingIndicator,
 } from "@/components-common";
 import { useAllPatientReportList } from "@/services/useAllPatientReportList";
-import { usePatientReportDetail } from "@/services/usePatientReportDetail";
-import { checkTruthy } from "@/utils";
 import { NoReportHistory } from "@/components";
 import {
   TableHeader,
@@ -49,11 +47,6 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
     hasNext: false,
     data: [],
   };
-
-  usePatientReportDetail({
-    reportId: allPatientReportListData.data[selectedReportIndex]?.id.toString(),
-    enabled: checkTruthy(allPatientReportListData.data),
-  });
 
   console.log(
     "AllPatientsController: allPatientReportListData & isAllPatientReportListLoading",
