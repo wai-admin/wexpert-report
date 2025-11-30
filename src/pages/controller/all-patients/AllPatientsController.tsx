@@ -1,10 +1,5 @@
-import { useState } from "react";
-import {
-  Button,
-  SearchInput,
-  Pagination,
-  LoadingIndicator,
-} from "@/components-common";
+import { useState, useEffect } from "react";
+import { Button, SearchInput, Pagination } from "@/components-common";
 import { useAllPatientReportList } from "@/services/useAllPatientReportList";
 import { NoReportHistory } from "@/components";
 import {
@@ -13,7 +8,7 @@ import {
   SortContainer,
   RowsPerPageContainer,
 } from "@/pages";
-import { useAllPatientsFilterStore } from "@/store";
+import { useAllPatientsFilterStore, useLoadingStore } from "@/store";
 import { PrintOptions } from "@/hooks/usePrintAction";
 
 interface AllPatientsControllerProps {
@@ -23,6 +18,7 @@ interface AllPatientsControllerProps {
 const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
   const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
 
+  const { setLoading } = useLoadingStore();
   const {
     setSearchKeyword,
     clearSearchKeyword,
@@ -38,7 +34,7 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
 
   const {
     data: allPatientReportListResponse,
-    isLoading: isAllPatientReportListLoading,
+    isFetching: isAllPatientReportListLoading,
   } = useAllPatientReportList();
   const allPatientReportListData = allPatientReportListResponse?.data ?? {
     page: 0,
@@ -48,14 +44,13 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
     data: [],
   };
 
-  console.log(
-    "AllPatientsController: allPatientReportListData & isAllPatientReportListLoading",
-    allPatientReportListData,
-    isAllPatientReportListLoading
-  );
+  useEffect(() => {
+    setLoading(isAllPatientReportListLoading);
+  }, [isAllPatientReportListLoading]);
 
+  // ReportContainer에서 전체 로딩 상태 처리로 인하여 빈 페이지 반환
   if (isAllPatientReportListLoading) {
-    return <LoadingIndicator full={true} />;
+    return <></>;
   }
 
   if (allPatientReportListData.data.length <= 0) {

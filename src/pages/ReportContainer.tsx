@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { usePrintAction, useWebViewLoading } from "@/hooks";
-import { useMessageStore } from "@/store";
+import { useMessageStore, useLoadingStore } from "@/store";
 import { PrintPage, ReportController } from "@/pages";
 import usePrintPageHandler from "@/hooks/usePrintPageHandler";
 import { ReportOptionType } from "@/lib";
@@ -12,8 +12,10 @@ const ReportContainer = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   //Bridge Message
   const { nativeMessage } = useMessageStore();
+  // Loading Status
+  const { isLoading } = useLoadingStore();
   // Data Information
-  const { printPageData, option, isLoading } = usePrintPageHandler();
+  const { printPageData, option } = usePrintPageHandler();
   // Handlers & State
   const { handlePrint } = usePrintAction({
     printRef,
@@ -26,7 +28,6 @@ const ReportContainer = () => {
   useWebViewLoading(isLoading);
 
   console.log("ReportContainer: PrintPage Data Information", printPageData);
-  console.log("ReportContainer: Loading Status", isLoading);
   const reportMode = nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT;
 
   return (

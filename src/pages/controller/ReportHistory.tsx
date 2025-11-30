@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
-import { RadioIndicator, Button, LoadingIndicator } from "@/components-common";
+import { RadioIndicator, Button } from "@/components-common";
 import { PrintGuide, NoReportHistory } from "@/components";
 import { usePatientReportList } from "@/services/usePatientReportList";
 import { convertISOToLocal, hasValidPatientId } from "@/utils";
-import { useMessageStore, useReportHistoryStore } from "@/store";
+import {
+  useMessageStore,
+  useReportHistoryStore,
+  useLoadingStore,
+} from "@/store";
 import { PrintOptions } from "@/hooks/usePrintAction";
 
 interface ReportHistoryProps {
@@ -12,14 +16,17 @@ interface ReportHistoryProps {
 
 const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
+
   const { setSelectedReportId } = useReportHistoryStore();
   const { nativeMessage } = useMessageStore();
-  const hasPatientContext = hasValidPatientId(nativeMessage);
+  const { setLoading } = useLoadingStore();
 
-  const { data: patientReportListData, isLoading: isPatientReportListLoading } =
-    usePatientReportList({
-      enabled: hasPatientContext,
-    });
+  const {
+    data: patientReportListData,
+    isFetching: isPatientReportListLoading,
+  } = usePatientReportList({
+    enabled: hasValidPatientId(nativeMessage),
+  });
   const patientReportList = patientReportListData?.data ?? [];
 
   // 리스트 로드 성공 시 또는 selectedReportIndex 변경 시 selectedReportId 업데이트
@@ -32,8 +39,13 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
     }
   }, [patientReportList, selectedReportIndex, setSelectedReportId]);
 
+  useEffect(() => {
+    setLoading(isPatientReportListLoading);
+  }, [isPatientReportListLoading]);
+
+  // ReportContainer에서 전체 로딩 상태 처리로 인하여 빈 페이지 반환
   if (isPatientReportListLoading) {
-    return <LoadingIndicator full={true} />;
+    return <></>;
   }
 
   const hasPatientReportList = patientReportList.length > 0;
