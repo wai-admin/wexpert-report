@@ -1,8 +1,22 @@
+import { ChangeEvent } from "react";
 import { OptionField } from "@/components";
 import { useNewReportStore } from "@/store";
+import { ELEMENT } from "@/constants";
 
 const PhysicianAssessment = () => {
   const { physicianAssessment, setPhysicianAssessment } = useNewReportStore();
+
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setPhysicianAssessment(e.target.value);
+
+    // PrintPage에서 스크롤 처리를 위해 요소 ID 사용
+    const assessmentEl = document.getElementById(
+      `${ELEMENT.A4_CONTAINER}-${ELEMENT.ASSESSMENT}`
+    );
+    if (assessmentEl) {
+      assessmentEl.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <OptionField
@@ -15,7 +29,7 @@ const PhysicianAssessment = () => {
           placeholder="Up to 1000 characters"
           maxLength={1000}
           value={physicianAssessment}
-          onChange={(e) => setPhysicianAssessment(e.target.value)}
+          onChange={handleChange}
         />
       </div>
     </OptionField>
