@@ -4,8 +4,8 @@ import { useAllPatientReportList } from "@/services/useAllPatientReportList";
 import {
   TableHeader,
   TableRows,
-  SortContainer,
-  RowsPerPageContainer,
+  SortDropdown,
+  RowsPerPageDropdown,
 } from "@/pages";
 import { useAllPatientsFilterStore, useLoadingStore } from "@/store";
 import { PrintOptions } from "@/hooks/usePrintAction";
@@ -79,7 +79,7 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
           <p className="font-pretendard text-[16px] text-white font-medium">
             Report List
           </p>
-          <SortContainer
+          <SortDropdown
             sortBy={sortBy}
             setSortBy={setSortBy}
             sortOrder={sortOrder}
@@ -108,7 +108,7 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
           </div>
           {/* Pagination Footer */}
           <div className="w-full flex items-center justify-between">
-            <RowsPerPageContainer
+            <RowsPerPageDropdown
               rowsPerPage={rowsPerPage}
               setRowsPerPage={setRowsPerPage}
             />

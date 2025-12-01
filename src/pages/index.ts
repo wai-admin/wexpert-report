@@ -14,5 +14,5 @@ export { default as TableHeader } from "./controller/all-patients/table/TableHea
 export { default as TableRows } from "./controller/all-patients/table/TableRows";
 export { default as TableCell } from "./controller/all-patients/table/TableCell";
 
-export { default as SortContainer } from "./controller/all-patients/sort/SortContainer";
-export { default as RowsPerPageContainer } from "./controller/all-patients/rows-per-page/RowsPerPageContainer";
+export { default as SortDropdown } from "./controller/all-patients/sort/SortDropdown";
+export { default as RowsPerPageDropdown } from "./controller/all-patients/rows-per-page/RowsPerPageDropdown";

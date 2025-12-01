@@ -1,25 +1,34 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { SortBy, SortOrder } from "@/store";
+import { useClickOutside } from "@/hooks";
 import SortByBox from "./SortByBox";
 import SortOrderBox from "./SortOrderBox";
 
-interface SortContainerProps {
+interface SortDropdownProps {
   sortBy: SortBy;
   setSortBy: (sortBy: SortBy) => void;
   sortOrder: SortOrder;
   setSortOrder: (sortOrder: SortOrder) => void;
 }
 
-const SortContainer = ({
+const SortDropdown = ({
   sortBy,
   setSortBy,
   sortOrder,
   setSortOrder,
-}: SortContainerProps) => {
+}: SortDropdownProps) => {
   const [isOpenSortDropdown, setIsOpenSortDropdown] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // 드롭다운 외부 클릭 시 닫기
+  useClickOutside<HTMLDivElement>(
+    dropdownRef,
+    () => setIsOpenSortDropdown(false),
+    isOpenSortDropdown
+  );
 
   return (
-    <div className="relative">
+    <div ref={dropdownRef} className="relative">
       <button
         className="flex gap-[5px] py-[4px]"
         onClick={() => setIsOpenSortDropdown(!isOpenSortDropdown)}
@@ -45,4 +54,4 @@ const SortContainer = ({
   );
 };
 
-export default SortContainer;
+export default SortDropdown;
