@@ -1,64 +1,66 @@
 import { useEffect } from "react";
 import { ReportTabs } from "@/components";
 import { NewReport, ReportHistory } from "@/pages";
-import { PrintPageData, ReportTabValues } from "@/types";
-import { ReportOptionType } from "@/lib/nativeMessageType";
-import { usePatientControllerStore } from "@/store";
+import {
+  PrintPageData,
+  ReportTabValues,
+  CurrentReportModeValues,
+} from "@/types";
+import { usePatientControllerStore, useCurrentReportModeStore } from "@/store";
 import { PrintOptions } from "@/hooks/usePrintAction";
+import { ReportOptionType } from "@/lib";
 
 interface PatientControllerProps {
   printPageData: PrintPageData | null;
-  reportMode: ReportOptionType;
   onPrint: (options?: PrintOptions) => void;
 }
 
 const PatientController = ({
   printPageData,
-  reportMode,
   onPrint,
 }: PatientControllerProps) => {
+  const {
+    currentReportMode,
+    isNewReportMode,
+    isPatientReportMode,
+    initialReportMode,
+  } = useCurrentReportModeStore();
+
   const { selectedReportTab, setSelectedReportTab } =
     usePatientControllerStore();
 
   useEffect(() => {
     setSelectedReportTab(
-      reportMode === ReportOptionType.NEW_REPORT
+      currentReportMode === CurrentReportModeValues.NEW_REPORT
         ? ReportTabValues.NEW_REPORT
         : ReportTabValues.REPORT_HISTORY
     );
-  }, [reportMode]);
+  }, [currentReportMode]);
 
-  const selectedNewReportMode = reportMode === ReportOptionType.NEW_REPORT;
-  const selectedReportHistoryMode =
-    reportMode === ReportOptionType.PATIENT_REPORT_HISTORY;
-
-  const selectedNewReportTab = selectedReportTab === ReportTabValues.NEW_REPORT;
-  const selectedReportHistoryTab =
-    selectedReportTab === ReportTabValues.REPORT_HISTORY;
+  const isInitialNewReport = initialReportMode === ReportOptionType.NEW_REPORT;
+  const isInitialReportHistory =
+    initialReportMode === ReportOptionType.PATIENT_REPORT_HISTORY;
 
   return (
     <div className="size-full flex flex-col justify-between p-[30px] gap-[25px]">
       {/* 분석 이미지 화면을 통해 들어온 경우 */}
-      {selectedNewReportMode && (
+      {isInitialNewReport && (
         <ReportTabs
           selectedReportTab={selectedReportTab}
           setSelectedReportTab={setSelectedReportTab}
         />
       )}
       {/* 환자 리스트 화면을 통해 들어온 경우 */}
-      {selectedReportHistoryMode && (
+      {isInitialReportHistory && (
         <p className="font-pretendard text-[16px] text-white font-medium">
           Report History
         </p>
       )}
       <div className="flex-1 min-h-0">
-        {selectedNewReportTab && (
+        {isNewReportMode && (
           <NewReport printPageData={printPageData} onPrint={onPrint} />
         )}
-        {/* 분석 화면을 통해 들어와서 Report History 탭 선택한 경우 or 환자 리스트 화면을 통해 들어온 경우 (빠른 화면 표시를 위해 두가지 조건 사용)*/}
-        {(selectedReportHistoryTab || selectedReportHistoryMode) && (
-          <ReportHistory onPrint={onPrint} />
-        )}
+        {isPatientReportMode && <ReportHistory onPrint={onPrint} />}
       </div>
     </div>
   );

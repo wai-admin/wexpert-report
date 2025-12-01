@@ -44,7 +44,7 @@ export const usePrintAction = ({
       // 리포트 업로드 (옵션에 따라 분기)
       if (printOptionsRef.shouldUploadReport && checkTruthy(nativeMessage)) {
         const reportData = {
-          patientId: nativeMessage.id || null,
+          patientId: nativeMessage.id,
           includeAllImages:
             imageExportOption === ImageExportOptionValues.ALL_IMAGE,
           doctorOpinion: physicianAssessment || null,

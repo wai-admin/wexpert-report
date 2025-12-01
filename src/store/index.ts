@@ -5,3 +5,4 @@ export * from "./useNewReportStore";
 export * from "./useAllPatientsFilterStore";
 export * from "./useReportListStore";
 export * from "./usePatientControllerStore";
+export * from "./useCurrentReportModeStore";

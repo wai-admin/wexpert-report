@@ -1,18 +1,12 @@
 import { useEffect } from "react";
 import { useReport } from "@/services/useReport";
 import {
-  useMessageStore,
   useNewReportStore,
   useReportListStore,
-  usePatientControllerStore,
   useLoadingStore,
+  useCurrentReportModeStore,
 } from "@/store";
-import {
-  ImageExportOptionValues,
-  ReportTabValues,
-  UsePrintPageHandlerReturn,
-} from "@/types";
-import { ReportOptionType } from "@/lib/nativeMessageType";
+import { ImageExportOptionValues, UsePrintPageHandlerReturn } from "@/types";
 import {
   checkTruthy,
   getPatientType,
@@ -37,22 +31,22 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
    * 4. { printPageData, isLoading, error } 형태로 반환
    */
 
-  const { nativeMessage } = useMessageStore();
   const { imageExportOption, physicianAssessment } = useNewReportStore();
+  const { isNewReportMode, isPatientReportMode, isAllReportMode } =
+    useCurrentReportModeStore();
   const { selectedReportId } = useReportListStore();
-  const { selectedReportTab } = usePatientControllerStore();
   const { setLoading } = useLoadingStore();
 
   // New Report 모드
   const { data: newReport, isFetching: isNewReportFetching } = useReport({
-    enabled: selectedReportTab === ReportTabValues.NEW_REPORT,
+    enabled: isNewReportMode,
   });
 
   // Report History 모드 - 같은 쿼리 키로 캐시된 데이터 사용
   const { data: reportHistoryDetail, isFetching: isHistoryDetailFetching } =
     usePatientReportDetail({
       reportId: selectedReportId ?? "",
-      enabled: selectedReportTab === ReportTabValues.REPORT_HISTORY,
+      enabled: isPatientReportMode || isAllReportMode,
     });
 
   useEffect(() => {
@@ -72,8 +66,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
 
   if (
     checkTruthy(reportHistoryDetail) &&
-    (selectedReportTab === ReportTabValues.REPORT_HISTORY ||
-      nativeMessage?.reportMode === ReportOptionType.ALL_REPORT_HISTORY)
+    (isPatientReportMode || isAllReportMode)
   ) {
     return {
       printPageData: {
@@ -145,7 +138,6 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
           : ImageExportOptionValues.RUPTURE_CASE,
         sonographies:
           reportHistoryDetail.data.report.patientDetail.sonographies,
-        reportMode: nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT,
       },
       // 개발 환경에서는 false, 프로덕션에서는 true
       isLoading: import.meta.env.PROD,
@@ -153,10 +145,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
     };
   }
 
-  if (
-    checkTruthy(newReport) &&
-    selectedReportTab === ReportTabValues.NEW_REPORT
-  ) {
+  if (checkTruthy(newReport) && isNewReportMode) {
     return {
       printPageData: {
         cover: {
@@ -206,7 +195,6 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
       option: {
         imageExportOption: imageExportOption,
         sonographies: newReport.data.patientDetail.sonographies,
-        reportMode: nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT,
       },
       isLoading: isNewReportFetching,
       error: null,
@@ -218,8 +206,6 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
     option: {
       imageExportOption: imageExportOption,
       sonographies: [],
-      // 개발 환경에서 테스트 시 해당 값 변경 필요
-      reportMode: nativeMessage?.reportMode ?? ReportOptionType.NEW_REPORT,
     },
     // 개발 환경에서는 false, 프로덕션에서는 true
     isLoading: import.meta.env.PROD,
