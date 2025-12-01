@@ -1,24 +1,33 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useClickOutside } from "@/hooks";
 import OptionBox from "./OptionBox";
 
-interface RowsPerPageContainerProps {
+interface RowsPerPageDropdownProps {
   rowsPerPage: number;
   setRowsPerPage: (rowsPerPage: number) => void;
 }
 
-const RowsPerPageContainer = ({
+const RowsPerPageDropdown = ({
   rowsPerPage,
   setRowsPerPage,
-}: RowsPerPageContainerProps) => {
+}: RowsPerPageDropdownProps) => {
   const [isOpenRowsPerPageDropdown, setIsOpenRowsPerPageDropdown] =
     useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // 드롭다운 외부 클릭 시 닫기
+  useClickOutside<HTMLDivElement>(
+    dropdownRef,
+    () => setIsOpenRowsPerPageDropdown(false),
+    isOpenRowsPerPageDropdown
+  );
 
   return (
     <div className="flex items-center gap-[16px]">
       <p className="font-pretendard text-[16px] text-[rgba(136,141,150,1)]">
         Rows per page:
       </p>
-      <div className="relative">
+      <div ref={dropdownRef} className="relative">
         <button
           className="flex items-center gap-[5px] py-[4px]"
           onClick={() =>
@@ -51,4 +60,4 @@ const RowsPerPageContainer = ({
   );
 };
 
-export default RowsPerPageContainer;
+export default RowsPerPageDropdown;
