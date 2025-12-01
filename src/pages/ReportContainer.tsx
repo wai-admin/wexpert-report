@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { usePrintAction, useWebViewLoading } from "@/hooks";
 import { useMessageStore, useLoadingStore, useReportListStore } from "@/store";
-import { PrintPage, ReportController, NoPrintPage } from "@/pages";
+import { PrintPage, ReportController, EmptyPrintPage } from "@/pages";
 import usePrintPageHandler from "@/hooks/usePrintPageHandler";
 import { ReportOptionType } from "@/lib";
 import { LoadingIndicator } from "@/components-common";
@@ -58,7 +58,7 @@ const ReportContainer = () => {
           `}
       >
         {isReportListEmpty ? (
-          <NoPrintPage />
+          <EmptyPrintPage />
         ) : (
           <PrintPage
             printRef={printRef}

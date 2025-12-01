@@ -30,7 +30,8 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
     if (checkTruthy(patientReportListData)) {
       const hasReportList = patientReportListData.data.length > 0;
       if (hasReportList) {
-        const reportId = patientReportList[selectedReportIndex]?.id.toString();
+        const reportId =
+          patientReportListData.data[selectedReportIndex]?.id.toString();
         if (reportId) {
           setSelectedReportId(reportId);
         }
@@ -49,8 +50,8 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
     return <></>;
   }
 
-  const hasPatientReportList = patientReportList.length > 0;
-  if (hasPatientReportList === false) {
+  const isEmptyReportList = patientReportList.length <= 0;
+  if (isEmptyReportList) {
     return <NoReportList />;
   }
 

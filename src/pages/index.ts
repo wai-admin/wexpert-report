@@ -1,7 +1,7 @@
 export { default as Cover } from "./print/Cover";
 export { default as ElementRenderer } from "./print/ElementRenderer";
 export { default as PrintPage } from "./print/PrintPage";
-export { default as NoPrintPage } from "./print/NoPrintPage";
+export { default as EmptyPrintPage } from "./print/EmptyPrintPage";
 
 export { default as ReportContainer } from "./ReportContainer";
 export { default as ReportController } from "./controller/ReportController";
