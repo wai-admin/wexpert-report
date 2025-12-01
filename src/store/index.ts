@@ -1,5 +1,6 @@
 export * from "./useAuthStore";
 export * from "./useMessageStore";
+export * from "./useVersionStore";
 export * from "./useLoadingStore";
 export * from "./useNewReportStore";
 export * from "./useAllPatientsFilterStore";
