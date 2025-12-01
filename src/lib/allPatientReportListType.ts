@@ -11,7 +11,8 @@ export interface AllPatientReportListData {
 }
 
 export interface AllPatientReportListDetailData {
-  id: number;
+  reportId: number;
+  patientId: number;
   chartNumber: string;
   patientName: string;
   patientBirthDate: string;

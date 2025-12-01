@@ -1,5 +1,5 @@
 import { useEffect, ReactNode } from "react";
-import { useMessageStore, useAuthStore } from "@/store";
+import { useMessageStore, useAuthStore, useReportListStore } from "@/store";
 import { NativeMessage, NativeMessageData } from "@/lib/nativeMessageType";
 import { hasKey } from "@/utils/common";
 import { NATIVE_MESSAGE_KEY } from "@/constants/bridge";
@@ -16,6 +16,7 @@ interface GlobalProviderProps {
 const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const { setNativeMessage } = useMessageStore();
   const { setAccessToken } = useAuthStore();
+  const { setSelectedPatientId } = useReportListStore();
 
   // C#의 WebView2에게 초기화 메시지 전송
   const callNativeInitialized = () => {
@@ -33,6 +34,7 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
       setNativeMessage(data as NativeMessage);
 
       setAccessToken((data as NativeMessage).accessToken);
+      setSelectedPatientId((data as NativeMessage).id);
     }
   };
 

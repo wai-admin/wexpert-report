@@ -34,7 +34,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
   const { imageExportOption, physicianAssessment } = useNewReportStore();
   const { isNewReportMode, isPatientReportMode, isAllReportMode } =
     useCurrentReportModeStore();
-  const { selectedReportId } = useReportListStore();
+  const { selectedReportId, selectedPatientId } = useReportListStore();
   const { setLoading } = useLoadingStore();
 
   // New Report 모드
@@ -45,7 +45,12 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
   // Report History 모드 - 같은 쿼리 키로 캐시된 데이터 사용
   const { data: reportHistoryDetail, isFetching: isHistoryDetailFetching } =
     usePatientReportDetail({
-      reportId: selectedReportId ?? "",
+      reportId: checkTruthy(selectedReportId)
+        ? selectedReportId.toString()
+        : "",
+      patientId: checkTruthy(selectedPatientId)
+        ? selectedPatientId.toString()
+        : "",
       enabled: isPatientReportMode || isAllReportMode,
     });
 
