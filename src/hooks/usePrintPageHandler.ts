@@ -70,7 +70,11 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
     isHistoryDetailFetching
   );
 
-  if (checkTruthy(reportHistoryDetail)) {
+  if (
+    checkTruthy(reportHistoryDetail) &&
+    (selectedReportTab === ReportTabValues.REPORT_HISTORY ||
+      nativeMessage?.reportMode === ReportOptionType.ALL_REPORT_HISTORY)
+  ) {
     return {
       printPageData: {
         cover: {
@@ -149,7 +153,10 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
     };
   }
 
-  if (checkTruthy(newReport)) {
+  if (
+    checkTruthy(newReport) &&
+    selectedReportTab === ReportTabValues.NEW_REPORT
+  ) {
     return {
       printPageData: {
         cover: {
