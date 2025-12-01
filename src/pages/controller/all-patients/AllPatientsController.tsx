@@ -51,11 +51,6 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
     setLoading(isAllPatientReportListLoading);
   }, [isAllPatientReportListLoading]);
 
-  // ReportContainer에서 전체 로딩 상태 처리로 인하여 빈 페이지 반환
-  if (isAllPatientReportListLoading) {
-    return <></>;
-  }
-
   const hasAllPatientReportList = allPatientReportListData.total > 0;
 
   return (
@@ -95,14 +90,20 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
         <div className="w-full flex flex-col flex-1 gap-[14px] overflow-hidden">
           <div className="w-full flex flex-col flex-1 overflow-hidden">
             <TableHeader />
-            {hasAllPatientReportList ? (
-              <TableRows
-                allPatientReportList={allPatientReportListData.data}
-                selectedReportIndex={selectedReportIndex}
-                setSelectedReportIndex={setSelectedReportIndex}
-              />
+            {isAllPatientReportListLoading ? (
+              <></>
             ) : (
-              <NoReportList />
+              <>
+                {hasAllPatientReportList ? (
+                  <TableRows
+                    allPatientReportList={allPatientReportListData.data}
+                    selectedReportIndex={selectedReportIndex}
+                    setSelectedReportIndex={setSelectedReportIndex}
+                  />
+                ) : (
+                  <NoReportList />
+                )}
+              </>
             )}
           </div>
           {/* Pagination Footer */}
