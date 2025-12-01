@@ -55,7 +55,10 @@ const PatientController = ({
         {selectedNewReportTab && (
           <NewReport printPageData={printPageData} onPrint={onPrint} />
         )}
-        {selectedReportHistoryTab && <ReportHistory onPrint={onPrint} />}
+        {/* 분석 화면을 통해 들어와서 Report History 탭 선택한 경우 or 환자 리스트 화면을 통해 들어온 경우 (빠른 화면 표시를 위해 두가지 조건 사용)*/}
+        {(selectedReportHistoryTab || selectedReportHistoryMode) && (
+          <ReportHistory onPrint={onPrint} />
+        )}
       </div>
     </div>
   );
