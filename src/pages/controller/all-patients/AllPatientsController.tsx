@@ -20,7 +20,6 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
   const { setLoading } = useLoadingStore();
   const {
     setSearchKeyword,
-    clearSearchKeyword,
     rowsPerPage,
     setRowsPerPage,
     currentPage,
@@ -64,7 +63,6 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
           <SearchInput
             placeholder="Enter search keywords"
             onSearch={setSearchKeyword}
-            onClear={clearSearchKeyword}
           />
         </div>
         <Button

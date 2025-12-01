@@ -3,10 +3,9 @@ import { FormEvent, useState } from "react";
 interface SearchInputProps {
   placeholder: string;
   onSearch: (keyword: string) => void;
-  onClear: () => void;
 }
 
-const SearchInput = ({ placeholder, onSearch, onClear }: SearchInputProps) => {
+const SearchInput = ({ placeholder, onSearch }: SearchInputProps) => {
   const [keyword, setKeyword] = useState("");
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -16,7 +15,6 @@ const SearchInput = ({ placeholder, onSearch, onClear }: SearchInputProps) => {
 
   const handleClear = () => {
     setKeyword("");
-    onClear(); // 검색어 초기화 시 빈 문자열로 검색
   };
 
   return (
