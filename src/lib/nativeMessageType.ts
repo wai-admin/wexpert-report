@@ -5,7 +5,7 @@ export interface NativeMessageData {
 export interface NativeMessage {
   accessToken: string;
   nativeVersion: string;
-  id: number;
+  id: number | null;
   reportMode: ReportOptionType;
 }
 

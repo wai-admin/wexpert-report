@@ -3,6 +3,7 @@ import { TableCell } from "@/pages";
 import { ALL_PATIENTS_TABLE_COLUMNS } from "@/constants";
 import { AllPatientReportListDetailData } from "@/lib/allPatientReportListType";
 import { useReportListStore } from "@/store";
+import { checkTruthy } from "@/utils";
 
 interface TableRowsProps {
   allPatientReportList: AllPatientReportListDetailData[];
@@ -15,21 +16,26 @@ const TableRows = ({
   selectedReportIndex,
   setSelectedReportIndex,
 }: TableRowsProps) => {
-  const { setSelectedReportId, setIsReportListEmpty } = useReportListStore();
+  const { setSelectedReportId, setSelectedPatientId, setIsReportListEmpty } =
+    useReportListStore();
 
   // 리스트 로드 성공 시 또는 selectedReportIndex 변경 시 selectedReportId 업데이트
   useEffect(() => {
     const hasReportList = allPatientReportList.length > 0;
 
     if (hasReportList) {
-      const reportId = allPatientReportList[selectedReportIndex]?.id.toString();
-      if (reportId) {
-        setSelectedReportId(reportId);
+      const { reportId, patientId } = allPatientReportList[selectedReportIndex];
+
+      if (checkTruthy(reportId)) {
+        setSelectedReportId(reportId.toString());
+      }
+      if (checkTruthy(patientId)) {
+        setSelectedPatientId(patientId);
       }
     } else {
       setIsReportListEmpty(true);
     }
-  }, [allPatientReportList, selectedReportIndex, setSelectedReportId]);
+  }, [allPatientReportList, selectedReportIndex]);
 
   return (
     <div className="w-full flex-1 border-b border-b-solid-dk overflow-y-auto overscroll-contain">
@@ -39,7 +45,7 @@ const TableRows = ({
 
           return (
             <div
-              key={report.id}
+              key={report.reportId.toString()}
               className="w-full h-[48px] flex items-center justify-between bg-transparent hover:bg-[rgb(49,51,53)] border-b border-b-solid-dk px-[14px] cursor-pointer transition-colors duration-100"
               onClick={() => setSelectedReportIndex(index)}
             >
