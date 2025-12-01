@@ -130,7 +130,7 @@ const NoReportList = () => {
         There are no exported reports.
       </p>
       <p className="text-[16px] font-pretendard text-solid-lt text-center">
-        Please click ‘Export’ in the ‘New Export’ tab <br /> to create your
+        Please click ‘Export’ in the ‘New Report’ tab <br /> to create your
         first report.
       </p>
     </div>
