@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 import { RadioIndicator, Button } from "@/components-common";
 import { PrintGuide } from "@/components";
 import { usePatientReportList } from "@/services/usePatientReportList";
-import { convertISOToLocal, hasValidPatientId, checkTruthy } from "@/utils";
+import {
+  convertISOToLocal,
+  hasValidPatientId,
+  checkTruthy,
+  checkFalsy,
+} from "@/utils";
 import { useMessageStore, useReportListStore, useLoadingStore } from "@/store";
 import { PrintOptions } from "@/hooks/usePrintAction";
 
@@ -55,7 +60,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   return (
     <div className="size-full flex flex-col justify-between gap-[10px]">
       <TableHeader />
-      {isPatientReportListLoading ? (
+      {isPatientReportListLoading && checkFalsy(patientReportList) ? (
         <></>
       ) : (
         <div className="w-full flex flex-col flex-1 overflow-y-auto overscroll-contain">
