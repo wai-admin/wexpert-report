@@ -45,12 +45,9 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
     setLoading(isPatientReportListLoading);
   }, [isPatientReportListLoading]);
 
-  // ReportContainer에서 전체 로딩 상태 처리로 인하여 빈 페이지 반환
-  if (isPatientReportListLoading) {
-    return <></>;
-  }
-
-  const isEmptyReportList = patientReportList.length <= 0;
+  // List를 받아온 상태에서 리스트가 비어있는 경우
+  const isEmptyReportList =
+    checkTruthy(patientReportListData) && patientReportList.length <= 0;
   if (isEmptyReportList) {
     return <NoReportList />;
   }
@@ -58,37 +55,43 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   return (
     <div className="size-full flex flex-col justify-between gap-[10px]">
       <TableHeader />
-      <div className="w-full flex flex-col flex-1 overflow-y-auto overscroll-contain">
-        {patientReportList.map((report, index) => {
-          const { id, createdAt, includeAllImages } = report;
-          const date = convertISOToLocal(createdAt, false, true);
-          const exportOption = includeAllImages ? "All Image" : "Rupture Case";
+      {isPatientReportListLoading ? (
+        <></>
+      ) : (
+        <div className="w-full flex flex-col flex-1 overflow-y-auto overscroll-contain">
+          {patientReportList.map((report, index) => {
+            const { id, createdAt, includeAllImages } = report;
+            const date = convertISOToLocal(createdAt, false, true);
+            const exportOption = includeAllImages
+              ? "All Image"
+              : "Rupture Case";
 
-          const isSelected = index === selectedReportIndex;
+            const isSelected = index === selectedReportIndex;
 
-          return (
-            <div
-              key={id}
-              className="w-full min-h-[52px] flex justify-between items-center hover:bg-[rgb(49,51,53)] border-b-[1px] border-solid-lt cursor-pointer transition-colors duration-100"
-              onClick={() => setSelectedReportIndex(index)}
-            >
-              <div className="w-[50px] flex justify-center">
-                <RadioIndicator checked={isSelected} />
+            return (
+              <div
+                key={id}
+                className="w-full min-h-[52px] flex justify-between items-center hover:bg-[rgb(49,51,53)] border-b-[1px] border-solid-lt cursor-pointer transition-colors duration-100"
+                onClick={() => setSelectedReportIndex(index)}
+              >
+                <div className="w-[50px] flex justify-center">
+                  <RadioIndicator checked={isSelected} />
+                </div>
+                <div className="w-[160px] flex justify-center">
+                  <p className="text-[14px] font-pretendard text-text-tertiary">
+                    {date}
+                  </p>
+                </div>
+                <div className="w-[160px] flex justify-center">
+                  <p className="text-[14px] font-pretendard text-white">
+                    {exportOption}
+                  </p>
+                </div>
               </div>
-              <div className="w-[160px] flex justify-center">
-                <p className="text-[14px] font-pretendard text-text-tertiary">
-                  {date}
-                </p>
-              </div>
-              <div className="w-[160px] flex justify-center">
-                <p className="text-[14px] font-pretendard text-white">
-                  {exportOption}
-                </p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
       <div className="w-full flex flex-col gap-[10px]">
         <Button
           label="Print"
