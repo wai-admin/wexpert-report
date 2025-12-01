@@ -18,6 +18,7 @@ export const usePatientReportList = ({
     queryKey: QUERY_KEYS.REPORT.PATIENT_LIST(patientId),
     queryFn: () => reportApi.getPatientReportList(patientId),
     enabled: enabled && hasValidPatientId(nativeMessage),
+    staleTime: 1 * 60 * 1000, // 1분 동안은 신선한 것으로 간주
     retry: (failureCount, error: any) => {
       // 실패 시 오류 로그
       console.error(`Report fetch failed (attempt ${failureCount + 1}):`, {

@@ -1,6 +1,6 @@
 import { ReportTabValues } from "@/types";
 import { create } from "zustand";
-import { useReportListStore } from "./useReportList";
+import { useReportListStore } from "./useReportListStore";
 
 interface PatientControllerState {
   selectedReportTab: ReportTabValues;
