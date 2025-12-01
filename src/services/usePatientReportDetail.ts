@@ -21,8 +21,7 @@ export const usePatientReportDetail = ({
     queryFn: () => reportApi.getPatientReportDetail(patientId, reportId),
     enabled:
       enabled && hasValidPatientId(nativeMessage) && checkTruthy(reportId),
-    // TODO: prod에서 statleTime 활성화하기 (캐시)
-    // staleTime: 1 * 60 * 1000, // 1분 동안은 신선한 것으로 간주
+    staleTime: 1 * 60 * 1000, // 1분 동안은 신선한 것으로 간주
     retry: (failureCount, error: any) => {
       // 실패 시 오류 로그
       console.error(`Report fetch failed (attempt ${failureCount + 1}):`, {

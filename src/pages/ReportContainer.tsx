@@ -5,7 +5,7 @@ import { PrintPage, ReportController, NoPrintPage } from "@/pages";
 import usePrintPageHandler from "@/hooks/usePrintPageHandler";
 import { ReportOptionType } from "@/lib";
 import { LoadingIndicator } from "@/components-common";
-import { checkFalsy } from "@/utils";
+import { checkFalsy, checkProd } from "@/utils";
 
 // WARNING: usePrintPageHandler 업데이트 시 전체 렌더링 주의 (개선 필요)
 const ReportContainer = () => {
@@ -31,16 +31,18 @@ const ReportContainer = () => {
   useWebViewLoading(isLoading);
   console.log("ReportContainer: PrintPage Data Information", printPageData);
 
-  // nativeMessage를 받을 때까지 아무것도 렌더링하지 않음
-  if (checkFalsy(nativeMessage)) {
+  // nativeMessage를 받을 때까지 아무것도 렌더링하지 않음 (프로덕션 환경에서만)
+  if (checkFalsy(nativeMessage) && checkProd()) {
     return (
-      <div className="size-full flex items-center justify-center">
+      <div className="size-full flex items-center justify-center bg-bg-base-alt">
         <LoadingIndicator isLoading={true} full={true} />
       </div>
     );
   }
 
-  const reportMode = nativeMessage.reportMode;
+  const reportMode = checkProd()
+    ? nativeMessage!.reportMode
+    : ReportOptionType.NEW_REPORT;
 
   return (
     <div className="size-full flex justify-start relative">
