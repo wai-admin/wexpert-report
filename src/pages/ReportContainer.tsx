@@ -1,9 +1,13 @@
 import { useRef } from "react";
 import { usePrintAction, useWebViewLoading } from "@/hooks";
-import { useMessageStore, useLoadingStore, useReportListStore } from "@/store";
+import {
+  useMessageStore,
+  useLoadingStore,
+  useReportListStore,
+  useCurrentReportModeStore,
+} from "@/store";
 import { PrintPage, ReportController, EmptyPrintPage } from "@/pages";
 import usePrintPageHandler from "@/hooks/usePrintPageHandler";
-import { ReportOptionType } from "@/lib";
 import { LoadingIndicator } from "@/components-common";
 import { checkFalsy, checkProd } from "@/utils";
 
@@ -17,6 +21,8 @@ const ReportContainer = () => {
   const { isLoading } = useLoadingStore();
   // Report List Empty Status
   const { isReportListEmpty } = useReportListStore();
+  // Current Report Mode
+  const { isAllReportMode } = useCurrentReportModeStore();
   // Data Information
   const { printPageData, option } = usePrintPageHandler();
   // Handlers & State
@@ -40,10 +46,6 @@ const ReportContainer = () => {
     );
   }
 
-  const reportMode = checkProd()
-    ? nativeMessage!.reportMode
-    : ReportOptionType.NEW_REPORT;
-
   return (
     <div className="size-full flex justify-start relative">
       <LoadingIndicator isLoading={isLoading} full={true} />
@@ -51,7 +53,7 @@ const ReportContainer = () => {
         ref={scrollRef}
         className={`h-full flex justify-center overflow-y-scroll
           ${
-            reportMode === ReportOptionType.ALL_REPORT_HISTORY
+            isAllReportMode
               ? "w-[calc(100%-var(--all-report-controller-width))]"
               : "w-[calc(100%-var(--patient-report-controller-width))]"
           }
@@ -69,11 +71,7 @@ const ReportContainer = () => {
         )}
       </div>
       <div className="fixed right-0 top-0">
-        <ReportController
-          printPageData={printPageData}
-          reportMode={reportMode}
-          onPrint={handlePrint}
-        />
+        <ReportController printPageData={printPageData} onPrint={handlePrint} />
       </div>
     </div>
   );

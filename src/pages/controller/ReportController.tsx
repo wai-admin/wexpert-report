@@ -1,35 +1,32 @@
 import { AllPatientsController, PatientController } from "@/pages";
+import { useCurrentReportModeStore } from "@/store";
 import { PrintPageData } from "@/types";
-import { ReportOptionType } from "@/lib/nativeMessageType";
 import { PrintOptions } from "@/hooks/usePrintAction";
 
 interface ReportControllerProps {
   printPageData: PrintPageData | null;
-  reportMode: ReportOptionType;
   onPrint: (options?: PrintOptions) => void;
 }
 
 const ReportController = ({
   printPageData,
-  reportMode,
   onPrint,
 }: ReportControllerProps) => {
+  // Current Report Mode
+  const { isAllReportMode } = useCurrentReportModeStore();
+
   return (
     <div
       className={`h-screen bg-bg-base-alt ${
-        reportMode === ReportOptionType.ALL_REPORT_HISTORY
+        isAllReportMode
           ? "w-[var(--all-report-controller-width)]"
           : "w-[var(--patient-report-controller-width)]"
       }`}
     >
-      {reportMode === ReportOptionType.ALL_REPORT_HISTORY ? (
+      {isAllReportMode ? (
         <AllPatientsController onPrint={onPrint} />
       ) : (
-        <PatientController
-          printPageData={printPageData}
-          reportMode={reportMode}
-          onPrint={onPrint}
-        />
+        <PatientController printPageData={printPageData} onPrint={onPrint} />
       )}
     </div>
   );
