@@ -1,43 +1,53 @@
 import { RefObject } from "react";
 import { useReactToPrint } from "react-to-print";
 import { sendPrintStatus, checkTruthy, formatPdfFileName } from "@/utils";
-import { useMessageStore, usePrintStore } from "@/store";
+import { useMessageStore } from "@/store";
 import { useReportUpload } from "@/services/useReportUpload";
-import { ReportData, ExportOptionType } from "@/lib";
+import { ReportData } from "@/lib";
+import { ImageExportOptionValues } from "@/types";
+
+interface UsePrintActionProps {
+  printRef: RefObject<HTMLDivElement | null>;
+  imageExportOption: ImageExportOptionValues;
+  physicianAssessment: string;
+  patientName: string;
+}
+
+export interface PrintOptions {
+  shouldUploadReport?: boolean;
+}
 
 /**
  * 인쇄 처리를 위한 커스텀 훅
  */
-export const usePrintHandler = (
-  printRef: RefObject<HTMLDivElement | null>,
-  patientName: string
-) => {
-  const { clearPrintRequest } = usePrintStore();
+export const usePrintAction = ({
+  printRef,
+  imageExportOption,
+  physicianAssessment,
+  patientName,
+}: UsePrintActionProps) => {
   const { nativeMessage } = useMessageStore();
   const { uploadReport } = useReportUpload();
 
-  const fileName = `${
-    checkTruthy(patientName) ? patientName : "Unknown"
-  }_${formatPdfFileName(new Date())}`;
+  const fileName = `${patientName}_${formatPdfFileName(new Date())}`;
 
-  const handlePrint = useReactToPrint({
+  // 현재 인쇄 옵션을 저장할 ref
+  const printOptionsRef = { shouldUploadReport: true };
+
+  const handlePrintInternal = useReactToPrint({
     contentRef: printRef,
     documentTitle: fileName,
     onBeforePrint: async () => {
       // Native에게 인쇄 요청 메시지 전송
       sendPrintStatus(true);
 
-      // 리포트 업로드
-      if (checkTruthy(nativeMessage)) {
+      // 리포트 업로드 (옵션에 따라 분기)
+      if (printOptionsRef.shouldUploadReport && checkTruthy(nativeMessage)) {
         const reportData = {
           patientId: nativeMessage.id || null,
           includeAllImages:
-            nativeMessage.exportOptionType === ExportOptionType.ALL,
-          chartNumber: nativeMessage.chartNo || null,
-          birthYear: nativeMessage.birthYear || null,
-          birthMonth: nativeMessage.birthMonth || null,
-          birthDay: nativeMessage.birthDay || null,
-          doctorOpinion: nativeMessage.assessment || null,
+            imageExportOption === ImageExportOptionValues.ALL_IMAGE,
+          doctorOpinion: physicianAssessment || null,
         } as ReportData;
 
         uploadReport({
@@ -49,8 +59,6 @@ export const usePrintHandler = (
       return Promise.resolve();
     },
     onAfterPrint: () => {
-      // 인쇄 요청 상태 초기화 (상태 관리를 위해 별도로 초기화)
-      clearPrintRequest();
       // Native에게 인쇄 완료 메시지 전송
       sendPrintStatus(false);
     },
@@ -71,6 +79,12 @@ export const usePrintHandler = (
       }
     `,
   });
+
+  // 옵션을 받을 수 있는 래퍼 함수
+  const handlePrint = (options?: PrintOptions) => {
+    printOptionsRef.shouldUploadReport = options?.shouldUploadReport ?? true;
+    handlePrintInternal();
+  };
 
   return { handlePrint };
 };

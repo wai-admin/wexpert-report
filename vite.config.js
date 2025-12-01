@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-export default defineConfig({
+export default defineConfig(() => ({
   plugins: [
     react({
       // React 17+ JSX Transform 사용 (import React 불필요)
@@ -14,6 +14,11 @@ export default defineConfig({
   },
   build: {
     outDir: "dist", // 정적 빌드 결과 폴더
+    // 모든 환경에서 소스맵 활성화
+    // TODO: sourcemap: mode === "development" ? true : false,
+    sourcemap: true,
+    // 청크 크기 경고 임계값 설정
+    chunkSizeWarningLimit: 1000, // 1000KB
     rollupOptions: {
       output: {
         manualChunks: {
@@ -23,6 +28,8 @@ export default defineConfig({
           // state: ["zustand"],
         },
       },
+      // Service Worker를 빌드에서 제외하지 않도록 설정
+      external: [],
     },
   },
   resolve: {
@@ -31,4 +38,6 @@ export default defineConfig({
     },
     extensions: [".js", ".jsx", ".ts", ".tsx"],
   },
-});
+  // Service Worker 파일이 public 폴더에 있으므로 자동으로 dist로 복사됨
+  publicDir: "public",
+}));

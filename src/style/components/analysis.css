@@ -7,6 +7,7 @@
 
 .analysis-img {
   width: 58.3mm; /* 220px */
+  min-width: 58.3mm; /* 220px */
   height: 42.3mm; /* 160px */
   background-color: black;
 }

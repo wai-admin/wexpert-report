@@ -4,3 +4,4 @@ export * from "./roi";
 export * from "./bridge";
 export * from "./analysis-viewer";
 export * from "./patient";
+export * from "./serviceWorker";

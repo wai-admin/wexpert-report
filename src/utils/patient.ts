@@ -1,3 +1,4 @@
+import { Sonography } from "@/lib/reportType";
 import { checkFalsy } from "@/utils/common";
 
 /**
@@ -102,4 +103,140 @@ function formatBirthDate(
   return formattedParts.join("/");
 }
 
-export { getPatientId, hasValidPatientId, formatBirthDate };
+/**
+ * 포맷된 생년월일 문자열(YYYY/MM/DD 또는 YYYY/-/- 등)을 분리하여 객체로 반환
+ * @param formattedBirthDate - formatBirthDate 함수의 결과물 (예: "1990/01/15", "1990/-/-", "")
+ * @returns { birthYear: string, birthMonth: string, birthDay: string }
+ */
+function parseBirthDate(formattedBirthDate: string): {
+  birthYear: string;
+  birthMonth: string;
+  birthDay: string;
+} {
+  // 빈 문자열이면 모두 빈 문자열 반환
+  if (!formattedBirthDate || formattedBirthDate.trim() === "") {
+    return { birthYear: "", birthMonth: "", birthDay: "" };
+  }
+
+  // "/"로 분리
+  const parts = formattedBirthDate.split("/");
+
+  // 각 부분을 가져오고, "-"이면 빈 문자열로 변환
+  const birthYear = parts[0] && parts[0] !== "-" ? parts[0] : "";
+  const birthMonth = parts[1] && parts[1] !== "-" ? parts[1] : "";
+  const birthDay = parts[2] && parts[2] !== "-" ? parts[2] : "";
+
+  return {
+    birthYear,
+    birthMonth,
+    birthDay,
+  };
+}
+
+const getPatientType = (type: string) => {
+  switch (type) {
+    case "aesthetic":
+      return "유방 확대";
+    case "reconstructive":
+      return "유방재건";
+    case "both":
+      return "유방확대 및 재건";
+    default:
+      return "";
+  }
+};
+
+const getRuptureImageCount = (sonographies: Sonography[]) => {
+  const breastImplantImages = sonographies.filter(
+    (item: Sonography) => item.type === "BREAST_IMPLANT"
+  );
+  const ruptureImages = breastImplantImages.filter((item: Sonography) => {
+    return item.analysis.labels.some(
+      (label) =>
+        label.result_type === "rupture" && label.result_class === "exist"
+    );
+  });
+
+  return ruptureImages.length;
+};
+
+const getAnalysisItemCount = (sonographies: Sonography[]) => {
+  const breastImplantImages = sonographies.filter(
+    (item: Sonography) => item.type === "BREAST_IMPLANT"
+  );
+  const lymphNodeImages = sonographies.filter(
+    (item: Sonography) => item.type === "LYMPH_NODE"
+  );
+  const ruptureImages = breastImplantImages.filter((item: Sonography) => {
+    return item.analysis.labels.some(
+      (label) =>
+        label.result_type === "rupture" && label.result_class === "exist"
+    );
+  });
+
+  return {
+    totalAnalysisImageCount: sonographies.length,
+    ruptureImageCount: ruptureImages.length,
+    breastImplantImageCount: breastImplantImages.length,
+    lymphNodeImageCount: lymphNodeImages.length,
+  };
+};
+
+const generateAnalysisItems = ({
+  onlyRuptureExist,
+  sonographies,
+}: {
+  onlyRuptureExist: boolean;
+  sonographies: Sonography[];
+}) => {
+  let breastImplantLabels: Sonography[] = [];
+  let lymphNodeLabels: Sonography[] = [];
+
+  sonographies.forEach((item: Sonography) => {
+    if (item.type === "BREAST_IMPLANT") {
+      const breastImplantAnalysisLabels = item.analysis.labels.filter(
+        (label) => label.result_type === "rupture"
+      );
+
+      if (breastImplantAnalysisLabels.length > 0) {
+        breastImplantLabels.push(item);
+      }
+    }
+
+    if (item.type === "LYMPH_NODE") {
+      const lymphNodeAnalysisLabels = item.analysis.labels.filter(
+        (label) => label.result_type === "silicone_invasion_to_ln"
+      );
+
+      if (lymphNodeAnalysisLabels.length > 0) {
+        lymphNodeLabels.push(item);
+      }
+    }
+  });
+
+  if (onlyRuptureExist) {
+    return [
+      ...breastImplantLabels.filter((item: Sonography) =>
+        item.analysis.labels.some(
+          (label) =>
+            label.result_type === "rupture" && label.result_class === "exist"
+        )
+      ),
+      // TODO: 기획 회의 후 변경 가능성 있음.
+      // ...lymphNodeLabels,
+    ];
+  } else {
+    return [...breastImplantLabels, ...lymphNodeLabels];
+  }
+};
+
+export {
+  getPatientId,
+  hasValidPatientId,
+  formatBirthDate,
+  parseBirthDate,
+  getPatientType,
+  getRuptureImageCount,
+  getAnalysisItemCount,
+  generateAnalysisItems,
+};
