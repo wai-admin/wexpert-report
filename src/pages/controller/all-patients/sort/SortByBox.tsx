@@ -7,10 +7,10 @@ const SORT_BY_OPTIONS = {
 
 interface SortByBoxProps {
   sortBy: SortBy;
-  setSortBy: (sortBy: SortBy) => void;
+  onSelectSortBy: (sortBy: SortBy) => void;
 }
 
-const SortByBox = ({ sortBy, setSortBy }: SortByBoxProps) => {
+const SortByBox = ({ sortBy, onSelectSortBy }: SortByBoxProps) => {
   return (
     <div className="flex flex-col py-[14px] gap-[12px]">
       <p className="font-pretendard text-[12px] text-text-tertiary px-[12px]">
@@ -25,7 +25,7 @@ const SortByBox = ({ sortBy, setSortBy }: SortByBoxProps) => {
                 ? "bg-subtle-transparent-7"
                 : "hover:bg-subtle-transparent-7"
             }`}
-            onClick={() => setSortBy(option)}
+            onClick={() => onSelectSortBy(option)}
           >
             <p className="font-pretendard text-[15px] text-white">{option}</p>
           </button>

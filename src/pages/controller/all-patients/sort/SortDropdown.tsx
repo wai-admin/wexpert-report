@@ -27,6 +27,16 @@ const SortDropdown = ({
     isOpenSortDropdown
   );
 
+  const handleClickSortBy = (option: SortBy) => {
+    setSortBy(option);
+    setIsOpenSortDropdown(false);
+  };
+
+  const handleClickSortOrder = (option: SortOrder) => {
+    setSortOrder(option);
+    setIsOpenSortDropdown(false);
+  };
+
   return (
     <div ref={dropdownRef} className="relative">
       <button
@@ -45,9 +55,12 @@ const SortDropdown = ({
       </button>
       {isOpenSortDropdown && (
         <div className="absolute right-0 top-full w-[130px] bg-bg-base-alt border border-solid-lt rounded-[6px] z-10">
-          <SortByBox sortBy={sortBy} setSortBy={setSortBy} />
+          <SortByBox sortBy={sortBy} onSelectSortBy={handleClickSortBy} />
           <div className="w-full min-h-[1px] bg-[rgba(145,145,148,0.5)]" />
-          <SortOrderBox sortOrder={sortOrder} setSortOrder={setSortOrder} />
+          <SortOrderBox
+            sortOrder={sortOrder}
+            onSelectSortOrder={handleClickSortOrder}
+          />
         </div>
       )}
     </div>
