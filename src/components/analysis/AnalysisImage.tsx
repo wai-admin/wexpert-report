@@ -23,6 +23,7 @@ const AnalysisImage = ({
     width: 0,
     height: 0,
   });
+  const [isImageError, setIsImageError] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
 
   // 이미지 크기 변경 감지
@@ -54,7 +55,7 @@ const AnalysisImage = ({
   }, [isImageLoaded]);
 
   const handleImageError = () => {
-    alert("이미지를 불러올 수 없습니다.");
+    setIsImageError(true);
   };
 
   // 이미지 로드 완료 시 크기 저장
@@ -75,15 +76,21 @@ const AnalysisImage = ({
 
   return (
     <div className="analysis-img-container">
-      <img
-        ref={imageRef}
-        src={imageUrl}
-        alt={originalFileName}
-        className="analysis-img"
-        onError={handleImageError}
-        onLoad={onImageLoad}
-      />
-
+      {isImageError ? (
+        <div className="analysis-img-error">
+          일시적인 오류로 인해 <br /> 이미지를 불러올 수 없습니다. <br />
+          <br /> 잠시 후 다시 시도해주세요.
+        </div>
+      ) : (
+        <img
+          ref={imageRef}
+          src={imageUrl}
+          alt={originalFileName}
+          className="analysis-img"
+          onError={handleImageError}
+          onLoad={onImageLoad}
+        />
+      )}
       <ROIOverlay
         coordinates={coordinates}
         originalSize={originalImageSize}
