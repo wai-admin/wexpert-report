@@ -7,7 +7,11 @@ import {
   SortDropdown,
   RowsPerPageDropdown,
 } from "@/pages";
-import { useAllPatientsFilterStore, useLoadingStore } from "@/store";
+import {
+  useAllPatientsFilterStore,
+  useLoadingStore,
+  useReportListStore,
+} from "@/store";
 import { PrintOptions } from "@/hooks/usePrintAction";
 import { checkTruthy } from "@/utils";
 
@@ -31,36 +35,51 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
     sortOrder,
     setSortOrder,
   } = useAllPatientsFilterStore();
+  const { setSelectedReportId, setSelectedPatientId, setIsReportListEmpty } =
+    useReportListStore();
 
   const {
     data: allPatientReportListResponse,
     isFetching: isAllPatientReportListLoading,
   } = useAllPatientReportList();
 
-  const allPatientReportListData = allPatientReportListResponse?.data ?? {
-    page: 0,
-    limit: 0,
-    total: 0,
-    hasNext: false,
-    data: [],
-  };
+  const isValidAllPatientReportList = checkTruthy(allPatientReportListResponse);
+  const isEmptyAllPatientReportList =
+    isValidAllPatientReportList && allPatientReportListResponse.data.total <= 0;
 
   useEffect(() => {
     setLoading(isAllPatientReportListLoading);
   }, [isAllPatientReportListLoading]);
 
-  // 새로운 리포트 리스트 호출 시 첫 번째 리포트 선택 및 스크롤 초기화
+  // 새로운 리포트 리스트 호출 시
   useEffect(() => {
-    if (checkTruthy(allPatientReportListData)) {
+    if (isValidAllPatientReportList) {
+      // 첫 번째 리포트 선택
       setSelectedReportIndex(0);
 
+      // 스크롤 초기화
       if (checkTruthy(scrollRef.current)) {
         scrollRef.current.scrollTo({ top: 0, behavior: "smooth" });
       }
-    }
-  }, [allPatientReportListData]);
 
-  const hasAllPatientReportList = allPatientReportListData.total > 0;
+      if (isEmptyAllPatientReportList) {
+        setIsReportListEmpty(true);
+      }
+    }
+  }, [allPatientReportListResponse]);
+
+  // 리스트 로드 성공 시 또는 selectedReportIndex 변경 시 selectedReportId 업데이트
+  useEffect(() => {
+    if (isValidAllPatientReportList) {
+      const { reportId, patientId } =
+        allPatientReportListResponse.data.data[selectedReportIndex];
+
+      if (checkTruthy(reportId) && checkTruthy(patientId)) {
+        setSelectedReportId(reportId);
+        setSelectedPatientId(patientId);
+      }
+    }
+  }, [allPatientReportListResponse, selectedReportIndex]);
 
   return (
     <div className="size-full flex flex-col p-[30px] gap-[25px] overflow-hidden">
@@ -102,15 +121,19 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
               <></>
             ) : (
               <>
-                {hasAllPatientReportList ? (
+                {isEmptyAllPatientReportList ? (
+                  <NoReportList />
+                ) : (
                   <TableRows
                     scrollRef={scrollRef}
-                    allPatientReportList={allPatientReportListData.data}
+                    allPatientReportList={
+                      isValidAllPatientReportList
+                        ? allPatientReportListResponse.data.data
+                        : []
+                    }
                     selectedReportIndex={selectedReportIndex}
                     setSelectedReportIndex={setSelectedReportIndex}
                   />
-                ) : (
-                  <NoReportList />
                 )}
               </>
             )}
@@ -122,7 +145,11 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
               setRowsPerPage={setRowsPerPage}
             />
             <Pagination
-              totalItems={allPatientReportListData.total}
+              totalItems={
+                isValidAllPatientReportList
+                  ? allPatientReportListResponse.data.total
+                  : 0
+              }
               itemsPerPage={rowsPerPage}
               currentPage={currentPage}
               onPageChange={setCurrentPage}
