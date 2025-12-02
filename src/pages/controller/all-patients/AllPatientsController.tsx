@@ -83,6 +83,8 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
       return;
     }
 
+    console.log("allPatientReportListResponse", allPatientReportListResponse);
+
     // 선택된 리포트 정보 업데이트
     const { reportId, patientId } =
       allPatientReportListResponse.data.data[selectedReportIndex];
