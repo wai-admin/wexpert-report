@@ -22,9 +22,7 @@ export const useInvalidateReportCache = () => {
       queryKey: QUERY_KEYS.REPORT.PATIENT_LIST(targetPatientId),
     });
 
-    console.log(
-      `[Cache] Invalidating patient report list for patientId: ${targetPatientId}`
-    );
+    console.log("[Cache] Invalidating patient report list");
   };
 
   /**
@@ -53,9 +51,7 @@ export const useInvalidateReportCache = () => {
       queryKey: QUERY_KEYS.REPORT.PATIENT_DETAIL(targetPatientId, reportId),
     });
 
-    console.log(
-      `[Cache] Invalidating patient report detail for patientId: ${targetPatientId}, reportId: ${reportId}`
-    );
+    console.log("[Cache] Invalidating patient report detail");
   };
 
   /**

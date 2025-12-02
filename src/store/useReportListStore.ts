@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
 interface ReportListState {
-  selectedReportId: string | null;
-  setSelectedReportId: (id: string | null) => void;
+  selectedReportId: number | null;
+  setSelectedReportId: (id: number | null) => void;
   isReportListEmpty: boolean;
   setIsReportListEmpty: (isReportListEmpty: boolean) => void;
   selectedPatientId: number | null;

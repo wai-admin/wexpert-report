@@ -1,7 +1,5 @@
 const getApiBaseUrl = () => {
   const hostname = window.location.hostname;
-  console.log("hostname", hostname);
-
   // 로컬 개발 환경
   if (hostname === "localhost" || hostname === "127.0.0.1") {
     return "https://dev-wexpert-api.w-ai.ai";
