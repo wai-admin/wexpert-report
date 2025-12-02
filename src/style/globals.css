@@ -117,7 +117,7 @@ h3 {
 
   .scroll-custom::-webkit-scrollbar-track {
     border-radius: 9999px;
-    background-color: rgb(39, 41, 44);
+    background-color: rgb(62, 66, 70);
   }
 
   .scroll-custom::-webkit-scrollbar-thumb {
