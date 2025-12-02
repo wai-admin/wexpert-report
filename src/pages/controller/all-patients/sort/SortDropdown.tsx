@@ -30,16 +30,16 @@ const SortDropdown = ({
   return (
     <div ref={dropdownRef} className="relative">
       <button
-        className="flex gap-[5px] py-[4px]"
+        className="flex gap-[5px] p-[6px] hover:bg-[rgb(49,51,53)] rounded-[6px] transition-colors duration-100"
         onClick={() => setIsOpenSortDropdown(!isOpenSortDropdown)}
       >
         <p className="font-pretendard text-[16px] text-text-tertiary">Sort</p>
         <img
-          src="/images/arrow-dropdown-icon.png"
+          src="/images/arrow-normal-icon.png"
           width={17}
           height={17}
           className={` transition-all duration-200 ${
-            isOpenSortDropdown ? "-rotate-180" : ""
+            isOpenSortDropdown ? "-rotate-90" : "rotate-90"
           }`}
         />
       </button>
