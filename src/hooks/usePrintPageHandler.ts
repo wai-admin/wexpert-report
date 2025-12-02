@@ -58,17 +58,6 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
     setLoading(isNewReportFetching || isHistoryDetailFetching);
   }, [isNewReportFetching, isHistoryDetailFetching]);
 
-  console.log(
-    "usePrintPageHandler: newReport/isLoading",
-    newReport,
-    isNewReportFetching
-  );
-  console.log(
-    "usePrintPageHandler: reportHistoryDetail/isLoading",
-    reportHistoryDetail,
-    isHistoryDetailFetching
-  );
-
   if (
     checkTruthy(reportHistoryDetail) &&
     (isPatientReportMode || isAllReportMode)

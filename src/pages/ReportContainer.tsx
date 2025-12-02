@@ -35,7 +35,6 @@ const ReportContainer = () => {
 
   // Native에 로딩 상태 전송
   useWebViewLoading(isLoading);
-  console.log("ReportContainer: PrintPage Data Information", printPageData);
 
   // nativeMessage를 받을 때까지 아무것도 렌더링하지 않음 (프로덕션 환경에서만)
   if (checkFalsy(nativeMessage) && checkProd()) {

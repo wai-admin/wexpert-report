@@ -35,16 +35,16 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
     if (checkTruthy(patientReportListData)) {
       const hasReportList = patientReportListData.data.length > 0;
       if (hasReportList) {
-        const reportId =
-          patientReportListData.data[selectedReportIndex]?.id.toString();
-        if (reportId) {
+        const { id: reportId } =
+          patientReportListData.data[selectedReportIndex];
+        if (checkTruthy(reportId)) {
           setSelectedReportId(reportId);
         }
       } else {
         setIsReportListEmpty(true);
       }
     }
-  }, [patientReportListData, selectedReportIndex, setSelectedReportId]);
+  }, [patientReportListData, selectedReportIndex]);
 
   useEffect(() => {
     setLoading(isPatientReportListLoading);

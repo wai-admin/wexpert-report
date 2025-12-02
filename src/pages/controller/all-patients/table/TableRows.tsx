@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, RefObject } from "react";
 import { TableCell } from "@/pages";
 import { ALL_PATIENTS_TABLE_COLUMNS } from "@/constants";
 import { AllPatientReportListDetailData } from "@/lib/allPatientReportListType";
@@ -6,12 +6,14 @@ import { useReportListStore } from "@/store";
 import { checkTruthy } from "@/utils";
 
 interface TableRowsProps {
+  scrollRef: RefObject<HTMLDivElement | null>;
   allPatientReportList: AllPatientReportListDetailData[];
   selectedReportIndex: number;
   setSelectedReportIndex: (index: number) => void;
 }
 
 const TableRows = ({
+  scrollRef,
   allPatientReportList,
   selectedReportIndex,
   setSelectedReportIndex,
@@ -26,10 +28,8 @@ const TableRows = ({
     if (hasReportList) {
       const { reportId, patientId } = allPatientReportList[selectedReportIndex];
 
-      if (checkTruthy(reportId)) {
-        setSelectedReportId(reportId.toString());
-      }
-      if (checkTruthy(patientId)) {
+      if (checkTruthy(reportId) && checkTruthy(patientId)) {
+        setSelectedReportId(reportId);
         setSelectedPatientId(patientId);
       }
     } else {
@@ -38,7 +38,10 @@ const TableRows = ({
   }, [allPatientReportList, selectedReportIndex]);
 
   return (
-    <div className="w-full flex-1 border-b border-b-solid-dk overflow-y-auto overscroll-contain">
+    <div
+      ref={scrollRef}
+      className="w-full flex-1 border-b border-b-solid-dk overflow-y-auto overscroll-contain"
+    >
       {allPatientReportList.map(
         (report: AllPatientReportListDetailData, index: number) => {
           const isSelected = index === selectedReportIndex;

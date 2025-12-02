@@ -31,20 +31,16 @@ const STATIC_ASSETS = [
  * 폰트와 정적 자산을 미리 캐싱
  */
 self.addEventListener("install", (event) => {
-  console.log("[Service Worker] Installing...");
-
   event.waitUntil(
     (async () => {
       try {
         // 폰트 캐시 생성
         const fontCache = await caches.open(FONT_CACHE_NAME);
         await fontCache.addAll(FONT_FILES);
-        console.log("[Service Worker] Fonts cached successfully");
 
         // 정적 자산 캐시 생성
         const staticCache = await caches.open(CACHE_NAME);
         await staticCache.addAll(STATIC_ASSETS);
-        console.log("[Service Worker] Static assets cached successfully");
 
         // 즉시 활성화
         self.skipWaiting();
@@ -60,8 +56,6 @@ self.addEventListener("install", (event) => {
  * 오래된 캐시 정리
  */
 self.addEventListener("activate", (event) => {
-  console.log("[Service Worker] Activating...");
-
   event.waitUntil(
     (async () => {
       // 모든 캐시 키 가져오기
@@ -75,7 +69,6 @@ self.addEventListener("activate", (event) => {
             cacheName !== FONT_CACHE_NAME &&
             cacheName.startsWith("wexpert-")
           ) {
-            console.log("[Service Worker] Deleting old cache:", cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -83,7 +76,6 @@ self.addEventListener("activate", (event) => {
 
       // 모든 클라이언트에서 즉시 제어권 가져오기
       await self.clients.claim();
-      console.log("[Service Worker] Activated and ready");
     })()
   );
 });
@@ -121,19 +113,16 @@ self.addEventListener("fetch", (event) => {
           const cachedResponse = await cache.match(request);
 
           if (cachedResponse) {
-            console.log("[Service Worker] Serving from cache:", url.pathname);
             return cachedResponse;
           }
 
           // 2. 캐시에 없으면 네트워크에서 가져오기
-          console.log("[Service Worker] Fetching from network:", url.pathname);
           const networkResponse = await fetch(request);
 
           // 3. 성공적인 응답이면 캐시에 저장
           if (networkResponse && networkResponse.status === 200) {
             const responseToCache = networkResponse.clone();
             await cache.put(request, responseToCache);
-            console.log("[Service Worker] Cached new resource:", url.pathname);
           }
 
           return networkResponse;
@@ -166,7 +155,6 @@ self.addEventListener("message", (event) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
             if (cacheName.startsWith("wexpert-")) {
-              console.log("[Service Worker] Clearing cache:", cacheName);
               return caches.delete(cacheName);
             }
           })

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button, SearchInput, Pagination } from "@/components-common";
 import { useAllPatientReportList } from "@/services/useAllPatientReportList";
 import {
@@ -9,12 +9,14 @@ import {
 } from "@/pages";
 import { useAllPatientsFilterStore, useLoadingStore } from "@/store";
 import { PrintOptions } from "@/hooks/usePrintAction";
+import { checkTruthy } from "@/utils";
 
 interface AllPatientsControllerProps {
   onPrint: (options?: PrintOptions) => void;
 }
 
 const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
 
   const { setLoading } = useLoadingStore();
@@ -34,10 +36,7 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
     data: allPatientReportListResponse,
     isFetching: isAllPatientReportListLoading,
   } = useAllPatientReportList();
-  console.log(
-    "AllPatientsController: allPatientReportListData",
-    allPatientReportListResponse
-  );
+
   const allPatientReportListData = allPatientReportListResponse?.data ?? {
     page: 0,
     limit: 0,
@@ -49,6 +48,17 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
   useEffect(() => {
     setLoading(isAllPatientReportListLoading);
   }, [isAllPatientReportListLoading]);
+
+  // 새로운 리포트 리스트 호출 시 첫 번째 리포트 선택 및 스크롤 초기화
+  useEffect(() => {
+    if (checkTruthy(allPatientReportListData)) {
+      setSelectedReportIndex(0);
+
+      if (checkTruthy(scrollRef.current)) {
+        scrollRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+  }, [allPatientReportListData]);
 
   const hasAllPatientReportList = allPatientReportListData.total > 0;
 
@@ -94,6 +104,7 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
               <>
                 {hasAllPatientReportList ? (
                   <TableRows
+                    scrollRef={scrollRef}
                     allPatientReportList={allPatientReportListData.data}
                     selectedReportIndex={selectedReportIndex}
                     setSelectedReportIndex={setSelectedReportIndex}
