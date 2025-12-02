@@ -47,7 +47,7 @@ const ReportContainer = () => {
       <LoadingIndicator isLoading={isLoading} full={true} />
       <div
         ref={scrollRef}
-        className={`h-full flex justify-center overflow-y-scroll scroll-custom
+        className={`h-full flex justify-center overflow-y-scroll overflow-x-hidden scroll-custom
           ${
             isAllReportMode
               ? "w-[calc(100%-var(--all-report-controller-width))]"
