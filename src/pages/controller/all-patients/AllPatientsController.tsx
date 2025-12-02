@@ -47,6 +47,12 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
   const isEmptyAllPatientReportList =
     isValidAllPatientReportList && allPatientReportListResponse.data.total <= 0;
 
+  console.log(
+    "isValidAllPatientReportList",
+    checkTruthy(allPatientReportListResponse),
+    allPatientReportListResponse
+  );
+
   useEffect(() => {
     setLoading(isAllPatientReportListLoading);
   }, [isAllPatientReportListLoading]);
@@ -68,17 +74,25 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
     }
   }, [allPatientReportListResponse]);
 
-  // 리스트 로드 성공 시 또는 selectedReportIndex 변경 시 selectedReportId 업데이트
+  // 리스트 로드 후 selectedReportIndex 변경 시 리포트 정보 업데이트
   useEffect(() => {
-    if (isValidAllPatientReportList) {
-      const { reportId, patientId } =
-        allPatientReportListResponse.data.data[selectedReportIndex];
-
-      if (checkTruthy(reportId) && checkTruthy(patientId)) {
-        setSelectedReportId(reportId);
-        setSelectedPatientId(patientId);
-      }
+    if (isValidAllPatientReportList === false) {
+      return;
     }
+
+    if (isEmptyAllPatientReportList) {
+      return;
+    }
+
+    // 선택된 리포트 정보 업데이트
+    const { reportId, patientId } =
+      allPatientReportListResponse.data.data[selectedReportIndex];
+
+    if (checkTruthy(reportId) && checkTruthy(patientId)) {
+      setSelectedReportId(reportId);
+      setSelectedPatientId(patientId);
+    }
+    // WARNING: 리스트 로드 후 로직이 실행되어야하기 때문에 의존성 배열에 allPatientReportListResponse를 추가합니다.
   }, [allPatientReportListResponse, selectedReportIndex]);
 
   return (
