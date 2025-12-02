@@ -63,7 +63,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
       {isPatientReportListLoading && checkFalsy(patientReportList) ? (
         <></>
       ) : (
-        <div className="w-full flex flex-col flex-1 overflow-y-auto overscroll-contain">
+        <div className="w-full flex flex-col flex-1 overflow-y-auto overscroll-contain scroll-custom">
           {patientReportList.map((report, index) => {
             const { id, createdAt, includeAllImages } = report;
             const date = convertISOToLocal(createdAt, false, true);

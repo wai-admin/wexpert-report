@@ -90,5 +90,47 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // 커스텀 스크롤바 플러그인
+    function ({ addUtilities }) {
+      const scrollbarUtilities = {
+        // 기본 커스텀 스크롤바
+        ".scroll-custom": {
+          "&::-webkit-scrollbar": {
+            width: "0.5rem",
+            height: "0.5rem",
+          },
+          "&::-webkit-scrollbar-track": {
+            borderRadius: "9999px",
+            backgroundColor: "rgb(243, 244, 246)", // gray-100
+          },
+          "&::-webkit-scrollbar-thumb": {
+            borderRadius: "9999px",
+            backgroundColor: "rgb(209, 213, 219)", // gray-300
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: "rgb(156, 163, 175)", // gray-400
+          },
+        },
+
+        // 얇은 스크롤바
+        ".scroll-thin": {
+          "&::-webkit-scrollbar": {
+            width: "0.25rem",
+            height: "0.25rem",
+          },
+          "&::-webkit-scrollbar-track": {
+            borderRadius: "9999px",
+            backgroundColor: "rgb(243, 244, 246)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            borderRadius: "9999px",
+            backgroundColor: "rgb(209, 213, 219)",
+          },
+        },
+      };
+
+      addUtilities(scrollbarUtilities);
+    },
+  ],
 };

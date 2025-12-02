@@ -19,7 +19,7 @@ const TableRows = ({
   return (
     <div
       ref={scrollRef}
-      className="w-full flex-1 border-b border-b-solid-dk overflow-y-auto overscroll-contain"
+      className="w-full flex-1 border-b border-b-solid-dk overflow-y-auto overscroll-contain scroll-custom"
     >
       {allPatientReportList.map(
         (report: AllPatientReportListDetailData, index: number) => {

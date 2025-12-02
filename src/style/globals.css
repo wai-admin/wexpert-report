@@ -108,3 +108,20 @@ h3 {
   -ms-overflow-style: none; /* 인터넷 익스플로러 */
   scrollbar-width: none; /* 파이어폭스 */
 }
+
+@layer utilities {
+  /* 커스텀 스크롤바 스타일 */
+  .scroll-custom::-webkit-scrollbar {
+    width: 0.4rem;
+  }
+
+  .scroll-custom::-webkit-scrollbar-track {
+    border-radius: 9999px;
+    background-color: rgb(62, 66, 70);
+  }
+
+  .scroll-custom::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background-color: rgb(145, 145, 148);
+  }
+}
