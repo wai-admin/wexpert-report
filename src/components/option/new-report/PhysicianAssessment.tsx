@@ -20,7 +20,7 @@ const PhysicianAssessment = () => {
 
   return (
     <OptionField
-      label="Physician's Assessment"
+      label="Physician's assessment"
       subLabel={`${physicianAssessment.length}/1000`}
     >
       <div className="h-[120px] flex items-center bg-transparent rounded-[6px] border border-solid-lt px-[15px] py-[10px]">
