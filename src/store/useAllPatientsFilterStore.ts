@@ -26,8 +26,9 @@ interface AllPatientsFilterState {
 
 const useAllPatientsFilterStore = create<AllPatientsFilterState>((set) => ({
   searchKeyword: "",
-  setSearchKeyword: (searchKeyword: string) => set({ searchKeyword }),
-  clearSearchKeyword: () => set({ searchKeyword: "" }),
+  setSearchKeyword: (searchKeyword: string) =>
+    set({ searchKeyword, currentPage: 1 }),
+  clearSearchKeyword: () => set({ searchKeyword: "", currentPage: 1 }),
 
   currentPage: 1,
   setCurrentPage: (page) => set({ currentPage: page }),
@@ -36,10 +37,10 @@ const useAllPatientsFilterStore = create<AllPatientsFilterState>((set) => ({
   setRowsPerPage: (rowsPerPage: number) => set({ rowsPerPage, currentPage: 1 }),
 
   sortBy: SortBy.NAME,
-  setSortBy: (sortBy: SortBy) => set({ sortBy }),
+  setSortBy: (sortBy: SortBy) => set({ sortBy, currentPage: 1 }),
 
   sortOrder: SortOrder.ASC,
-  setSortOrder: (sortOrder: SortOrder) => set({ sortOrder }),
+  setSortOrder: (sortOrder: SortOrder) => set({ sortOrder, currentPage: 1 }),
 }));
 
 export { useAllPatientsFilterStore };
