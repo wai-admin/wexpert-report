@@ -27,7 +27,7 @@ export default LoadingIndicator;
 const LoadingSpinner = () => {
   return (
     <div className="size-full flex flex-col justify-center items-center">
-      <div className="relative size-5">
+      <div className="relative size-6">
         <div className="absolute w-full h-full border-[3px] border-component-blue rounded-full"></div>
         <div className="absolute w-full h-full border-[3px] border-solid-lt-solid rounded-full animate-spin border-t-transparent"></div>
       </div>
