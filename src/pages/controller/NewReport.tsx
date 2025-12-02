@@ -19,7 +19,7 @@ interface NewReportProps {
 const NewReport = ({ printPageData, onPrint }: NewReportProps) => {
   return (
     <div className="size-full flex flex-col justify-between gap-[10px]">
-      <div className="w-full flex flex-col flex-1 gap-[26px] overflow-y-auto overscroll-contain">
+      <div className="w-full flex flex-col flex-1 gap-[26px] overflow-y-auto overscroll-contain scroll-custom">
         <ImageExportOption />
         <Divider />
         <ChartNumber value={printPageData?.patientDetail.chartNumber ?? "-"} />
