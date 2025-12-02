@@ -124,7 +124,7 @@ const TableHeader = () => {
       </div>
       <div className="w-[160px] flex justify-center">
         <p className="font-pretendard text-[16px] text-text-tertiary">
-          Export Option
+          Export option
         </p>
       </div>
     </div>

@@ -7,7 +7,7 @@ const ImageExportOption = () => {
   const { imageExportOption, setImageExportOption } = useNewReportStore();
 
   return (
-    <OptionField label="Image Export Option">
+    <OptionField label="Export option">
       <div className="flex flex-row items-center gap-[24px]">
         <RadioButton
           label="All Image"
