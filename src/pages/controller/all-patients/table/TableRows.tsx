@@ -1,9 +1,7 @@
-import { useEffect, RefObject } from "react";
+import { RefObject } from "react";
 import { TableCell } from "@/pages";
 import { ALL_PATIENTS_TABLE_COLUMNS } from "@/constants";
 import { AllPatientReportListDetailData } from "@/lib/allPatientReportListType";
-import { useReportListStore } from "@/store";
-import { checkTruthy } from "@/utils";
 
 interface TableRowsProps {
   scrollRef: RefObject<HTMLDivElement | null>;
@@ -18,25 +16,6 @@ const TableRows = ({
   selectedReportIndex,
   setSelectedReportIndex,
 }: TableRowsProps) => {
-  const { setSelectedReportId, setSelectedPatientId, setIsReportListEmpty } =
-    useReportListStore();
-
-  // 리스트 로드 성공 시 또는 selectedReportIndex 변경 시 selectedReportId 업데이트
-  useEffect(() => {
-    const hasReportList = allPatientReportList.length > 0;
-
-    if (hasReportList) {
-      const { reportId, patientId } = allPatientReportList[selectedReportIndex];
-
-      if (checkTruthy(reportId) && checkTruthy(patientId)) {
-        setSelectedReportId(reportId);
-        setSelectedPatientId(patientId);
-      }
-    } else {
-      setIsReportListEmpty(true);
-    }
-  }, [allPatientReportList, selectedReportIndex]);
-
   return (
     <div
       ref={scrollRef}
