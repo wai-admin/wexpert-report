@@ -68,9 +68,8 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
         scrollRef.current.scrollTo({ top: 0, behavior: "smooth" });
       }
 
-      if (isEmptyAllPatientReportList) {
-        setIsReportListEmpty(true);
-      }
+      // 리스트 비어있는 상태 업데이트
+      setIsReportListEmpty(isEmptyAllPatientReportList);
     }
   }, [allPatientReportListResponse]);
 
