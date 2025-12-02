@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { usePrintAction, useWebViewLoading } from "@/hooks";
+import { usePrintAction } from "@/hooks";
 import {
   useMessageStore,
   useLoadingStore,
@@ -32,9 +32,6 @@ const ReportContainer = () => {
     physicianAssessment: printPageData?.physicianAssessment ?? "",
     patientName: printPageData?.patientDetail.patientName ?? "",
   });
-
-  // Native에 로딩 상태 전송
-  useWebViewLoading(isLoading);
 
   // nativeMessage를 받을 때까지 아무것도 렌더링하지 않음 (프로덕션 환경에서만)
   if (checkFalsy(nativeMessage) && checkProd()) {
