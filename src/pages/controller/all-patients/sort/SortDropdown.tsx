@@ -54,9 +54,9 @@ const SortDropdown = ({
         />
       </button>
       {isOpenSortDropdown && (
-        <div className="absolute right-0 top-full w-[130px] bg-bg-base-alt border border-solid-lt rounded-[6px] z-10">
+        <div className="absolute right-0 top-full w-[130px] bg-bg-base-alt border border-solid-dk rounded-[6px] z-10">
           <SortByBox sortBy={sortBy} onSelectSortBy={handleClickSortBy} />
-          <div className="w-full min-h-[1px] bg-[rgba(145,145,148,0.5)]" />
+          <div className="w-full min-h-[1px] bg-solid-dk" />
           <SortOrderBox
             sortOrder={sortOrder}
             onSelectSortOrder={handleClickSortOrder}

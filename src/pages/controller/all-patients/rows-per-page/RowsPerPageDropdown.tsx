@@ -47,7 +47,7 @@ const RowsPerPageDropdown = ({
           />
         </button>
         {isOpenRowsPerPageDropdown && (
-          <div className="absolute right-0 bottom-full w-[80px] bg-bg-base-alt border border-solid-lt rounded-[6px]">
+          <div className="absolute right-0 bottom-full w-[80px] bg-bg-base-alt border border-solid-dk rounded-[6px]">
             <OptionBox
               rowsPerPage={rowsPerPage}
               setRowsPerPage={setRowsPerPage}
