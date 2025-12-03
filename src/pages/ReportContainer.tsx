@@ -7,7 +7,7 @@ import {
   useCurrentReportModeStore,
 } from "@/store";
 import { PrintPage, ReportController, EmptyPrintPage } from "@/pages";
-import usePrintPageHandler from "@/hooks/usePrintPageHandler";
+import usePrintPageHandler from "@/hooks/print/usePrintPageHandler";
 import { LoadingIndicator } from "@/components-common";
 import { checkFalsy, checkProd } from "@/utils";
 

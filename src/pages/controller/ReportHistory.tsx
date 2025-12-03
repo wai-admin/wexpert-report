@@ -9,7 +9,7 @@ import {
   checkFalsy,
 } from "@/utils";
 import { useMessageStore, useReportListStore, useLoadingStore } from "@/store";
-import { PrintOptions } from "@/hooks/usePrintAction";
+import { PrintOptions } from "@/hooks/print/usePrintAction";
 
 interface ReportHistoryProps {
   onPrint: (options?: PrintOptions) => void;
