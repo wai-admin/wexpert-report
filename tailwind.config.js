@@ -64,19 +64,20 @@ export default {
         "green-color-transparent-lt-15": "rgba(115, 232, 203, 0.15)",
         "green-color-transparent-dk-15": "rgba(20, 123, 97, 0.15)",
 
-        "bg-base": "rgba(39, 41, 44, 1)",
-        "bg-base-alt": "rgba(26, 28, 30, 1)",
-        "bg-base-error": "rgba(152, 54, 75, 1)",
+        "bg-base": "rgb(39, 41, 44)",
+        "bg-base-alt": "rgb(26, 28, 30)",
+        "bg-base-error": "rgb(152, 54, 75)",
 
-        "solid-dk": "rgba(62, 66, 70, 1)",
-        "solid-lt": "rgba(145, 145, 148, 1)",
-        "solid-focus": "rgba(117, 157, 230, 1)",
+        "solid-dk": "rgb(62, 66, 70)",
+        "solid-lt": "rgb(145, 145, 148)",
+        "solid-focus": "rgb(117, 157, 230)",
 
-        "text-primary": "rgba(255, 255, 255, 1)",
-        "text-secondary": "rgba(212, 214, 220, 1)",
-        "text-tertiary": "rgba(185, 189, 199, 1)",
+        "text-primary": "rgb(255, 255, 255)",
+        "text-secondary": "rgb(212, 214, 220)",
+        "text-tertiary": "rgb(185, 189, 199)",
 
-        "component-blue": "rgba(71, 160, 255, 1)",
+        "component-blue": "rgb(71, 160, 255)",
+        "component-disabled": "rgb(86, 91, 97)",
       },
       screens: {
         mobile: "0px",

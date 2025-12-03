@@ -107,6 +107,7 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
           width="w-[150px]"
           label="Print"
           onClick={() => onPrint({ shouldUploadReport: false })}
+          disabled={isEmptyAllPatientReportList}
         />
       </div>
       <div className="w-full flex flex-col flex-1 gap-[20px] overflow-hidden">

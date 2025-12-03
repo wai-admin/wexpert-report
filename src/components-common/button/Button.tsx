@@ -13,9 +13,14 @@ const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      className={`${width} h-[40px] bg-blue-300 hover:bg-blue-400 rounded-[6px] px-[15px] flex items-center justify-center transition-all duration-100`}
+      className={`${width} h-[40px] rounded-[6px] px-[15px] flex items-center justify-center transition-all duration-100
+      ${
+        disabled
+          ? "opacity-50 cursor-not-allowed bg-component-disabled"
+          : " bg-blue-300 hover:bg-blue-400"
+      }
+      `}
       onClick={onClick}
-      disabled={disabled}
     >
       <p className="text-[14px] text-white font-pretendard font-medium">
         {label}
