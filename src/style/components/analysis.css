@@ -7,8 +7,24 @@
 
 .analysis-img {
   width: 58.3mm; /* 220px */
+  min-width: 58.3mm; /* 220px */
   height: 42.3mm; /* 160px */
   background-color: black;
+}
+
+.analysis-img-error {
+  width: 58.3mm; /* 220px */
+  min-width: 58.3mm; /* 220px */
+  height: 42.3mm; /* 160px */
+  background-color: rgb(216, 221, 233);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(62, 66, 70);
+  font-family: Pretendard;
+  font-size: 3.5mm; /* 13px */
+  font-weight: 400;
+  text-align: center;
 }
 
 .analysis-info-box {

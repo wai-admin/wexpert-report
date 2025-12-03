@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom";
-import PrintPage from "@/pages/PrintPage";
+import { ReportContainer } from "@/pages";
 
-function GlobalRoutes() {
+const GlobalRoutes = () => {
   return (
     <Routes>
-      <Route path="*" element={<PrintPage />} />
+      <Route path="*" element={<ReportContainer />} />
     </Routes>
   );
-}
+};
 
 export default GlobalRoutes;
