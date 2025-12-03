@@ -6,7 +6,6 @@ const BRIDGE_TYPE = {
 
 enum NATIVE_MESSAGE_KEY {
   INITIALIZED = "accessToken",
-  REQUEST_PRINT = "requestPrint",
 }
 
 // TODO: 네이티브 버전 변경 시 반드시 NATIVE_VERSION enum 값 등록

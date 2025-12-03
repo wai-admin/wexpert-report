@@ -2,11 +2,15 @@ import { useMutation } from "@tanstack/react-query";
 import { reportApi } from "@/services/api";
 import { ReportUploadRequest, ReportUploadResponse, QUERY_KEYS } from "@/lib";
 import { checkFalsy } from "@/utils/common";
+import { useInvalidateReportCache } from "@/hooks";
 
 /**
  * 리포트 업로드를 위한 커스텀 훅
  */
 export const useReportUpload = () => {
+  const { invalidatePatientReportList, invalidateAllPatientReportList } =
+    useInvalidateReportCache();
+
   const mutation = useMutation<
     ReportUploadResponse,
     Error,
@@ -43,6 +47,11 @@ export const useReportUpload = () => {
     },
     // 1번째 재시도: 1초 딜레이, 2번째 재시도: 2초 딜레이
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    // 리포트 업로드 성공 시 캐시 무효화
+    onSuccess: () => {
+      invalidatePatientReportList();
+      invalidateAllPatientReportList();
+    },
   });
 
   return {
