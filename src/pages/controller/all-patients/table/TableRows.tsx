@@ -28,7 +28,7 @@ const TableRows = ({
           return (
             <div
               key={report.reportId.toString()}
-              className={`w-full h-[48px] flex items-center justify-between hover:bg-[rgb(49,51,53)] border-b border-b-solid-dk px-[14px] transition-colors duration-100
+              className={`w-full h-[48px] flex items-center justify-between py-[1px] hover:bg-[rgb(49,51,53)] border-b border-b-solid-dk px-[14px] transition-colors duration-100
                 ${isSelected ? "bg-[rgb(49,51,53)]" : "bg-transparent"}
                 `}
               onClick={() => setSelectedReportIndex(index)}

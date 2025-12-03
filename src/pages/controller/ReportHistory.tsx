@@ -58,7 +58,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   }
 
   return (
-    <div className="size-full flex flex-col justify-between gap-[10px]">
+    <div className="size-full flex flex-col justify-between">
       <TableHeader />
       {isPatientReportListLoading && checkFalsy(patientReportList) ? (
         <></>
@@ -76,7 +76,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
             return (
               <div
                 key={id}
-                className={`w-full min-h-[52px] flex justify-between items-center hover:bg-[rgb(49,51,53)] border-b-[1px] border-solid-lt transition-colors duration-100
+                className={`w-full min-h-[52px] flex justify-between items-center py-[1px] hover:bg-[rgb(49,51,53)] border-b-[1px] border-solid-dk transition-colors duration-100
                   ${isSelected ? "bg-[rgb(49,51,53)]" : "bg-transparent"}
                   `}
                 onClick={() => setSelectedReportIndex(index)}
@@ -99,7 +99,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
           })}
         </div>
       )}
-      <div className="w-full flex flex-col gap-[10px]">
+      <div className="w-full flex flex-col gap-[10px] mt-[10px]">
         <Button
           label="Print"
           onClick={() => onPrint({ shouldUploadReport: false })}
