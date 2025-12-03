@@ -6,7 +6,7 @@ import {
   useLoadingStore,
   useCurrentReportModeStore,
 } from "@/store";
-import { ImageExportOptionValues, UsePrintPageHandlerReturn } from "@/types";
+import { ImageExportOptionValues, UsePrintHandlerReturn } from "@/types";
 import {
   checkTruthy,
   getPatientType,
@@ -18,7 +18,7 @@ import {
 } from "@/utils";
 import { usePatientReportDetail } from "@/services/usePatientReportDetail";
 
-const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
+const usePrintHandler = (): UsePrintHandlerReturn => {
   /**
    * @description: 훅 플로우
    * 1. Native Message Store에서 현재 타입 읽기
@@ -27,8 +27,8 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
    *    type === "report-history" → useReportHistoryDetail(...)
    *    type === "all-report-history" → useAllReportHistoryDetail(...)
    *    각각은 내부에서 API(Call) + 가공까지 담당 (또는 최소한 원본 응답을 리턴)
-   * 3. (필요하면) PrintPage용 zustand 스토어 값과 합쳐서 printPageData 생성
-   * 4. { printPageData, isLoading, error } 형태로 반환
+   * 3. (필요하면) PrintPage용 zustand 스토어 값과 합쳐서 printData 생성
+   * 4. { printData, isLoading, error } 형태로 반환
    */
 
   const { imageExportOption, physicianAssessment } = useNewReportStore();
@@ -38,24 +38,32 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
   const { setLoading } = useLoadingStore();
 
   // New Report 모드
-  const { data: newReport, isFetching: isNewReportFetching } = useReport({
+  const {
+    data: newReport,
+    isFetching: isNewReportFetching,
+    error: newReportError,
+  } = useReport({
     enabled: isNewReportMode,
   });
 
   // Report History 모드 - 같은 쿼리 키로 캐시된 데이터 사용
-  const { data: reportHistoryDetail, isFetching: isHistoryDetailFetching } =
-    usePatientReportDetail({
-      reportId: checkTruthy(selectedReportId)
-        ? selectedReportId.toString()
-        : "",
-      patientId: checkTruthy(selectedPatientId)
-        ? selectedPatientId.toString()
-        : "",
-      enabled: isPatientReportMode || isAllReportMode,
-    });
+  const {
+    data: reportHistoryDetail,
+    isFetching: isHistoryDetailFetching,
+    error: historyDetailError,
+  } = usePatientReportDetail({
+    reportId: checkTruthy(selectedReportId) ? selectedReportId.toString() : "",
+    patientId: checkTruthy(selectedPatientId)
+      ? selectedPatientId.toString()
+      : "",
+    enabled: isPatientReportMode || isAllReportMode,
+  });
 
+  // 리포트 api 호출 시 로딩 상태 업데이트
   useEffect(() => {
-    setLoading(isNewReportFetching || isHistoryDetailFetching);
+    const isReportLoading = isNewReportFetching || isHistoryDetailFetching;
+
+    setLoading(isReportLoading);
   }, [isNewReportFetching, isHistoryDetailFetching]);
 
   if (
@@ -63,7 +71,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
     (isPatientReportMode || isAllReportMode)
   ) {
     return {
-      printPageData: {
+      printData: {
         cover: {
           hospitalName:
             reportHistoryDetail.data.report.patientSummary.hospitalName,
@@ -135,13 +143,13 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
       },
       // 개발 환경에서는 false, 프로덕션에서는 true
       isLoading: import.meta.env.PROD,
-      error: null,
+      error: historyDetailError,
     };
   }
 
   if (checkTruthy(newReport) && isNewReportMode) {
     return {
-      printPageData: {
+      printData: {
         cover: {
           hospitalName: newReport.data.patientSummary.hospitalName,
         },
@@ -191,20 +199,20 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
         sonographies: newReport.data.patientDetail.sonographies,
       },
       isLoading: isNewReportFetching,
-      error: null,
+      error: newReportError,
     };
   }
 
   return {
-    printPageData: null,
+    printData: null,
     option: {
       imageExportOption: imageExportOption,
       sonographies: [],
     },
     // 개발 환경에서는 false, 프로덕션에서는 true
     isLoading: import.meta.env.PROD,
-    error: null,
+    error: newReportError || historyDetailError,
   };
 };
 
-export default usePrintPageHandler;
+export default usePrintHandler;

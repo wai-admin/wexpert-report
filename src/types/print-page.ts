@@ -32,7 +32,7 @@ export interface PrintPageAnalysisImage {
 /**
  * PrintPage 렌더링을 위한 전체 데이터 구조
  */
-export interface PrintPageData {
+export interface PrintData {
   cover: PrintPageCover;
   patientDetail: PrintPagePatientDetail;
   analysisSummary: PrintPageAnalysisSummary;
@@ -49,19 +49,19 @@ export interface PrintPageCover {
 }
 
 /**
- * usePrintPageHandler의 반환 타입
+ * usePrintHandler의 반환 타입
  */
-export interface PrintPageOption {
+export interface PrintOption {
   imageExportOption: ImageExportOptionValues;
   sonographies: Sonography[];
 }
 
 /**
- * usePrintPageHandler의 반환 타입
+ * usePrintHandler의 반환 타입
  */
-export interface UsePrintPageHandlerReturn {
-  printPageData: PrintPageData | null;
-  option: PrintPageOption;
+export interface UsePrintHandlerReturn {
+  printData: PrintData | null;
+  option: PrintOption;
   isLoading: boolean;
   error: Error | null;
 }

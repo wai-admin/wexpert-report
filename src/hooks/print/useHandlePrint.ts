@@ -1,12 +1,12 @@
 import { RefObject } from "react";
 import { useReactToPrint } from "react-to-print";
-import { sendPrintStatus, checkTruthy, formatPdfFileName } from "@/utils";
-import { useMessageStore } from "@/store";
+import { sendPrintStatus, formatPdfFileName } from "@/utils";
+import { useReportListStore } from "@/store";
 import { useReportUpload } from "@/services/useReportUpload";
 import { ReportData } from "@/lib";
 import { ImageExportOptionValues } from "@/types";
 
-interface UsePrintActionProps {
+interface UseHandlePrintProps {
   printRef: RefObject<HTMLDivElement | null>;
   imageExportOption: ImageExportOptionValues;
   physicianAssessment: string;
@@ -20,15 +20,14 @@ export interface PrintOptions {
 /**
  * 인쇄 처리를 위한 커스텀 훅
  */
-export const usePrintAction = ({
+export const useHandlePrint = ({
   printRef,
   imageExportOption,
   physicianAssessment,
   patientName,
-}: UsePrintActionProps) => {
-  const { nativeMessage } = useMessageStore();
+}: UseHandlePrintProps) => {
   const { uploadReport } = useReportUpload();
-
+  const { selectedPatientId } = useReportListStore();
   const fileName = `${patientName}_${formatPdfFileName(new Date())}`;
 
   // 현재 인쇄 옵션을 저장할 ref
@@ -42,9 +41,9 @@ export const usePrintAction = ({
       sendPrintStatus(true);
 
       // 리포트 업로드 (옵션에 따라 분기)
-      if (printOptionsRef.shouldUploadReport && checkTruthy(nativeMessage)) {
+      if (printOptionsRef.shouldUploadReport) {
         const reportData = {
-          patientId: nativeMessage.id,
+          patientId: selectedPatientId,
           includeAllImages:
             imageExportOption === ImageExportOptionValues.ALL_IMAGE,
           doctorOpinion: physicianAssessment || null,

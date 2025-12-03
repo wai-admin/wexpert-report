@@ -17,11 +17,7 @@ import {
 } from "@/constants";
 import { useMessageStore } from "@/store";
 import { generateAnalysisItems } from "@/utils";
-import {
-  ImageExportOptionValues,
-  PrintPageData,
-  PrintPageOption,
-} from "@/types";
+import { ImageExportOptionValues, PrintData, PrintOption } from "@/types";
 
 interface ElementPageInfo {
   page: number;
@@ -29,11 +25,11 @@ interface ElementPageInfo {
 }
 
 interface UseA4HandlerProps {
-  printPageData: PrintPageData | null;
-  option: PrintPageOption;
+  printData: PrintData | null;
+  option: PrintOption;
 }
 
-const useA4Handler = ({ printPageData, option }: UseA4HandlerProps) => {
+const useA4Handler = ({ printData, option }: UseA4HandlerProps) => {
   const { nativeMessage } = useMessageStore();
 
   const measureRootRef = useRef<HTMLDivElement>(null);
@@ -41,7 +37,7 @@ const useA4Handler = ({ printPageData, option }: UseA4HandlerProps) => {
 
   // 데이터 초기화, 변경 시 페이지 생성 (A4 내부에 표시할 요소 목록 생성)
   useEffect(() => {
-    if (printPageData) {
+    if (printData) {
       // 1. elementPageInfo 초기화
       setElementPageInfo([]);
 
@@ -51,15 +47,15 @@ const useA4Handler = ({ printPageData, option }: UseA4HandlerProps) => {
       }
 
       // 3. 새로운 데이터로 페이지 생성
-      const a4Element = getA4Element(printPageData, nativeMessage);
+      const a4Element = getA4Element(printData, nativeMessage);
       const generatedPages = getA4Data(a4Element);
       setElementPageInfo(generatedPages);
     }
-  }, [printPageData, nativeMessage]);
+  }, [printData, nativeMessage]);
 
   // A4 내부에 표시할 요소 목록 생성
   const getA4Element = (
-    printPageData: PrintPageData,
+    printData: PrintData,
     nativeMessage: NativeMessage | null
   ) => {
     const analysisItems = generateAnalysisItems({
@@ -83,7 +79,7 @@ const useA4Handler = ({ printPageData, option }: UseA4HandlerProps) => {
         type: ELEMENT.RECOMMEND_TREATMENT,
         data: recommendTreatment(
           ELEMENT.RECOMMEND_TREATMENT,
-          printPageData?.analysisResultByAI ?? ""
+          printData?.analysisResultByAI ?? ""
         ),
         active: true,
       },
@@ -102,7 +98,7 @@ const useA4Handler = ({ printPageData, option }: UseA4HandlerProps) => {
         type: ELEMENT.ASSESSMENT,
         data: assessment(
           ELEMENT.ASSESSMENT,
-          printPageData?.physicianAssessment ?? ""
+          printData?.physicianAssessment ?? ""
         ),
         active: getFeatureActivation(
           FEATURE.ASSESSMENT,

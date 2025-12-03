@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { usePrintAction } from "@/hooks";
+import { useHandlePrint } from "@/hooks";
 import {
   useMessageStore,
   useLoadingStore,
@@ -7,16 +7,16 @@ import {
   useCurrentReportModeStore,
 } from "@/store";
 import { PrintPage, ReportController, EmptyPrintPage } from "@/pages";
-import usePrintPageHandler from "@/hooks/print/usePrintPageHandler";
+import usePrintHandler from "@/hooks/print/usePrintHandler";
 import { LoadingIndicator } from "@/components-common";
-import { checkFalsy, checkProd } from "@/utils";
+import { checkProd } from "@/utils";
 
 // WARNING: usePrintPageHandler 업데이트 시 전체 렌더링 주의 (개선 필요)
 const ReportContainer = () => {
   const printRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   //Bridge Message
-  const { nativeMessage } = useMessageStore();
+  const { isInitializedNativeMessage } = useMessageStore();
   // Loading Status
   const { isLoading } = useLoadingStore();
   // Report List Empty Status
@@ -24,17 +24,18 @@ const ReportContainer = () => {
   // Current Report Mode
   const { isAllReportMode } = useCurrentReportModeStore();
   // Data Information
-  const { printPageData, option } = usePrintPageHandler();
+  const { printData, option } = usePrintHandler();
   // Handlers & State
-  const { handlePrint } = usePrintAction({
+  const { handlePrint } = useHandlePrint({
     printRef,
     imageExportOption: option.imageExportOption,
-    physicianAssessment: printPageData?.physicianAssessment ?? "",
-    patientName: printPageData?.patientDetail.patientName ?? "",
+    physicianAssessment: printData?.physicianAssessment ?? "",
+    patientName: printData?.patientDetail.patientName ?? "",
   });
 
-  // nativeMessage를 받을 때까지 아무것도 렌더링하지 않음 (프로덕션 환경에서만)
-  if (checkFalsy(nativeMessage) && checkProd()) {
+  // 초기 nativeMessage를 받을 때까지 아무것도 렌더링하지 않음 (프로덕션 환경에서만)
+  const isInitialLoading = !isInitializedNativeMessage && checkProd();
+  if (isInitialLoading) {
     return (
       <div className="size-full flex items-center justify-center bg-bg-base-alt">
         <LoadingIndicator isLoading={true} full={true} />
@@ -61,13 +62,13 @@ const ReportContainer = () => {
           <PrintPage
             printRef={printRef}
             scrollRef={scrollRef}
-            printPageData={printPageData}
+            printData={printData}
             option={option}
           />
         )}
       </div>
       <div className="fixed right-0 top-0">
-        <ReportController printPageData={printPageData} onPrint={handlePrint} />
+        <ReportController printData={printData} onPrint={handlePrint} />
       </div>
     </div>
   );
