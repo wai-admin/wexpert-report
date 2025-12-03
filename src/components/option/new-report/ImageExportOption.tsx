@@ -1,10 +1,10 @@
 import { OptionField } from "@/components";
 import { RadioButton } from "@/components-common";
 import { ImageExportOptionValues } from "@/types";
-import { useNewReportStore } from "@/store";
+import { useReportStore } from "@/store";
 
 const ImageExportOption = () => {
-  const { imageExportOption, setImageExportOption } = useNewReportStore();
+  const { imageExportOption, setImageExportOption } = useReportStore();
 
   return (
     <OptionField label="Export option">

@@ -1,7 +1,7 @@
 import { RefObject } from "react";
 import { useReactToPrint } from "react-to-print";
 import { sendPrintStatus, formatPdfFileName } from "@/utils";
-import { useReportListStore } from "@/store";
+import { useReportStore } from "@/store";
 import { useReportUpload } from "@/services/useReportUpload";
 import { ReportData } from "@/lib";
 import { ImageExportOptionValues } from "@/types";
@@ -27,7 +27,7 @@ export const useHandlePrint = ({
   patientName,
 }: UseHandlePrintProps) => {
   const { uploadReport } = useReportUpload();
-  const { selectedPatientId } = useReportListStore();
+  const { selectedPatientId } = useReportStore();
   const fileName = `${patientName}_${formatPdfFileName(new Date())}`;
 
   // 현재 인쇄 옵션을 저장할 ref

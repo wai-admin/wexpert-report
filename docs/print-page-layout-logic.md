@@ -101,7 +101,7 @@ MeasureContainer: () => (
 ```typescript
 const getA4Element = (
   reportData: ReportResponse,
-  nativeMessage: NativeDefaultMessage | null
+  bridgeMessage: NativeDefaultMessage | null
 ) => {
   // 파열 항목 필터링
   const ruptureItems = reportData.data.patientDetail.sonographies.filter(
@@ -116,7 +116,7 @@ const getA4Element = (
 
   // 내보내기 옵션에 따른 분기
   const analysisItems =
-    nativeMessage?.exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE
+    bridgeMessage?.exportOptionType === ExportOptionType.ONLY_POSITIVE_CASE
       ? positiveCaseItems
       : ruptureItems;
 
@@ -157,10 +157,10 @@ const getA4Element = (
     // 6. 담당 의사 소견 (버전별 활성화)
     {
       type: ELEMENT.ASSESSMENT,
-      data: assessment(ELEMENT.ASSESSMENT, nativeMessage?.assessment || ""),
+      data: assessment(ELEMENT.ASSESSMENT, bridgeMessage?.assessment || ""),
       active: getFeatureActivation(
         FEATURE.ASSESSMENT,
-        nativeMessage?.nativeVersion as NATIVE_VERSION | undefined
+        bridgeMessage?.nativeVersion as NATIVE_VERSION | undefined
       ),
     },
   ];
@@ -370,7 +370,7 @@ const PrintPage = () => {
 
 ```typescript
 const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
-  const { nativeMessage } = useMessageStore();
+  const { bridgeMessage } = useBridgeStore();
 
   const {
     patientInformation,
@@ -380,7 +380,7 @@ const ElementRenderer = ({ element, reportData }: ElementRendererProps) => {
     analysisCount,
     ruptureCount,
     assessment,
-  } = processReportData(reportData, nativeMessage);
+  } = processReportData(reportData, bridgeMessage);
 
   // 요소 타입별 분기
   if (element === ELEMENT.PATIENT_INFORMATION) {

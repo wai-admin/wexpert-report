@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { reportApi } from "@/services/api";
 import { QUERY_KEYS } from "@/lib/queryKeys";
-import { useMessageStore } from "@/store";
+import { useBridgeStore } from "@/store";
 import { getPatientId, hasValidPatientId } from "@/utils";
 
 interface useReportProps {
@@ -10,13 +10,13 @@ interface useReportProps {
 
 // 리포트 데이터를 조회하는 커스텀 훅
 export const useReport = ({ enabled = true }: useReportProps) => {
-  const { nativeMessage } = useMessageStore();
-  const patientId = getPatientId(nativeMessage);
+  const { bridgeMessage } = useBridgeStore();
+  const patientId = getPatientId(bridgeMessage);
 
   const query = useQuery({
     queryKey: QUERY_KEYS.REPORT.DETAIL(patientId),
     queryFn: () => reportApi.getReport(patientId),
-    enabled: enabled && hasValidPatientId(nativeMessage),
+    enabled: enabled && hasValidPatientId(bridgeMessage),
     retry: (failureCount, error: any) => {
       // 실패 시 오류 로그
       console.error(`Report fetch failed (attempt ${failureCount + 1}):`, {

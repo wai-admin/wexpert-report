@@ -1,10 +1,10 @@
 import { ChangeEvent } from "react";
 import { OptionField } from "@/components";
-import { useNewReportStore } from "@/store";
+import { useReportStore } from "@/store";
 import { ELEMENT } from "@/constants";
 
 const PhysicianAssessment = () => {
-  const { physicianAssessment, setPhysicianAssessment } = useNewReportStore();
+  const { physicianAssessment, setPhysicianAssessment } = useReportStore();
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setPhysicianAssessment(e.target.value);

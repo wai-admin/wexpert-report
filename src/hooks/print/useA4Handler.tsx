@@ -7,7 +7,7 @@ import {
   analysisResult,
   assessment,
 } from "@/components/html";
-import { NativeMessage } from "@/lib";
+import { BridgeMessage } from "@/lib";
 import {
   ELEMENT,
   CONTENTS_MAX_HEIGHT,
@@ -15,7 +15,7 @@ import {
   NATIVE_VERSION,
   getFeatureActivation,
 } from "@/constants";
-import { useMessageStore } from "@/store";
+import { useBridgeStore } from "@/store";
 import { generateAnalysisItems } from "@/utils";
 import { ImageExportOptionValues, PrintData, PrintOption } from "@/types";
 
@@ -30,7 +30,7 @@ interface UseA4HandlerProps {
 }
 
 const useA4Handler = ({ printData, option }: UseA4HandlerProps) => {
-  const { nativeMessage } = useMessageStore();
+  const { bridgeMessage } = useBridgeStore();
 
   const measureRootRef = useRef<HTMLDivElement>(null);
   const [elementPageInfo, setElementPageInfo] = useState<ElementPageInfo[]>([]);
@@ -47,16 +47,16 @@ const useA4Handler = ({ printData, option }: UseA4HandlerProps) => {
       }
 
       // 3. 새로운 데이터로 페이지 생성
-      const a4Element = getA4Element(printData, nativeMessage);
+      const a4Element = getA4Element(printData, bridgeMessage);
       const generatedPages = getA4Data(a4Element);
       setElementPageInfo(generatedPages);
     }
-  }, [printData, nativeMessage]);
+  }, [printData, bridgeMessage]);
 
   // A4 내부에 표시할 요소 목록 생성
   const getA4Element = (
     printData: PrintData,
-    nativeMessage: NativeMessage | null
+    bridgeMessage: BridgeMessage | null
   ) => {
     const analysisItems = generateAnalysisItems({
       onlyRuptureExist:
@@ -102,7 +102,7 @@ const useA4Handler = ({ printData, option }: UseA4HandlerProps) => {
         ),
         active: getFeatureActivation(
           FEATURE.ASSESSMENT,
-          nativeMessage?.nativeVersion as NATIVE_VERSION
+          bridgeMessage?.nativeVersion as NATIVE_VERSION
         ),
       },
     ];

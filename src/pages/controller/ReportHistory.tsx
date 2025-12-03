@@ -8,7 +8,7 @@ import {
   checkTruthy,
   checkFalsy,
 } from "@/utils";
-import { useMessageStore, useReportListStore, useLoadingStore } from "@/store";
+import { useBridgeStore, useReportStore, useLoadingStore } from "@/store";
 import { PrintOptions } from "@/hooks/print/useHandlePrint";
 
 interface ReportHistoryProps {
@@ -18,15 +18,15 @@ interface ReportHistoryProps {
 const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
 
-  const { setSelectedReportId, setIsReportListEmpty } = useReportListStore();
-  const { nativeMessage } = useMessageStore();
+  const { setSelectedReportId, setIsReportListEmpty } = useReportStore();
+  const { bridgeMessage } = useBridgeStore();
   const { setLoading } = useLoadingStore();
 
   const {
     data: patientReportListData,
     isFetching: isPatientReportListLoading,
   } = usePatientReportList({
-    enabled: hasValidPatientId(nativeMessage),
+    enabled: hasValidPatientId(bridgeMessage),
   });
   const patientReportList = patientReportListData?.data ?? [];
 

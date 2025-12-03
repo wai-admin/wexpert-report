@@ -1,11 +1,6 @@
 import { useEffect } from "react";
 import { useReport } from "@/services/useReport";
-import {
-  useNewReportStore,
-  useReportListStore,
-  useLoadingStore,
-  useCurrentReportModeStore,
-} from "@/store";
+import { useReportStore, useLoadingStore, useCurrentReportMode } from "@/store";
 import { ImageExportOptionValues, UsePrintHandlerReturn } from "@/types";
 import {
   checkTruthy,
@@ -21,7 +16,7 @@ import { usePatientReportDetail } from "@/services/usePatientReportDetail";
 const usePrintHandler = (): UsePrintHandlerReturn => {
   /**
    * @description: 훅 플로우
-   * 1. Native Message Store에서 현재 타입 읽기
+   * 1. Bridge Message Store에서 현재 타입 읽기
    * 2. 타입에 따라 적절한 데이터 훅 호출
    *    type === "new-report" → useNewReportDetail(...)
    *    type === "report-history" → useReportHistoryDetail(...)
@@ -31,10 +26,14 @@ const usePrintHandler = (): UsePrintHandlerReturn => {
    * 4. { printData, isLoading, error } 형태로 반환
    */
 
-  const { imageExportOption, physicianAssessment } = useNewReportStore();
+  const {
+    imageExportOption,
+    physicianAssessment,
+    selectedReportId,
+    selectedPatientId,
+  } = useReportStore();
   const { isNewReportMode, isPatientReportMode, isAllReportMode } =
-    useCurrentReportModeStore();
-  const { selectedReportId, selectedPatientId } = useReportListStore();
+    useCurrentReportMode();
   const { setLoading } = useLoadingStore();
 
   // New Report 모드

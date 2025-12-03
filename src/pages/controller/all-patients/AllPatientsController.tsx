@@ -10,7 +10,7 @@ import {
 import {
   useAllPatientsFilterStore,
   useLoadingStore,
-  useReportListStore,
+  useReportStore,
 } from "@/store";
 import { PrintOptions } from "@/hooks/print/useHandlePrint";
 import { checkTruthy } from "@/utils";
@@ -36,7 +36,7 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
     setSortOrder,
   } = useAllPatientsFilterStore();
   const { setSelectedReportId, setSelectedPatientId, setIsReportListEmpty } =
-    useReportListStore();
+    useReportStore();
 
   const {
     data: allPatientReportListResponse,

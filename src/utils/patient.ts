@@ -4,17 +4,17 @@ import { checkFalsy } from "@/utils/common";
 /**
  * Native 메시지에서 환자 ID를 안전하게 추출하는 함수
  */
-function getPatientId(nativeMessage: any): string {
+function getPatientId(bridgeMessage: any): string {
   try {
-    if (checkFalsy(nativeMessage) || typeof nativeMessage !== "object") {
+    if (checkFalsy(bridgeMessage) || typeof bridgeMessage !== "object") {
       return "";
     }
 
-    if (!("id" in nativeMessage)) {
+    if (!("id" in bridgeMessage)) {
       return "";
     }
 
-    const id = nativeMessage.id;
+    const id = bridgeMessage.id;
     if (checkFalsy(id)) {
       return "";
     }
@@ -34,17 +34,17 @@ function getPatientId(nativeMessage: any): string {
 /**
  * Native 메시지에서 환자 ID가 유효한지 확인하는 함수
  */
-function hasValidPatientId(nativeMessage: any): boolean {
+function hasValidPatientId(bridgeMessage: any): boolean {
   try {
-    if (checkFalsy(nativeMessage) || typeof nativeMessage !== "object") {
+    if (checkFalsy(bridgeMessage) || typeof bridgeMessage !== "object") {
       return false;
     }
 
-    if (!("id" in nativeMessage)) {
+    if (!("id" in bridgeMessage)) {
       return false;
     }
 
-    const id = nativeMessage.id;
+    const id = bridgeMessage.id;
     if (checkFalsy(id)) {
       return false;
     }

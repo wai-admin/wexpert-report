@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { ReportTabs } from "@/components";
 import { NewReport, ReportHistory } from "@/pages";
 import { PrintData, ReportTabValues, CurrentReportModeValues } from "@/types";
-import { usePatientControllerStore, useCurrentReportModeStore } from "@/store";
+import { useReportStore, useCurrentReportMode } from "@/store";
 import { PrintOptions } from "@/hooks/print/useHandlePrint";
 import { ReportOptionType } from "@/lib";
 
@@ -17,10 +17,9 @@ const PatientController = ({ printData, onPrint }: PatientControllerProps) => {
     isNewReportMode,
     isPatientReportMode,
     initialReportMode,
-  } = useCurrentReportModeStore();
+  } = useCurrentReportMode();
 
-  const { selectedReportTab, setSelectedReportTab } =
-    usePatientControllerStore();
+  const { selectedReportTab, setSelectedReportTab } = useReportStore();
 
   useEffect(() => {
     setSelectedReportTab(

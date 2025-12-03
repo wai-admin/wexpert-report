@@ -1,28 +1,28 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useHandlePrint } from "@/hooks";
 import {
-  useMessageStore,
+  useBridgeStore,
   useLoadingStore,
-  useReportListStore,
-  useCurrentReportModeStore,
+  useReportStore,
+  useCurrentReportMode,
 } from "@/store";
 import { PrintPage, ReportController, EmptyPrintPage } from "@/pages";
 import usePrintHandler from "@/hooks/print/usePrintHandler";
 import { LoadingIndicator } from "@/components-common";
-import { checkProd } from "@/utils";
+import { checkProd, checkFalsy } from "@/utils";
 
 // WARNING: usePrintPageHandler 업데이트 시 전체 렌더링 주의 (개선 필요)
 const ReportContainer = () => {
   const printRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   //Bridge Message
-  const { isInitializedNativeMessage } = useMessageStore();
+  const { isInitializedBridgeMessage } = useBridgeStore();
   // Loading Status
   const { isLoading } = useLoadingStore();
   // Report List Empty Status
-  const { isReportListEmpty } = useReportListStore();
+  const { isReportListEmpty, selectedReportId } = useReportStore();
   // Current Report Mode
-  const { isAllReportMode } = useCurrentReportModeStore();
+  const { isAllReportMode } = useCurrentReportMode();
   // Data Information
   const { printData, option } = usePrintHandler();
   // Handlers & State
@@ -33,8 +33,21 @@ const ReportContainer = () => {
     patientName: printData?.patientDetail.patientName ?? "",
   });
 
-  // 초기 nativeMessage를 받을 때까지 아무것도 렌더링하지 않음 (프로덕션 환경에서만)
-  const isInitialLoading = !isInitializedNativeMessage && checkProd();
+  // 새로운 리포트 선택 시 스크롤 초기화 (Report History 모드에 해당)
+  useEffect(() => {
+    if (checkFalsy(selectedReportId)) {
+      return;
+    }
+
+    if (checkFalsy(scrollRef.current)) {
+      return;
+    }
+
+    scrollRef.current.scrollTo({ top: 0, behavior: "smooth" });
+  }, [selectedReportId]);
+
+  // 초기 bridgeMessage를 받을 때까지 아무것도 렌더링하지 않음 (프로덕션 환경에서만)
+  const isInitialLoading = !isInitializedBridgeMessage && checkProd();
   if (isInitialLoading) {
     return (
       <div className="size-full flex items-center justify-center bg-bg-base-alt">
@@ -61,7 +74,6 @@ const ReportContainer = () => {
         ) : (
           <PrintPage
             printRef={printRef}
-            scrollRef={scrollRef}
             printData={printData}
             option={option}
           />

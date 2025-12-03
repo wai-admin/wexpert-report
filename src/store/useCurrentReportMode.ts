@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { useMessageStore } from "./useMessageStore";
-import { usePatientControllerStore } from "./usePatientControllerStore";
-import { ReportOptionType } from "@/lib/nativeMessageType";
+import { useBridgeStore } from "./useBridgeStore";
+import { useReportStore } from "./useReportStore";
+import { ReportOptionType } from "@/lib/bridgeMessageType";
 import { CurrentReportModeValues, ReportTabValues } from "@/types";
 import { checkFalsy } from "@/utils";
 
@@ -26,16 +26,15 @@ const defaultReportModeResult: ReportModeResult = {
  * React 컴포넌트 외부에서도 사용 가능
  */
 export const getCurrentReportMode = (): ReportModeResult => {
-  const nativeMessage = useMessageStore.getState().nativeMessage;
-  const selectedReportTab =
-    usePatientControllerStore.getState().selectedReportTab;
+  const bridgeMessage = useBridgeStore.getState().bridgeMessage;
+  const selectedReportTab = useReportStore.getState().selectedReportTab;
 
-  // nativeMessage가 없으면 NONE
-  if (checkFalsy(nativeMessage)) {
+  // bridgeMessage가 없으면 NONE
+  if (checkFalsy(bridgeMessage)) {
     return defaultReportModeResult;
   }
 
-  const { reportMode } = nativeMessage;
+  const { reportMode } = bridgeMessage;
 
   // ALL_REPORT_HISTORY 모드
   if (reportMode === ReportOptionType.ALL_REPORT_HISTORY) {
@@ -90,15 +89,13 @@ export const getCurrentReportMode = (): ReportModeResult => {
  * 현재 리포트 모드와 초기 입장 옵션을 반환하는 훅
  * React 컴포넌트 내에서 사용
  */
-export const useCurrentReportModeStore = (): ReportModeResult => {
+export const useCurrentReportMode = (): ReportModeResult => {
   // Zustand selector로 필요한 값만 구독
-  const nativeMessage = useMessageStore((state) => state.nativeMessage);
-  const selectedReportTab = usePatientControllerStore(
-    (state) => state.selectedReportTab
-  );
+  const bridgeMessage = useBridgeStore((state) => state.bridgeMessage);
+  const selectedReportTab = useReportStore((state) => state.selectedReportTab);
 
   // 의존성이 변경될 때만 재계산
   return useMemo(() => {
     return getCurrentReportMode();
-  }, [nativeMessage, selectedReportTab]);
+  }, [bridgeMessage, selectedReportTab]);
 };

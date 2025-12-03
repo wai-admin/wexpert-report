@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { reportApi } from "@/services/api";
 import { QUERY_KEYS } from "@/lib/queryKeys";
-import { useMessageStore } from "@/store";
+import { useBridgeStore } from "@/store";
 import { getPatientId, hasValidPatientId } from "@/utils";
 
 interface usePatientReportListProps {
@@ -11,13 +11,13 @@ interface usePatientReportListProps {
 export const usePatientReportList = ({
   enabled = true,
 }: usePatientReportListProps) => {
-  const { nativeMessage } = useMessageStore();
-  const patientId = getPatientId(nativeMessage);
+  const { bridgeMessage } = useBridgeStore();
+  const patientId = getPatientId(bridgeMessage);
 
   const query = useQuery({
     queryKey: QUERY_KEYS.REPORT.PATIENT_LIST(patientId),
     queryFn: () => reportApi.getPatientReportList(patientId),
-    enabled: enabled && hasValidPatientId(nativeMessage),
+    enabled: enabled && hasValidPatientId(bridgeMessage),
     staleTime: 1 * 60 * 1000, // 1분 동안은 신선한 것으로 간주
     retry: (failureCount, error: any) => {
       // 실패 시 오류 로그

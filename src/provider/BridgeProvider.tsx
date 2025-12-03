@@ -1,8 +1,8 @@
 import { useEffect, ReactNode } from "react";
-import { useMessageStore, useAuthStore, useReportListStore } from "@/store";
-import { NativeMessage, NativeMessageData } from "@/lib/nativeMessageType";
+import { useBridgeStore, useAuthStore, useReportStore } from "@/store";
+import { BridgeMessage, BridgeMessageData } from "@/lib/bridgeMessageType";
 import { hasKey } from "@/utils/common";
-import { NATIVE_MESSAGE_KEY } from "@/constants/bridge";
+import { BRIDGE_MESSAGE_KEY } from "@/constants/bridge";
 import { sendInitialized } from "@/utils/bridge";
 
 interface BridgeProviderProps {
@@ -10,39 +10,44 @@ interface BridgeProviderProps {
 }
 
 /**
- * ✅ 1. C#의 WebView2에게 초기화 메시지 전송 및 access token, patient id 획득
+ * WebView Bridge 초기화 및 메시지 수신 처리
+ * - 초기화 메시지 전송
+ * - access token, patient id 획득
  */
 const BridgeProvider = ({ children }: BridgeProviderProps) => {
-  const { setNativeMessage } = useMessageStore();
+  const { setBridgeMessage } = useBridgeStore();
   const { setAccessToken } = useAuthStore();
-  const { setSelectedPatientId } = useReportListStore();
+  const { setSelectedPatientId } = useReportStore();
 
-  // C#의 WebView2에게 초기화 메시지 전송
-  const callNativeInitialized = () => {
+  // Bridge 초기화 메시지 전송
+  const initializeBridge = () => {
     sendInitialized();
   };
 
-  // C#의 WebView2에서 전달받은 메시지 처리
-  const receiveNative = (message: NativeMessageData) => {
-    console.log("receiveNative from C#: ", message.data);
+  // Bridge에서 전달받은 메시지 처리
+  const handleBridgeMessage = (message: BridgeMessageData) => {
+    console.log("[Bridge] Received message:", message.data);
 
     const { data } = message;
 
-    // 토큰 및 사용자 입력 정보 처리
-    if (hasKey(data, NATIVE_MESSAGE_KEY.INITIALIZED)) {
-      setNativeMessage(data as NativeMessage);
+    // 초기화 메시지 처리: 토큰 및 환자 정보 설정
+    if (hasKey(data, BRIDGE_MESSAGE_KEY.INITIALIZED)) {
+      setBridgeMessage(data as BridgeMessage);
 
-      setAccessToken((data as NativeMessage).accessToken);
-      setSelectedPatientId((data as NativeMessage).id);
+      setAccessToken((data as BridgeMessage).accessToken);
+      setSelectedPatientId((data as BridgeMessage).id);
     }
   };
 
   useEffect(() => {
-    window.chrome?.webview?.addEventListener("message", receiveNative);
-    callNativeInitialized();
+    window.chrome?.webview?.addEventListener("message", handleBridgeMessage);
+    initializeBridge();
 
     return () => {
-      window.chrome?.webview?.removeEventListener("message", receiveNative);
+      window.chrome?.webview?.removeEventListener(
+        "message",
+        handleBridgeMessage
+      );
     };
   }, []);
 
