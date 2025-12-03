@@ -76,7 +76,9 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
             return (
               <div
                 key={id}
-                className="w-full min-h-[52px] flex justify-between items-center hover:bg-[rgb(49,51,53)] border-b-[1px] border-solid-lt transition-colors duration-100"
+                className={`w-full min-h-[52px] flex justify-between items-center hover:bg-[rgb(49,51,53)] border-b-[1px] border-solid-lt transition-colors duration-100
+                  ${isSelected ? "bg-[rgb(49,51,53)]" : "bg-transparent"}
+                  `}
                 onClick={() => setSelectedReportIndex(index)}
               >
                 <div className="w-[50px] flex justify-center">
