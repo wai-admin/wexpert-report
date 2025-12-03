@@ -40,7 +40,7 @@ const SortDropdown = ({
   return (
     <div ref={dropdownRef} className="relative">
       <button
-        className="flex gap-[5px] p-[6px] hover:bg-[rgb(49,51,53)] rounded-[6px] transition-colors duration-100"
+        className="flex gap-[5px] p-[6px] hover:bg-[rgb(49,51,53)] rounded-[6px] transition-colors duration-100 cursor-default"
         onClick={() => setIsOpenSortDropdown(!isOpenSortDropdown)}
       >
         <p className="font-pretendard text-[16px] text-text-tertiary">Sort</p>

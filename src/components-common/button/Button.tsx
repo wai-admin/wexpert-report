@@ -17,7 +17,7 @@ const Button = ({
       ${
         disabled
           ? "opacity-50 cursor-not-allowed bg-component-disabled"
-          : " bg-blue-300 hover:bg-blue-400"
+          : " bg-blue-300 hover:bg-blue-400 cursor-default"
       }
       `}
       onClick={onClick}

@@ -6,7 +6,7 @@ interface RadioButtonProps {
 
 const RadioButton = ({ label, checked, onChange }: RadioButtonProps) => {
   return (
-    <label className="text-[16px] cursor-pointer font-pretendard flex items-center gap-[10px] text-white">
+    <label className="text-[16px] cursor-default font-pretendard flex items-center gap-[10px] text-white">
       <input
         type="radio"
         value={label}

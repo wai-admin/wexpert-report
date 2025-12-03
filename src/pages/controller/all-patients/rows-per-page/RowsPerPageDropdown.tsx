@@ -29,7 +29,7 @@ const RowsPerPageDropdown = ({
       </p>
       <div ref={dropdownRef} className="relative">
         <button
-          className="flex items-center gap-[5px] p-[6px] hover:bg-[rgb(49,51,53)] rounded-[6px] transition-colors duration-100"
+          className="flex items-center gap-[5px] p-[6px] hover:bg-[rgb(49,51,53)] rounded-[6px] transition-colors duration-100 cursor-default"
           onClick={() =>
             setIsOpenRowsPerPageDropdown(!isOpenRowsPerPageDropdown)
           }

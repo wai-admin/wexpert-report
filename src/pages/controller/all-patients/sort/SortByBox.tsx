@@ -20,7 +20,7 @@ const SortByBox = ({ sortBy, onSelectSortBy }: SortByBoxProps) => {
         {SORT_BY_OPTIONS.options.map((option) => (
           <button
             key={option}
-            className={`flex px-[12px] py-[8px] ${
+            className={`flex px-[12px] py-[8px] cursor-default ${
               sortBy === option
                 ? "bg-subtle-transparent-7"
                 : "hover:bg-subtle-transparent-7"

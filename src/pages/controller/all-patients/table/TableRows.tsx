@@ -28,7 +28,7 @@ const TableRows = ({
           return (
             <div
               key={report.reportId.toString()}
-              className="w-full h-[48px] flex items-center justify-between bg-transparent hover:bg-[rgb(49,51,53)] border-b border-b-solid-dk px-[14px] cursor-pointer transition-colors duration-100"
+              className="w-full h-[48px] flex items-center justify-between bg-transparent hover:bg-[rgb(49,51,53)] border-b border-b-solid-dk px-[14px] transition-colors duration-100"
               onClick={() => setSelectedReportIndex(index)}
             >
               {ALL_PATIENTS_TABLE_COLUMNS.map((column) => (

@@ -36,7 +36,7 @@ const ReportTab = ({
 }: ReportTabProps) => {
   return (
     <button
-      className={`flex flex-1 justify-center ${
+      className={`flex flex-1 justify-center cursor-default ${
         selectedReportTab === tab
           ? "border-b-[4px] border-solid-focus"
           : "border-b-[1px] border-solid-lt"

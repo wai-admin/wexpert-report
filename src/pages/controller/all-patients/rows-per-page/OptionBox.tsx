@@ -21,7 +21,7 @@ const OptionBox = ({
       {ROWS_PER_PAGE_OPTIONS.map((option) => (
         <button
           key={option}
-          className={`w-full flex px-[12px] py-[8px]
+          className={`w-full flex px-[12px] py-[8px] cursor-default
             ${
               rowsPerPage === option
                 ? "bg-subtle-transparent-7"

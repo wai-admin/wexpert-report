@@ -40,7 +40,7 @@ const Pagination = ({
         <button
           onClick={handlePrevious}
           disabled={currentPage === 1}
-          className="flex items-center justify-center w-[40px] h-[40px] hover:bg-solid-dk disabled:hover:bg-transparent disabled:opacity-50 disabled:cursor-not-allowed rounded-[6px]"
+          className="flex items-center justify-center w-[40px] h-[40px] hover:bg-solid-dk disabled:hover:bg-transparent disabled:opacity-50 disabled:cursor-not-allowed rounded-[6px] cursor-default"
           aria-label="이전 페이지"
         >
           <img
@@ -56,7 +56,7 @@ const Pagination = ({
         <button
           onClick={handleNext}
           disabled={currentPage === totalPages}
-          className="flex items-center justify-center w-[40px] h-[40px] hover:bg-solid-dk disabled:hover:bg-transparent disabled:opacity-50 disabled:cursor-not-allowed rounded-[6px]"
+          className="flex items-center justify-center w-[40px] h-[40px] hover:bg-solid-dk disabled:hover:bg-transparent disabled:opacity-50 disabled:cursor-not-allowed rounded-[6px] cursor-default"
           aria-label="다음 페이지"
         >
           <img
