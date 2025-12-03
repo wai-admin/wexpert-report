@@ -48,6 +48,12 @@ body {
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
   line-height: 1.4;
+
+  /* 텍스트 선택 방지 (W Expert와 일관성 유지) */
+  -webkit-user-select: none; /* Safari, Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none; /* 표준 */
 }
 
 /* 높이 설정이 없으면 자식의 콘텐츠 높이만큼만 확장. PrintPage는 높이가 가변적이기 때문에 100%로 설정하여 뷰포트 높이만큼 확장. */
