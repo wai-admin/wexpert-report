@@ -98,7 +98,7 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
             Search
           </p>
           <SearchInput
-            placeholder="Enter search keywords"
+            placeholder="Chart number or Name"
             onSearch={setSearchKeyword}
             onClear={clearSearchKeyword}
           />
