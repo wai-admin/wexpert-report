@@ -26,6 +26,7 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
   const { setLoading } = useLoadingStore();
   const {
     setSearchKeyword,
+    clearSearchKeyword,
     rowsPerPage,
     setRowsPerPage,
     currentPage,
@@ -46,12 +47,6 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
   const isValidAllPatientReportList = checkTruthy(allPatientReportListResponse);
   const isEmptyAllPatientReportList =
     isValidAllPatientReportList && allPatientReportListResponse.data.total <= 0;
-
-  console.log(
-    "isValidAllPatientReportList",
-    checkTruthy(allPatientReportListResponse),
-    allPatientReportListResponse
-  );
 
   useEffect(() => {
     setLoading(isAllPatientReportListLoading);
@@ -83,8 +78,6 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
       return;
     }
 
-    console.log("allPatientReportListResponse", allPatientReportListResponse);
-
     // 선택된 리포트 정보 업데이트
     const { reportId, patientId } =
       allPatientReportListResponse.data.data[selectedReportIndex];
@@ -107,6 +100,7 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
           <SearchInput
             placeholder="Enter search keywords"
             onSearch={setSearchKeyword}
+            onClear={clearSearchKeyword}
           />
         </div>
         <Button

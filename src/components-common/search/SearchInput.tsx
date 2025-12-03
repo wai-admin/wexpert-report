@@ -3,9 +3,10 @@ import { FormEvent, useState } from "react";
 interface SearchInputProps {
   placeholder: string;
   onSearch: (keyword: string) => void;
+  onClear: () => void;
 }
 
-const SearchInput = ({ placeholder, onSearch }: SearchInputProps) => {
+const SearchInput = ({ placeholder, onSearch, onClear }: SearchInputProps) => {
   const [keyword, setKeyword] = useState("");
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -15,6 +16,7 @@ const SearchInput = ({ placeholder, onSearch }: SearchInputProps) => {
 
   const handleClear = () => {
     setKeyword("");
+    onClear();
   };
 
   return (
