@@ -83,6 +83,7 @@ const AnalysisImage = ({
         </div>
       ) : (
         <img
+          key={imageUrl + Math.random()}
           ref={imageRef}
           src={imageUrl}
           alt={originalFileName}

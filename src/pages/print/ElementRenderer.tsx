@@ -85,7 +85,7 @@ const ElementRenderer = ({ element, printPageData }: ElementRendererProps) => {
 
     return (
       <AnalysisResult
-        key={element}
+        key={element + Math.random()}
         index={analysisResultIndex + 1}
         item={analysisItem}
       />
