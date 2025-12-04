@@ -36,10 +36,10 @@ const useAllPatientsFilterStore = create<AllPatientsFilterState>((set) => ({
   rowsPerPage: 20,
   setRowsPerPage: (rowsPerPage: number) => set({ rowsPerPage, currentPage: 1 }),
 
-  sortBy: SortBy.NAME,
+  sortBy: SortBy.REPORT_CREATED_DATE,
   setSortBy: (sortBy: SortBy) => set({ sortBy, currentPage: 1 }),
 
-  sortOrder: SortOrder.ASC,
+  sortOrder: SortOrder.DESC,
   setSortOrder: (sortOrder: SortOrder) => set({ sortOrder, currentPage: 1 }),
 }));
 
