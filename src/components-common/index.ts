@@ -9,3 +9,5 @@ export { default as SearchInput } from "./search/SearchInput";
 export { default as Pagination } from "./pagination/Pagination";
 
 export { default as LoadingIndicator } from "./loading/LoadingIndicator";
+
+export { default as ErrorIndicator } from "./error/ErrorIndicator";

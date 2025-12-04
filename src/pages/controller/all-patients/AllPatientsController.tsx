@@ -9,6 +9,7 @@ import {
 } from "@/pages";
 import {
   useAllPatientsFilterStore,
+  useErrorStore,
   useLoadingStore,
   useReportListStore,
 } from "@/store";
@@ -38,19 +39,27 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
   } = useAllPatientsFilterStore();
   const { setSelectedReportId, setSelectedPatientId, setIsReportListEmpty } =
     useReportListStore();
+  const { setIsError } = useErrorStore();
 
   const {
     data: allPatientReportListResponse,
     isFetching: isAllPatientReportListLoading,
+    isError: isAllPatientReportListError,
   } = useAllPatientReportList();
 
   const isValidAllPatientReportList = checkTruthy(allPatientReportListResponse);
   const isEmptyAllPatientReportList =
     isValidAllPatientReportList && allPatientReportListResponse.data.total <= 0;
 
+  // 리스트 로드 상태 업데이트
   useEffect(() => {
     setLoading(isAllPatientReportListLoading);
   }, [isAllPatientReportListLoading]);
+
+  // 리스트 에러 상태 업데이트
+  useEffect(() => {
+    setIsError(isAllPatientReportListError);
+  }, [isAllPatientReportListError]);
 
   // 새로운 리포트 리스트 호출 시
   useEffect(() => {

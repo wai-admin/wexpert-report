@@ -4,6 +4,7 @@ import {
   useNewReportStore,
   useReportListStore,
   useLoadingStore,
+  useErrorStore,
   useCurrentReportModeStore,
 } from "@/store";
 import { ImageExportOptionValues, UsePrintPageHandlerReturn } from "@/types";
@@ -36,27 +37,36 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
     useCurrentReportModeStore();
   const { selectedReportId, selectedPatientId } = useReportListStore();
   const { setLoading } = useLoadingStore();
-
+  const { setIsError } = useErrorStore();
   // New Report 모드
-  const { data: newReport, isFetching: isNewReportFetching } = useReport({
+  const {
+    data: newReport,
+    isFetching: isNewReportFetching,
+    isError: isNewReportError,
+  } = useReport({
     enabled: isNewReportMode,
   });
 
   // Report History 모드 - 같은 쿼리 키로 캐시된 데이터 사용
-  const { data: reportHistoryDetail, isFetching: isHistoryDetailFetching } =
-    usePatientReportDetail({
-      reportId: checkTruthy(selectedReportId)
-        ? selectedReportId.toString()
-        : "",
-      patientId: checkTruthy(selectedPatientId)
-        ? selectedPatientId.toString()
-        : "",
-      enabled: isPatientReportMode || isAllReportMode,
-    });
+  const {
+    data: reportHistoryDetail,
+    isFetching: isHistoryDetailFetching,
+    isError: isHistoryDetailError,
+  } = usePatientReportDetail({
+    reportId: checkTruthy(selectedReportId) ? selectedReportId.toString() : "",
+    patientId: checkTruthy(selectedPatientId)
+      ? selectedPatientId.toString()
+      : "",
+    enabled: isPatientReportMode || isAllReportMode,
+  });
 
   useEffect(() => {
     setLoading(isNewReportFetching || isHistoryDetailFetching);
   }, [isNewReportFetching, isHistoryDetailFetching]);
+
+  useEffect(() => {
+    setIsError(isNewReportError || isHistoryDetailError);
+  }, [isNewReportError, isHistoryDetailError]);
 
   if (
     checkTruthy(reportHistoryDetail) &&

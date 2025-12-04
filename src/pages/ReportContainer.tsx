@@ -3,12 +3,13 @@ import { usePrintAction } from "@/hooks";
 import {
   useMessageStore,
   useLoadingStore,
+  useErrorStore,
   useReportListStore,
   useCurrentReportModeStore,
 } from "@/store";
 import { PrintPage, ReportController, EmptyPrintPage } from "@/pages";
 import usePrintPageHandler from "@/hooks/usePrintPageHandler";
-import { LoadingIndicator } from "@/components-common";
+import { LoadingIndicator, ErrorIndicator } from "@/components-common";
 import { checkFalsy, checkProd } from "@/utils";
 
 // WARNING: usePrintPageHandler 업데이트 시 전체 렌더링 주의 (개선 필요)
@@ -19,6 +20,8 @@ const ReportContainer = () => {
   const { nativeMessage } = useMessageStore();
   // Loading Status
   const { isLoading } = useLoadingStore();
+  // Error Status
+  const { isError } = useErrorStore();
   // Report List Empty Status
   const { isReportListEmpty } = useReportListStore();
   // Current Report Mode
@@ -40,6 +43,10 @@ const ReportContainer = () => {
         <LoadingIndicator isLoading={true} full={true} />
       </div>
     );
+  }
+
+  if (isError) {
+    return <ErrorIndicator />;
   }
 
   return (

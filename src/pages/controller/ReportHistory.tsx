@@ -8,7 +8,12 @@ import {
   checkTruthy,
   checkFalsy,
 } from "@/utils";
-import { useMessageStore, useReportListStore, useLoadingStore } from "@/store";
+import {
+  useMessageStore,
+  useReportListStore,
+  useLoadingStore,
+  useErrorStore,
+} from "@/store";
 import { PrintOptions } from "@/hooks/usePrintAction";
 
 interface ReportHistoryProps {
@@ -21,10 +26,12 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   const { setSelectedReportId, setIsReportListEmpty } = useReportListStore();
   const { nativeMessage } = useMessageStore();
   const { setLoading } = useLoadingStore();
+  const { setIsError } = useErrorStore();
 
   const {
     data: patientReportListData,
     isFetching: isPatientReportListLoading,
+    isError: isPatientReportListError,
   } = usePatientReportList({
     enabled: hasValidPatientId(nativeMessage),
   });
@@ -49,6 +56,10 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   useEffect(() => {
     setLoading(isPatientReportListLoading);
   }, [isPatientReportListLoading]);
+
+  useEffect(() => {
+    setIsError(isPatientReportListError);
+  }, [isPatientReportListError]);
 
   // List를 받아온 상태에서 리스트가 비어있는 경우
   const isEmptyReportList =
