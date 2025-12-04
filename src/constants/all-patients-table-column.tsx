@@ -19,9 +19,9 @@ const ALL_PATIENTS_TABLE_COLUMNS = [
   {
     key: "chart number",
     title: "Chart number",
-    width: 170,
+    width: 165,
     render: ({ report }: RenderProps) => (
-      <p className="font-pretendard text-[14px] text-text-secondary">
+      <p className="w-full min-w-0 font-pretendard text-[14px] text-text-secondary truncate px-[8px]">
         {checkTruthy(report.chartNumber) ? report.chartNumber : "-"}
       </p>
     ),
@@ -29,9 +29,9 @@ const ALL_PATIENTS_TABLE_COLUMNS = [
   {
     key: "name",
     title: "Name",
-    width: 170,
+    width: 165,
     render: ({ report }: RenderProps) => (
-      <p className="font-pretendard text-[14px] text-text-secondary">
+      <p className="w-full min-w-0 font-pretendard text-[14px] text-text-secondary truncate px-[8px]">
         {checkTruthy(report.patientName) ? report.patientName : "-"}
       </p>
     ),
@@ -39,9 +39,9 @@ const ALL_PATIENTS_TABLE_COLUMNS = [
   {
     key: "date of birth",
     title: "Date of birth",
-    width: 170,
+    width: 155,
     render: ({ report }: RenderProps) => (
-      <p className="font-pretendard text-[14px] text-text-secondary">
+      <p className="font-pretendard text-[14px] text-text-secondary px-[8px]">
         {checkTruthy(report.patientBirthDate)
           ? convertISOToLocal(report.patientBirthDate, true, true)
           : "-"}
@@ -51,9 +51,9 @@ const ALL_PATIENTS_TABLE_COLUMNS = [
   {
     key: "report created",
     title: "Report created",
-    width: 170,
+    width: 165,
     render: ({ report }: RenderProps) => (
-      <p className="font-pretendard text-[14px] text-text-secondary">
+      <p className="font-pretendard text-[14px] text-text-secondary px-[8px]">
         {checkTruthy(report.createdAt)
           ? convertISOToLocal(report.createdAt, false, true)
           : "-"}

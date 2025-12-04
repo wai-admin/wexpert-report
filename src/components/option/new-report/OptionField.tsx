@@ -31,7 +31,9 @@ const OptionField = ({ label, subLabel, children }: OptionFieldProps) => {
 const OptionDisabledField = ({ value }: OptionDisabledFieldProps) => {
   return (
     <div className="w-full h-[40px] flex items-center bg-subtle-transparent-7 rounded-[6px] border border-solid-dk px-[15px]">
-      <p className="text-[16px] text-solid-lt font-pretendard">{value}</p>
+      <p className="w-full min-w-0 text-[16px] text-solid-lt font-pretendard truncate">
+        {value}
+      </p>
     </div>
   );
 };
