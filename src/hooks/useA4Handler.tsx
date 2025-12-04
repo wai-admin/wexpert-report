@@ -7,15 +7,7 @@ import {
   analysisResult,
   assessment,
 } from "@/components/html";
-import { NativeMessage } from "@/lib";
-import {
-  ELEMENT,
-  CONTENTS_MAX_HEIGHT,
-  FEATURE,
-  NATIVE_VERSION,
-  getFeatureActivation,
-} from "@/constants";
-import { useMessageStore } from "@/store";
+import { ELEMENT, CONTENTS_MAX_HEIGHT } from "@/constants";
 import { generateAnalysisItems } from "@/utils";
 import {
   ImageExportOptionValues,
@@ -34,8 +26,6 @@ interface UseA4HandlerProps {
 }
 
 const useA4Handler = ({ printPageData, option }: UseA4HandlerProps) => {
-  const { nativeMessage } = useMessageStore();
-
   const measureRootRef = useRef<HTMLDivElement>(null);
   const [elementPageInfo, setElementPageInfo] = useState<ElementPageInfo[]>([]);
 
@@ -51,17 +41,14 @@ const useA4Handler = ({ printPageData, option }: UseA4HandlerProps) => {
       }
 
       // 3. 새로운 데이터로 페이지 생성
-      const a4Element = getA4Element(printPageData, nativeMessage);
+      const a4Element = getA4Element(printPageData);
       const generatedPages = getA4Data(a4Element);
       setElementPageInfo(generatedPages);
     }
-  }, [printPageData, nativeMessage]);
+  }, [printPageData]);
 
   // A4 내부에 표시할 요소 목록 생성
-  const getA4Element = (
-    printPageData: PrintPageData,
-    nativeMessage: NativeMessage | null
-  ) => {
+  const getA4Element = (printPageData: PrintPageData) => {
     const analysisItems = generateAnalysisItems({
       onlyRuptureExist:
         option?.imageExportOption === ImageExportOptionValues.RUPTURE_CASE,
@@ -104,10 +91,7 @@ const useA4Handler = ({ printPageData, option }: UseA4HandlerProps) => {
           ELEMENT.ASSESSMENT,
           printPageData?.physicianAssessment ?? ""
         ),
-        active: getFeatureActivation(
-          FEATURE.ASSESSMENT,
-          nativeMessage?.nativeVersion as NATIVE_VERSION
-        ),
+        active: true,
       },
     ];
   };
@@ -166,7 +150,13 @@ const useA4Handler = ({ printPageData, option }: UseA4HandlerProps) => {
     MeasureContainer: () => (
       <div
         ref={measureRootRef}
-        style={{ position: "absolute", top: "-9999px", left: "-9999px" }}
+        style={{
+          position: "absolute",
+          top: "-9999px",
+          left: "-9999px",
+          // A4 콘텐츠 영역과 동일한 너비로 설정하여 정확한 높이 측정
+          width: "var(--a4-content-width)",
+        }}
       />
     ),
   };
