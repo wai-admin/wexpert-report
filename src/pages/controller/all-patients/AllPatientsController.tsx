@@ -39,27 +39,34 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
   } = useAllPatientsFilterStore();
   const { setSelectedReportId, setSelectedPatientId, setIsReportListEmpty } =
     useReportListStore();
-  const { setIsError } = useErrorStore();
+  const { setIsError, setRefetch } = useErrorStore();
 
   const {
     data: allPatientReportListResponse,
     isFetching: isAllPatientReportListLoading,
     isError: isAllPatientReportListError,
+    refetch: refetchAllPatientReportList,
   } = useAllPatientReportList();
 
   const isValidAllPatientReportList = checkTruthy(allPatientReportListResponse);
   const isEmptyAllPatientReportList =
     isValidAllPatientReportList && allPatientReportListResponse.data.total <= 0;
 
-  // 리스트 로드 상태 업데이트
+  // 로딩 상태 업데이트
   useEffect(() => {
     setLoading(isAllPatientReportListLoading);
   }, [isAllPatientReportListLoading]);
 
-  // 리스트 에러 상태 업데이트
+  // 에러 상태 및 refetch 함수 업데이트
   useEffect(() => {
     setIsError(isAllPatientReportListError);
-  }, [isAllPatientReportListError]);
+
+    if (isAllPatientReportListError) {
+      setRefetch(() => refetchAllPatientReportList);
+    } else {
+      setRefetch(null);
+    }
+  }, [isAllPatientReportListError, refetchAllPatientReportList]);
 
   // 새로운 리포트 리스트 호출 시
   useEffect(() => {
@@ -107,7 +114,14 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
       setSelectedPatientId(patientId);
     }
     // WARNING: 리스트 로드 후 로직이 실행되어야하기 때문에 의존성 배열에 allPatientReportListResponse를 추가합니다.
-  }, [allPatientReportListResponse, selectedReportIndex]);
+  }, [
+    allPatientReportListResponse,
+    selectedReportIndex,
+    isValidAllPatientReportList,
+    isEmptyAllPatientReportList,
+    setSelectedReportId,
+    setSelectedPatientId,
+  ]);
 
   return (
     <div className="size-full flex flex-col p-[30px] gap-[25px] overflow-hidden">

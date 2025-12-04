@@ -6,6 +6,8 @@ interface ErrorState {
   setError: (error: Error | null) => void;
   isError: boolean;
   setIsError: (isError: boolean) => void;
+  refetch: (() => void) | null;
+  setRefetch: (refetch: (() => void) | null) => void;
 }
 
 export const useErrorStore = create<ErrorState>((set) => ({
@@ -13,4 +15,6 @@ export const useErrorStore = create<ErrorState>((set) => ({
   setError: (error: Error | null) => set({ error }),
   isError: false,
   setIsError: (isError: boolean) => set({ isError }),
+  refetch: null,
+  setRefetch: (refetch) => set({ refetch }),
 }));

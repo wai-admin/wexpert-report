@@ -37,12 +37,14 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
     useCurrentReportModeStore();
   const { selectedReportId, selectedPatientId } = useReportListStore();
   const { setLoading } = useLoadingStore();
-  const { setIsError } = useErrorStore();
+  const { setIsError, setRefetch } = useErrorStore();
+
   // New Report 모드
   const {
     data: newReport,
     isFetching: isNewReportFetching,
     isError: isNewReportError,
+    refetch: refetchNewReport,
   } = useReport({
     enabled: isNewReportMode,
   });
@@ -52,6 +54,7 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
     data: reportHistoryDetail,
     isFetching: isHistoryDetailFetching,
     isError: isHistoryDetailError,
+    refetch: refetchReportHistory,
   } = usePatientReportDetail({
     reportId: checkTruthy(selectedReportId) ? selectedReportId.toString() : "",
     patientId: checkTruthy(selectedPatientId)
@@ -60,13 +63,32 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
     enabled: isPatientReportMode || isAllReportMode,
   });
 
+  // 로딩 상태 업데이트
   useEffect(() => {
     setLoading(isNewReportFetching || isHistoryDetailFetching);
   }, [isNewReportFetching, isHistoryDetailFetching]);
 
+  // 에러 상태 및 refetch 함수 업데이트
   useEffect(() => {
-    setIsError(isNewReportError || isHistoryDetailError);
-  }, [isNewReportError, isHistoryDetailError]);
+    const hasError = isNewReportError || isHistoryDetailError;
+    setIsError(hasError);
+
+    if (hasError) {
+      // 에러가 발생한 쿼리의 refetch 함수 저장
+      if (isNewReportError) {
+        setRefetch(() => refetchNewReport);
+      } else if (isHistoryDetailError) {
+        setRefetch(() => refetchReportHistory);
+      }
+    } else {
+      setRefetch(null);
+    }
+  }, [
+    isNewReportError,
+    isHistoryDetailError,
+    refetchNewReport,
+    refetchReportHistory,
+  ]);
 
   if (
     checkTruthy(reportHistoryDetail) &&

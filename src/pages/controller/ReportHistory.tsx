@@ -26,12 +26,13 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   const { setSelectedReportId, setIsReportListEmpty } = useReportListStore();
   const { nativeMessage } = useMessageStore();
   const { setLoading } = useLoadingStore();
-  const { setIsError } = useErrorStore();
+  const { setIsError, setRefetch } = useErrorStore();
 
   const {
     data: patientReportListData,
     isFetching: isPatientReportListLoading,
     isError: isPatientReportListError,
+    refetch: refetchPatientReportList,
   } = usePatientReportList({
     enabled: hasValidPatientId(nativeMessage),
   });
@@ -65,13 +66,21 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
     setIsReportListEmpty,
   ]);
 
+  // 로딩 상태 업데이트
   useEffect(() => {
     setLoading(isPatientReportListLoading);
   }, [isPatientReportListLoading]);
 
+  // 에러 상태 및 refetch 함수 업데이트
   useEffect(() => {
     setIsError(isPatientReportListError);
-  }, [isPatientReportListError]);
+
+    if (isPatientReportListError) {
+      setRefetch(() => refetchPatientReportList);
+    } else {
+      setRefetch(null);
+    }
+  }, [isPatientReportListError, refetchPatientReportList]);
 
   // List를 받아온 상태에서 리스트가 비어있는 경우
   const isEmptyReportList =
