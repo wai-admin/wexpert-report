@@ -63,6 +63,11 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
 
   // 새로운 리포트 리스트 호출 시
   useEffect(() => {
+    // 로딩 중일 때는 isReportListEmpty 업데이트하지 않음 (race condition 방지)
+    if (isAllPatientReportListLoading) {
+      return;
+    }
+
     if (isValidAllPatientReportList) {
       // 첫 번째 리포트 선택
       setSelectedReportIndex(0);
@@ -75,7 +80,13 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
       // 리스트 비어있는 상태 업데이트
       setIsReportListEmpty(isEmptyAllPatientReportList);
     }
-  }, [allPatientReportListResponse]);
+  }, [
+    allPatientReportListResponse,
+    isValidAllPatientReportList,
+    isEmptyAllPatientReportList,
+    isAllPatientReportListLoading,
+    setIsReportListEmpty,
+  ]);
 
   // 리스트 로드 후 selectedReportIndex 변경 시 리포트 정보 업데이트
   useEffect(() => {

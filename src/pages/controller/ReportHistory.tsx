@@ -39,6 +39,11 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
 
   // 리스트 로드 성공 시 또는 selectedReportIndex 변경 시 selectedReportId 업데이트
   useEffect(() => {
+    // 로딩 중일 때는 isReportListEmpty 업데이트하지 않음 (race condition 방지)
+    if (isPatientReportListLoading) {
+      return;
+    }
+
     if (checkTruthy(patientReportListData)) {
       const hasReportList = patientReportListData.data.length > 0;
       if (hasReportList) {
@@ -47,11 +52,18 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
         if (checkTruthy(reportId)) {
           setSelectedReportId(reportId);
         }
+        setIsReportListEmpty(false);
       } else {
         setIsReportListEmpty(true);
       }
     }
-  }, [patientReportListData, selectedReportIndex]);
+  }, [
+    patientReportListData,
+    selectedReportIndex,
+    isPatientReportListLoading,
+    setSelectedReportId,
+    setIsReportListEmpty,
+  ]);
 
   useEffect(() => {
     setLoading(isPatientReportListLoading);

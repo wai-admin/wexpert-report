@@ -1,7 +1,7 @@
-import { RefObject } from "react";
+import { RefObject, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 import { sendPrintStatus, checkTruthy, formatPdfFileName } from "@/utils";
-import { useMessageStore } from "@/store";
+import { useMessageStore, useReportListStore } from "@/store";
 import { useReportUpload } from "@/services/useReportUpload";
 import { ReportData } from "@/lib";
 import { ImageExportOptionValues } from "@/types";
@@ -27,12 +27,21 @@ export const usePrintAction = ({
   patientName,
 }: UsePrintActionProps) => {
   const { nativeMessage } = useMessageStore();
-  const { uploadReport } = useReportUpload();
+  const { uploadReport, isSuccess: isUploadSuccess } = useReportUpload();
+  const { setIsReportListEmpty } = useReportListStore();
 
   const fileName = `${patientName}_${formatPdfFileName(new Date())}`;
 
   // 현재 인쇄 옵션을 저장할 ref
   const printOptionsRef = { shouldUploadReport: true };
+
+  // 업로드 성공 시 리포트 리스트 비어있지 않음으로 설정
+  useEffect(() => {
+    if (isUploadSuccess) {
+      console.log("[Upload Success] Setting isReportListEmpty to false");
+      setIsReportListEmpty(false);
+    }
+  }, [isUploadSuccess, setIsReportListEmpty]);
 
   const handlePrintInternal = useReactToPrint({
     contentRef: printRef,
