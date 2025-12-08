@@ -8,11 +8,11 @@ import {
   useCurrentReportModeStore,
 } from "@/store";
 import { PrintPage, ReportController, EmptyPrintPage } from "@/pages";
-import usePrintPageHandler from "@/hooks/usePrintPageHandler";
+import usePrintHandler from "@/hooks/print/usePrintHandler";
 import { LoadingIndicator, ErrorIndicator } from "@/components-common";
 import { checkFalsy, checkProd } from "@/utils";
 
-// WARNING: usePrintPageHandler 업데이트 시 전체 렌더링 주의 (개선 필요)
+// WARNING: usePrintHandler 업데이트 시 전체 렌더링 주의 (개선 필요)
 const ReportContainer = () => {
   const printRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -27,7 +27,7 @@ const ReportContainer = () => {
   // Current Report Mode
   const { isAllReportMode } = useCurrentReportModeStore();
   // Data Information
-  const { printPageData, option } = usePrintPageHandler();
+  const { printPageData, option } = usePrintHandler();
   // Handlers & State
   const { handlePrint } = usePrintAction({
     printRef,

@@ -10,7 +10,7 @@ import {
 } from "@/components";
 import { Button } from "@/components-common";
 import { PrintPageData } from "@/types";
-import { PrintOptions } from "@/hooks/usePrintAction";
+import { PrintOptions } from "@/hooks/print/usePrintAction";
 import { useHasScroll } from "@/hooks";
 
 interface NewReportProps {

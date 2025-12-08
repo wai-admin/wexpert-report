@@ -7,7 +7,7 @@ import {
   useErrorStore,
   useCurrentReportModeStore,
 } from "@/store";
-import { ImageExportOptionValues, UsePrintPageHandlerReturn } from "@/types";
+import { ImageExportOptionValues, UsePrintHandlerReturn } from "@/types";
 import {
   checkTruthy,
   getPatientType,
@@ -19,7 +19,7 @@ import {
 } from "@/utils";
 import { usePatientReportDetail } from "@/services/usePatientReportDetail";
 
-const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
+const usePrintHandler = (): UsePrintHandlerReturn => {
   /**
    * @description: 훅 플로우
    * 1. Native Message Store에서 현재 타입 읽기
@@ -217,4 +217,4 @@ const usePrintPageHandler = (): UsePrintPageHandlerReturn => {
   };
 };
 
-export default usePrintPageHandler;
+export default usePrintHandler;

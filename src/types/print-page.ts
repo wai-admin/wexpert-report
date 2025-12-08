@@ -49,7 +49,7 @@ export interface PrintPageCover {
 }
 
 /**
- * usePrintPageHandler의 반환 타입
+ * usePrintHandler의 반환 타입
  */
 export interface PrintPageOption {
   imageExportOption: ImageExportOptionValues;
@@ -57,9 +57,9 @@ export interface PrintPageOption {
 }
 
 /**
- * usePrintPageHandler의 반환 타입
+ * usePrintHandler의 반환 타입
  */
-export interface UsePrintPageHandlerReturn {
+export interface UsePrintHandlerReturn {
   printPageData: PrintPageData | null;
   option: PrintPageOption;
   isLoading: boolean;

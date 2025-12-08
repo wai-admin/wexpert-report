@@ -13,7 +13,7 @@ import {
   useLoadingStore,
   useReportListStore,
 } from "@/store";
-import { PrintOptions } from "@/hooks/usePrintAction";
+import { PrintOptions } from "@/hooks/print/usePrintAction";
 import { checkTruthy } from "@/utils";
 
 interface AllPatientsControllerProps {

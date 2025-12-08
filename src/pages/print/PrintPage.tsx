@@ -1,5 +1,5 @@
 import { useEffect, RefObject } from "react";
-import useA4Handler from "@/hooks/useA4Handler";
+import useA4Handler from "@/hooks/print/useA4Handler";
 import { checkTruthy } from "@/utils";
 import { A4Template } from "@/components";
 import { Cover, ElementRenderer } from "@/pages";

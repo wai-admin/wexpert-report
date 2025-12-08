@@ -1,7 +1,7 @@
 import { AllPatientsController, PatientController } from "@/pages";
 import { useCurrentReportModeStore } from "@/store";
 import { PrintPageData } from "@/types";
-import { PrintOptions } from "@/hooks/usePrintAction";
+import { PrintOptions } from "@/hooks/print/usePrintAction";
 
 interface ReportControllerProps {
   printPageData: PrintPageData | null;
