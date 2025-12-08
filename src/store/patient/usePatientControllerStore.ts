@@ -1,6 +1,6 @@
 import { ReportTabValues } from "@/types";
 import { create } from "zustand";
-import { useReportListStore } from "./useReportListStore";
+import { useReportStore } from "../report/useReportStore";
 
 interface PatientControllerState {
   selectedReportTab: ReportTabValues;
@@ -15,7 +15,7 @@ export const usePatientControllerStore = create<PatientControllerState>(
 
       // NEW_REPORT 탭으로 변경 시 reportList를 비어있지 않음으로 설정
       if (tab === ReportTabValues.NEW_REPORT) {
-        useReportListStore.getState().setIsReportListEmpty(false);
+        useReportStore.getState().setIsReportListEmpty(false);
       }
     },
   })

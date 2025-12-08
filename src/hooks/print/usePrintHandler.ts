@@ -5,7 +5,7 @@ import {
   useReportListStore,
   useLoadingStore,
   useErrorStore,
-  useCurrentReportModeStore,
+  useCurrentReportMode,
 } from "@/store";
 import { ImageExportOptionValues, UsePrintHandlerReturn } from "@/types";
 import {
@@ -34,7 +34,7 @@ const usePrintHandler = (): UsePrintHandlerReturn => {
 
   const { imageExportOption, physicianAssessment } = useNewReportStore();
   const { isNewReportMode, isPatientReportMode, isAllReportMode } =
-    useCurrentReportModeStore();
+    useCurrentReportMode();
   const { selectedReportId, selectedPatientId } = useReportListStore();
   const { setLoading } = useLoadingStore();
   const { setIsError } = useErrorStore();

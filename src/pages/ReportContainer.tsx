@@ -5,7 +5,7 @@ import {
   useLoadingStore,
   useErrorStore,
   useReportListStore,
-  useCurrentReportModeStore,
+  useCurrentReportMode,
 } from "@/store";
 import { PrintPage, ReportController, EmptyPrintPage } from "@/pages";
 import usePrintHandler from "@/hooks/print/usePrintHandler";
@@ -25,7 +25,7 @@ const ReportContainer = () => {
   // Report List Empty Status
   const { isReportListEmpty } = useReportListStore();
   // Current Report Mode
-  const { isAllReportMode } = useCurrentReportModeStore();
+  const { isAllReportMode } = useCurrentReportMode();
   // Data Information
   const { printData, option } = usePrintHandler();
   // Handlers & State

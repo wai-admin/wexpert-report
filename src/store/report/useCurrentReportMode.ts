@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { useBridgeStore } from "./useBridgeStore";
-import { usePatientControllerStore } from "./usePatientControllerStore";
+import { useBridgeStore } from "../bridge/useBridgeStore";
+import { usePatientControllerStore } from "../patient/usePatientControllerStore";
 import { ReportOptionType } from "@/lib/bridgeMessageType";
 import { CurrentReportModeValues, ReportTabValues } from "@/types";
 import { checkFalsy } from "@/utils";
@@ -90,7 +90,7 @@ export const getCurrentReportMode = (): ReportModeResult => {
  * 현재 리포트 모드와 초기 입장 옵션을 반환하는 훅
  * React 컴포넌트 내에서 사용
  */
-export const useCurrentReportModeStore = (): ReportModeResult => {
+export const useCurrentReportMode = (): ReportModeResult => {
   // Zustand selector로 필요한 값만 구독
   const bridgeMessage = useBridgeStore((state) => state.bridgeMessage);
   const selectedReportTab = usePatientControllerStore(
