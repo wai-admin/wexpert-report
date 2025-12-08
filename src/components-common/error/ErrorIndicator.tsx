@@ -1,7 +1,7 @@
 import { useUIStore } from "@/store";
 
 const ErrorIndicator = () => {
-  const { refetchFn } = useUIStore();
+  const { refetchFn, isLoading } = useUIStore();
 
   const handleRetry = () => {
     if (refetchFn) {
@@ -10,7 +10,7 @@ const ErrorIndicator = () => {
   };
 
   return (
-    <div className="size-full flex flex-col items-center justify-center bg-bg-base-alt gap-[20px]">
+    <div className="size-full flex flex-col items-center justify-center bg-bg-base gap-[20px]">
       <div className="flex flex-col items-center gap-[10px]">
         <p className="text-[16px] text-text-primary font-pretendard">
           A connection error has occurred.
@@ -21,9 +21,15 @@ const ErrorIndicator = () => {
       </div>
       <button
         onClick={handleRetry}
-        className="w-[240px] px-[10px] h-[40px] rounded-[6px] bg-blue-300 hover:bg-blue-400 transition-all duration-100 cursor-default"
+        className={`w-[240px] px-[10px] h-[40px] rounded-[6px] bg-blue-300 hover:bg-blue-400 transition-all duration-100 cursor-default mt-[10px]
+          ${
+            isLoading
+              ? "opacity-50 cursor-not-allowed bg-component-disabled"
+              : " bg-blue-300 hover:bg-blue-400 cursor-default"
+          }
+          `}
       >
-        <p className="text-[16px] text-white font-pretendard">Reload</p>
+        <p className="text-[14px] text-white font-pretendard">Reload</p>
       </button>
     </div>
   );

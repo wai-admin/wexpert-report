@@ -47,7 +47,12 @@ const ReportContainer = () => {
 
   // api 호출 실패 시 에러 표시 (프로덕션 환경에서만)
   if (isError && checkProd()) {
-    return <ErrorIndicator />;
+    return (
+      <>
+        <ErrorIndicator />
+        <LoadingIndicator isLoading={isLoading} full={true} />
+      </>
+    );
   }
 
   return (

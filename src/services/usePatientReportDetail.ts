@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { reportApi } from "@/services/api";
 import { QUERY_KEYS } from "@/lib/queryKeys";
 import { useReportListStore, useUIStore } from "@/store";
+import { checkTruthy } from "@/utils";
 
 interface usePatientReportDetailProps {
   enabled?: boolean;
@@ -25,7 +26,7 @@ export const usePatientReportDetail = ({
         patientId?.toString() ?? "",
         reportId?.toString() ?? ""
       ),
-    enabled: enabled,
+    enabled: enabled && checkTruthy(patientId) && checkTruthy(reportId),
     staleTime: 1 * 60 * 1000, // 1분 동안은 신선한 것으로 간주
     retry: false, // 자동 재시도 비활성화
   });
@@ -33,7 +34,9 @@ export const usePatientReportDetail = ({
   // refetch 함수를 UIStore에 저장
   useEffect(() => {
     if (query.isError) {
-      setRefetchFn(() => query.refetch);
+      setRefetchFn(() => {
+        query.refetch();
+      });
     }
   }, [query.isError, query.refetch]);
 

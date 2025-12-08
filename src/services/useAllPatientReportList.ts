@@ -41,7 +41,9 @@ export const useAllPatientReportList = () => {
   // refetch 함수를 UIStore에 저장
   useEffect(() => {
     if (query.isError) {
-      setRefetchFn(() => query.refetch);
+      setRefetchFn(() => {
+        query.refetch();
+      });
     }
   }, [query.isError, query.refetch]);
 
