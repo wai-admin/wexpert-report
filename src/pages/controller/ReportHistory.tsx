@@ -2,18 +2,8 @@ import { useState, useEffect } from "react";
 import { RadioIndicator, Button } from "@/components-common";
 import { PrintGuide } from "@/components";
 import { usePatientReportList } from "@/services/usePatientReportList";
-import {
-  convertISOToLocal,
-  hasValidPatientId,
-  checkTruthy,
-  checkFalsy,
-} from "@/utils";
-import {
-  useReportListStore,
-  useLoadingStore,
-  useErrorStore,
-  useBridgeStore,
-} from "@/store";
+import { convertISOToLocal, checkTruthy, checkFalsy } from "@/utils";
+import { useReportListStore, useLoadingStore, useErrorStore } from "@/store";
 import { PrintOptions } from "@/hooks/print/usePrintAction";
 
 interface ReportHistoryProps {
@@ -24,7 +14,6 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
 
   const { setSelectedReportId, setIsReportListEmpty } = useReportListStore();
-  const { bridgeMessage } = useBridgeStore();
   const { setLoading } = useLoadingStore();
   const { setIsError } = useErrorStore();
 
@@ -33,7 +22,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
     isFetching: isPatientReportListLoading,
     isError: isPatientReportListError,
   } = usePatientReportList({
-    enabled: hasValidPatientId(bridgeMessage?.id),
+    enabled: true,
   });
   const patientReportList = patientReportListData?.data ?? [];
 

@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useReport } from "@/services/useReport";
 import {
   useNewReportStore,
-  useReportListStore,
   useLoadingStore,
   useErrorStore,
   useCurrentReportMode,
@@ -35,7 +34,6 @@ const usePrintHandler = (): UsePrintHandlerReturn => {
   const { imageExportOption, physicianAssessment } = useNewReportStore();
   const { isNewReportMode, isPatientReportMode, isAllReportMode } =
     useCurrentReportMode();
-  const { selectedReportId, selectedPatientId } = useReportListStore();
   const { setLoading } = useLoadingStore();
   const { setIsError } = useErrorStore();
   // New Report 모드
@@ -53,10 +51,6 @@ const usePrintHandler = (): UsePrintHandlerReturn => {
     isFetching: isHistoryDetailFetching,
     isError: isHistoryDetailError,
   } = usePatientReportDetail({
-    reportId: checkTruthy(selectedReportId) ? selectedReportId.toString() : "",
-    patientId: checkTruthy(selectedPatientId)
-      ? selectedPatientId.toString()
-      : "",
     enabled: isPatientReportMode || isAllReportMode,
   });
 

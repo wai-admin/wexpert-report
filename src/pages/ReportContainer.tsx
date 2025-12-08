@@ -10,14 +10,14 @@ import {
 import { PrintPage, ReportController, EmptyPrintPage } from "@/pages";
 import usePrintHandler from "@/hooks/print/usePrintHandler";
 import { LoadingIndicator, ErrorIndicator } from "@/components-common";
-import { checkFalsy, checkProd } from "@/utils";
+import { checkProd } from "@/utils";
 
 // WARNING: usePrintHandler 업데이트 시 전체 렌더링 주의 (개선 필요)
 const ReportContainer = () => {
   const printRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   //Bridge Message
-  const { bridgeMessage } = useBridgeStore();
+  const { isInitializedBridgeMessage } = useBridgeStore();
   // Loading Status
   const { isLoading } = useLoadingStore();
   // Error Status
@@ -37,7 +37,7 @@ const ReportContainer = () => {
   });
 
   // bridgeMessage를 받을 때까지 아무것도 렌더링하지 않음 (프로덕션 환경에서만)
-  if (checkFalsy(bridgeMessage) && checkProd()) {
+  if (!isInitializedBridgeMessage && checkProd()) {
     return (
       <div className="size-full flex items-center justify-center bg-bg-base-alt">
         <LoadingIndicator isLoading={true} full={true} />
@@ -45,7 +45,8 @@ const ReportContainer = () => {
     );
   }
 
-  if (isError) {
+  // api 호출 실패 시 에러 표시 (프로덕션 환경에서만)
+  if (isError && checkProd()) {
     return <ErrorIndicator />;
   }
 

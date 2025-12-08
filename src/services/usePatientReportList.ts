@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { reportApi } from "@/services/api";
 import { QUERY_KEYS } from "@/lib/queryKeys";
-import { useBridgeStore } from "@/store";
-import { getPatientId, hasValidPatientId } from "@/utils";
+import { useReportListStore } from "@/store";
 
 interface usePatientReportListProps {
   enabled?: boolean;
@@ -11,13 +10,12 @@ interface usePatientReportListProps {
 export const usePatientReportList = ({
   enabled = true,
 }: usePatientReportListProps) => {
-  const { bridgeMessage } = useBridgeStore();
-  const patientId = getPatientId(bridgeMessage);
+  const { selectedPatientId: patientId } = useReportListStore();
 
   const query = useQuery({
-    queryKey: QUERY_KEYS.REPORT.PATIENT_LIST(patientId),
-    queryFn: () => reportApi.getPatientReportList(patientId),
-    enabled: enabled && hasValidPatientId(bridgeMessage?.id),
+    queryKey: QUERY_KEYS.REPORT.PATIENT_LIST(patientId?.toString() ?? ""),
+    queryFn: () => reportApi.getPatientReportList(patientId?.toString() ?? ""),
+    enabled: enabled,
     staleTime: 0,
     retry: (failureCount, error: any) => {
       // 실패 시 오류 로그
@@ -50,6 +48,5 @@ export const usePatientReportList = ({
 
   return {
     ...query,
-    patientId,
   };
 };

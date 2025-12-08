@@ -4,13 +4,13 @@ import { BridgeMessage } from "@/lib/bridgeMessageType";
 interface BridgeState {
   bridgeMessage: BridgeMessage | null;
   setBridgeMessage: (message: BridgeMessage) => void;
-  clearBridgeMessage: () => void;
+  isInitializedBridgeMessage: boolean;
 }
 
 export const useBridgeStore = create<BridgeState>((set) => ({
   bridgeMessage: null,
   setBridgeMessage: (message: BridgeMessage) => {
-    set({ bridgeMessage: message });
+    set({ bridgeMessage: message, isInitializedBridgeMessage: true });
   },
-  clearBridgeMessage: () => set({ bridgeMessage: null }),
+  isInitializedBridgeMessage: false,
 }));
