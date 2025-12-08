@@ -5,15 +5,14 @@ import { hasKey } from "@/utils/common";
 import { NATIVE_MESSAGE_KEY } from "@/constants/bridge";
 import { sendInitialized } from "@/utils/bridge";
 
-interface GlobalProviderProps {
+interface BridgeProviderProps {
   children: ReactNode;
 }
 
 /**
- * ✅ 1. C#의 WebView2에게 초기화 메시지 전송 및 access token 수신
- * ✅ 2. C#의 WebView2에서 사용자 입력 정보 수신
+ * ✅ 1. C#의 WebView2에게 초기화 메시지 전송 및 access token, patient id 획득
  */
-const GlobalProvider = ({ children }: GlobalProviderProps) => {
+const BridgeProvider = ({ children }: BridgeProviderProps) => {
   const { setNativeMessage } = useMessageStore();
   const { setAccessToken } = useAuthStore();
   const { setSelectedPatientId } = useReportListStore();
@@ -50,4 +49,4 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
   return <>{children}</>;
 };
 
-export default GlobalProvider;
+export default BridgeProvider;
