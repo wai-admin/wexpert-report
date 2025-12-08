@@ -9,16 +9,16 @@ import {
   PrintGuide,
 } from "@/components";
 import { Button } from "@/components-common";
-import { PrintPageData } from "@/types";
+import { PrintData } from "@/types";
 import { PrintOptions } from "@/hooks/print/usePrintAction";
 import { useHasScroll } from "@/hooks";
 
 interface NewReportProps {
-  printPageData: PrintPageData | null;
+  printData: PrintData | null;
   onPrint: (options?: PrintOptions) => void;
 }
 
-const NewReport = ({ printPageData, onPrint }: NewReportProps) => {
+const NewReport = ({ printData, onPrint }: NewReportProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const { hasScroll } = useHasScroll(scrollRef);
 
@@ -32,9 +32,9 @@ const NewReport = ({ printPageData, onPrint }: NewReportProps) => {
       >
         <ImageExportOption />
         <Divider />
-        <ChartNumber value={printPageData?.patientDetail.chartNumber ?? "-"} />
-        <Name value={printPageData?.patientDetail.patientName ?? "-"} />
-        <DateOfBirth birth={printPageData?.patientDetail.birth ?? "-"} />
+        <ChartNumber value={printData?.patientDetail.chartNumber ?? "-"} />
+        <Name value={printData?.patientDetail.patientName ?? "-"} />
+        <DateOfBirth birth={printData?.patientDetail.birth ?? "-"} />
         <PhysicianAssessment />
       </div>
       <div className="w-full flex flex-col gap-[10px]">

@@ -28,8 +28,8 @@ const usePrintHandler = (): UsePrintHandlerReturn => {
    *    type === "report-history" → useReportHistoryDetail(...)
    *    type === "all-report-history" → useAllReportHistoryDetail(...)
    *    각각은 내부에서 API(Call) + 가공까지 담당 (또는 최소한 원본 응답을 리턴)
-   * 3. (필요하면) PrintPage용 zustand 스토어 값과 합쳐서 printPageData 생성
-   * 4. { printPageData, isLoading, error } 형태로 반환
+   * 3. (필요하면) PrintPage용 zustand 스토어 값과 합쳐서 printData 생성
+   * 4. { printData, isLoading, error } 형태로 반환
    */
 
   const { imageExportOption, physicianAssessment } = useNewReportStore();
@@ -73,7 +73,7 @@ const usePrintHandler = (): UsePrintHandlerReturn => {
     (isPatientReportMode || isAllReportMode)
   ) {
     return {
-      printPageData: {
+      printData: {
         cover: {
           hospitalName:
             reportHistoryDetail.data.report.patientSummary.hospitalName,
@@ -151,7 +151,7 @@ const usePrintHandler = (): UsePrintHandlerReturn => {
 
   if (checkTruthy(newReport) && isNewReportMode) {
     return {
-      printPageData: {
+      printData: {
         cover: {
           hospitalName: newReport.data.patientSummary.hospitalName,
         },
@@ -206,7 +206,7 @@ const usePrintHandler = (): UsePrintHandlerReturn => {
   }
 
   return {
-    printPageData: null,
+    printData: null,
     option: {
       imageExportOption: imageExportOption,
       sonographies: [],

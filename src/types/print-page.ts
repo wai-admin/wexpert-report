@@ -32,7 +32,7 @@ export interface PrintPageAnalysisImage {
 /**
  * PrintPage 렌더링을 위한 전체 데이터 구조
  */
-export interface PrintPageData {
+export interface PrintData {
   cover: PrintPageCover;
   patientDetail: PrintPagePatientDetail;
   analysisSummary: PrintPageAnalysisSummary;
@@ -60,7 +60,7 @@ export interface PrintPageOption {
  * usePrintHandler의 반환 타입
  */
 export interface UsePrintHandlerReturn {
-  printPageData: PrintPageData | null;
+  printData: PrintData | null;
   option: PrintPageOption;
   isLoading: boolean;
   error: Error | null;

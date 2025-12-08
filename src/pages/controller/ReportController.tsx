@@ -1,17 +1,14 @@
 import { AllPatientsController, PatientController } from "@/pages";
 import { useCurrentReportModeStore } from "@/store";
-import { PrintPageData } from "@/types";
+import { PrintData } from "@/types";
 import { PrintOptions } from "@/hooks/print/usePrintAction";
 
 interface ReportControllerProps {
-  printPageData: PrintPageData | null;
+  printData: PrintData | null;
   onPrint: (options?: PrintOptions) => void;
 }
 
-const ReportController = ({
-  printPageData,
-  onPrint,
-}: ReportControllerProps) => {
+const ReportController = ({ printData, onPrint }: ReportControllerProps) => {
   // Current Report Mode
   const { isAllReportMode } = useCurrentReportModeStore();
 
@@ -26,7 +23,7 @@ const ReportController = ({
       {isAllReportMode ? (
         <AllPatientsController onPrint={onPrint} />
       ) : (
-        <PatientController printPageData={printPageData} onPrint={onPrint} />
+        <PatientController printData={printData} onPrint={onPrint} />
       )}
     </div>
   );

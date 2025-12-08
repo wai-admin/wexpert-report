@@ -1,24 +1,17 @@
 import { useEffect } from "react";
 import { ReportTabs } from "@/components";
 import { NewReport, ReportHistory } from "@/pages";
-import {
-  PrintPageData,
-  ReportTabValues,
-  CurrentReportModeValues,
-} from "@/types";
+import { PrintData, ReportTabValues, CurrentReportModeValues } from "@/types";
 import { usePatientControllerStore, useCurrentReportModeStore } from "@/store";
 import { PrintOptions } from "@/hooks/print/usePrintAction";
 import { ReportOptionType } from "@/lib";
 
 interface PatientControllerProps {
-  printPageData: PrintPageData | null;
+  printData: PrintData | null;
   onPrint: (options?: PrintOptions) => void;
 }
 
-const PatientController = ({
-  printPageData,
-  onPrint,
-}: PatientControllerProps) => {
+const PatientController = ({ printData, onPrint }: PatientControllerProps) => {
   const {
     currentReportMode,
     isNewReportMode,
@@ -58,7 +51,7 @@ const PatientController = ({
       )}
       <div className="flex-1 min-h-0">
         {isNewReportMode && (
-          <NewReport printPageData={printPageData} onPrint={onPrint} />
+          <NewReport printData={printData} onPrint={onPrint} />
         )}
         {isPatientReportMode && <ReportHistory onPrint={onPrint} />}
       </div>

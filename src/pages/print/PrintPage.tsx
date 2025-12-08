@@ -3,26 +3,26 @@ import useA4Handler from "@/hooks/print/useA4Handler";
 import { checkTruthy } from "@/utils";
 import { A4Template } from "@/components";
 import { Cover, ElementRenderer } from "@/pages";
-import { PrintPageData, PrintPageOption } from "@/types";
+import { PrintData, PrintPageOption } from "@/types";
 import { useReportListStore } from "@/store";
 
 interface PrintPageProps {
   printRef: RefObject<HTMLDivElement | null>;
   scrollRef: RefObject<HTMLDivElement | null>;
-  printPageData: PrintPageData | null;
+  printData: PrintData | null;
   option: PrintPageOption;
 }
 
 const PrintPage = ({
   printRef,
   scrollRef,
-  printPageData,
+  printData,
   option,
 }: PrintPageProps) => {
   const { selectedReportId } = useReportListStore();
 
   const { elementPageInfo, MeasureContainer } = useA4Handler({
-    printPageData,
+    printData,
     option,
   });
 
@@ -33,8 +33,8 @@ const PrintPage = ({
     }
   }, [[selectedReportId]]);
   // Data Information
-  const hospitalName = checkTruthy(printPageData)
-    ? printPageData.cover.hospitalName
+  const hospitalName = checkTruthy(printData)
+    ? printData.cover.hospitalName
     : "";
 
   return (
@@ -42,7 +42,7 @@ const PrintPage = ({
       <MeasureContainer />
       <div ref={printRef} className="a4-container">
         <Cover hospitalName={hospitalName} />
-        {printPageData && (
+        {printData && (
           <>
             {elementPageInfo.map((page) => {
               const { page: pageNumber, elements } = page;
@@ -57,7 +57,7 @@ const PrintPage = ({
                     <ElementRenderer
                       key={element}
                       element={element}
-                      printPageData={printPageData}
+                      printData={printData}
                     />
                   ))}
                 </A4Template>

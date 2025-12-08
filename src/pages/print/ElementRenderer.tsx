@@ -7,12 +7,12 @@ import {
   RecommendTreatment,
 } from "@/components";
 import { ELEMENT } from "@/constants/element";
-import { PrintPageData } from "@/types";
+import { PrintData } from "@/types";
 import { checkFalsy } from "@/utils";
 
 interface ElementRendererProps {
   element: string;
-  printPageData: PrintPageData;
+  printData: PrintData;
 }
 
 /**
@@ -20,14 +20,14 @@ interface ElementRendererProps {
  * @description 각 요소에 해당하는 HTML이 존재하며 id 중복을 피하기 위해 요소 ID에 컨테이너 ID(ELEMENT.A4_CONTAINER)를 붙여서 사용
  * @description 해당 ID는 Native의 메시지 수신 시, 자동 스크롤 기능에 사용됨
  */
-const ElementRenderer = ({ element, printPageData }: ElementRendererProps) => {
+const ElementRenderer = ({ element, printData }: ElementRendererProps) => {
   const {
     patientDetail,
     analysisSummary,
     analysisResultByAI,
     analysisImage,
     physicianAssessment,
-  } = printPageData;
+  } = printData;
 
   // 1. 환자 정보
   if (element === ELEMENT.PATIENT_INFORMATION) {

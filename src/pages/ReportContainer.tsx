@@ -27,13 +27,13 @@ const ReportContainer = () => {
   // Current Report Mode
   const { isAllReportMode } = useCurrentReportModeStore();
   // Data Information
-  const { printPageData, option } = usePrintHandler();
+  const { printData, option } = usePrintHandler();
   // Handlers & State
   const { handlePrint } = usePrintAction({
     printRef,
     imageExportOption: option.imageExportOption,
-    physicianAssessment: printPageData?.physicianAssessment ?? "",
-    patientName: printPageData?.patientDetail.patientName ?? "",
+    physicianAssessment: printData?.physicianAssessment ?? "",
+    patientName: printData?.patientDetail.patientName ?? "",
   });
 
   // nativeMessage를 받을 때까지 아무것도 렌더링하지 않음 (프로덕션 환경에서만)
@@ -68,13 +68,13 @@ const ReportContainer = () => {
           <PrintPage
             printRef={printRef}
             scrollRef={scrollRef}
-            printPageData={printPageData}
+            printData={printData}
             option={option}
           />
         )}
       </div>
       <div className="fixed right-0 top-0">
-        <ReportController printPageData={printPageData} onPrint={handlePrint} />
+        <ReportController printData={printData} onPrint={handlePrint} />
       </div>
     </div>
   );
