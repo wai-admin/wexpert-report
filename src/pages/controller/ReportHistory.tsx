@@ -9,10 +9,10 @@ import {
   checkFalsy,
 } from "@/utils";
 import {
-  useMessageStore,
   useReportListStore,
   useLoadingStore,
   useErrorStore,
+  useBridgeStore,
 } from "@/store";
 import { PrintOptions } from "@/hooks/print/usePrintAction";
 
@@ -24,7 +24,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   const [selectedReportIndex, setSelectedReportIndex] = useState<number>(0);
 
   const { setSelectedReportId, setIsReportListEmpty } = useReportListStore();
-  const { nativeMessage } = useMessageStore();
+  const { bridgeMessage } = useBridgeStore();
   const { setLoading } = useLoadingStore();
   const { setIsError } = useErrorStore();
 
@@ -33,7 +33,7 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
     isFetching: isPatientReportListLoading,
     isError: isPatientReportListError,
   } = usePatientReportList({
-    enabled: hasValidPatientId(nativeMessage),
+    enabled: hasValidPatientId(bridgeMessage?.id),
   });
   const patientReportList = patientReportListData?.data ?? [];
 

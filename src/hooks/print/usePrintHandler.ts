@@ -22,7 +22,7 @@ import { usePatientReportDetail } from "@/services/usePatientReportDetail";
 const usePrintHandler = (): UsePrintHandlerReturn => {
   /**
    * @description: 훅 플로우
-   * 1. Native Message Store에서 현재 타입 읽기
+   * 1. Bridge Message Store에서 현재 타입 읽기
    * 2. 타입에 따라 적절한 데이터 훅 호출
    *    type === "new-report" → useNewReportDetail(...)
    *    type === "report-history" → useReportHistoryDetail(...)

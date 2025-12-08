@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { usePrintAction } from "@/hooks";
 import {
-  useMessageStore,
+  useBridgeStore,
   useLoadingStore,
   useErrorStore,
   useReportListStore,
@@ -17,7 +17,7 @@ const ReportContainer = () => {
   const printRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   //Bridge Message
-  const { nativeMessage } = useMessageStore();
+  const { bridgeMessage } = useBridgeStore();
   // Loading Status
   const { isLoading } = useLoadingStore();
   // Error Status
@@ -36,8 +36,8 @@ const ReportContainer = () => {
     patientName: printData?.patientDetail.patientName ?? "",
   });
 
-  // nativeMessage를 받을 때까지 아무것도 렌더링하지 않음 (프로덕션 환경에서만)
-  if (checkFalsy(nativeMessage) && checkProd()) {
+  // bridgeMessage를 받을 때까지 아무것도 렌더링하지 않음 (프로덕션 환경에서만)
+  if (checkFalsy(bridgeMessage) && checkProd()) {
     return (
       <div className="size-full flex items-center justify-center bg-bg-base-alt">
         <LoadingIndicator isLoading={true} full={true} />

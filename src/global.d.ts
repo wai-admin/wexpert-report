@@ -17,7 +17,7 @@ declare global {
     };
 
     // ✅ C#에서 호출하는 전역 함수 정의
-    receiveNative?: (param: any) => void;
+    receiveBridgeMessage?: (param: any) => void;
   }
 }
 

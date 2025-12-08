@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { useMessageStore } from "./useMessageStore";
+import { useBridgeStore } from "./useBridgeStore";
 import { usePatientControllerStore } from "./usePatientControllerStore";
-import { ReportOptionType } from "@/lib/nativeMessageType";
+import { ReportOptionType } from "@/lib/bridgeMessageType";
 import { CurrentReportModeValues, ReportTabValues } from "@/types";
 import { checkFalsy } from "@/utils";
 
@@ -26,16 +26,16 @@ const defaultReportModeResult: ReportModeResult = {
  * React 컴포넌트 외부에서도 사용 가능
  */
 export const getCurrentReportMode = (): ReportModeResult => {
-  const nativeMessage = useMessageStore.getState().nativeMessage;
+  const bridgeMessage = useBridgeStore.getState().bridgeMessage;
   const selectedReportTab =
     usePatientControllerStore.getState().selectedReportTab;
 
-  // nativeMessage가 없으면 NONE
-  if (checkFalsy(nativeMessage)) {
+  // bridgeMessage가 없으면 NONE
+  if (checkFalsy(bridgeMessage)) {
     return defaultReportModeResult;
   }
 
-  const { reportMode } = nativeMessage;
+  const { reportMode } = bridgeMessage;
 
   // ALL_REPORT_HISTORY 모드
   if (reportMode === ReportOptionType.ALL_REPORT_HISTORY) {
@@ -92,7 +92,7 @@ export const getCurrentReportMode = (): ReportModeResult => {
  */
 export const useCurrentReportModeStore = (): ReportModeResult => {
   // Zustand selector로 필요한 값만 구독
-  const nativeMessage = useMessageStore((state) => state.nativeMessage);
+  const bridgeMessage = useBridgeStore((state) => state.bridgeMessage);
   const selectedReportTab = usePatientControllerStore(
     (state) => state.selectedReportTab
   );
@@ -100,5 +100,5 @@ export const useCurrentReportModeStore = (): ReportModeResult => {
   // 의존성이 변경될 때만 재계산
   return useMemo(() => {
     return getCurrentReportMode();
-  }, [nativeMessage, selectedReportTab]);
+  }, [bridgeMessage, selectedReportTab]);
 };

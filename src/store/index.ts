@@ -1,5 +1,5 @@
 export * from "./useAuthStore";
-export * from "./useMessageStore";
+export * from "./useBridgeStore";
 export * from "./useLoadingStore";
 export * from "./useErrorStore";
 export * from "./useNewReportStore";

@@ -1,7 +1,7 @@
 import { RefObject, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 import { sendPrintStatus, checkTruthy, formatPdfFileName } from "@/utils";
-import { useMessageStore, useReportListStore } from "@/store";
+import { useBridgeStore, useReportListStore } from "@/store";
 import { useReportUpload } from "@/services/useReportUpload";
 import { ReportData } from "@/lib";
 import { ImageExportOptionValues } from "@/types";
@@ -26,7 +26,7 @@ export const usePrintAction = ({
   physicianAssessment,
   patientName,
 }: UsePrintActionProps) => {
-  const { nativeMessage } = useMessageStore();
+  const { bridgeMessage } = useBridgeStore();
   const { uploadReport, isSuccess: isUploadSuccess } = useReportUpload();
   const { setIsReportListEmpty } = useReportListStore();
 
@@ -51,9 +51,12 @@ export const usePrintAction = ({
       sendPrintStatus(true);
 
       // 리포트 업로드 (옵션에 따라 분기)
-      if (printOptionsRef.shouldUploadReport && checkTruthy(nativeMessage)) {
+      if (
+        printOptionsRef.shouldUploadReport &&
+        checkTruthy(bridgeMessage?.id)
+      ) {
         const reportData = {
-          patientId: nativeMessage.id,
+          patientId: bridgeMessage.id,
           includeAllImages:
             imageExportOption === ImageExportOptionValues.ALL_IMAGE,
           doctorOpinion: physicianAssessment || null,

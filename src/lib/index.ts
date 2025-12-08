@@ -1,4 +1,4 @@
-export * from "./nativeMessageType";
+export * from "./bridgeMessageType";
 export * from "./reportType";
 export * from "./patientReportListType";
 export * from "./allPatientReportListType";

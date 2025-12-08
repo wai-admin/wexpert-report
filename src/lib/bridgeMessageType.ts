@@ -1,8 +1,8 @@
-export interface NativeMessageData {
-  data: NativeMessage;
+export interface BridgeMessageData {
+  data: BridgeMessage;
 }
 
-export interface NativeMessage {
+export interface BridgeMessage {
   accessToken: string;
   nativeVersion: string;
   id: number | null;
