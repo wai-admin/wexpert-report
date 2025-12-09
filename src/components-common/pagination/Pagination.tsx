@@ -44,7 +44,7 @@ const Pagination = ({
           aria-label="이전 페이지"
         >
           <img
-            src="/images/arrow-normal-icon.png"
+            src="./images/arrow-normal-icon.png"
             alt="arrow-left"
             width={22}
             height={22}
@@ -60,7 +60,7 @@ const Pagination = ({
           aria-label="다음 페이지"
         >
           <img
-            src="/images/arrow-normal-icon.png"
+            src="./images/arrow-normal-icon.png"
             alt="arrow-right"
             width={22}
             height={22}

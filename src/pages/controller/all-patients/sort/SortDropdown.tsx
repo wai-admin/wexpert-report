@@ -45,7 +45,7 @@ const SortDropdown = ({
       >
         <p className="font-pretendard text-[16px] text-text-tertiary">Sort</p>
         <img
-          src="/images/arrow-normal-icon.png"
+          src="./images/arrow-normal-icon.png"
           width={17}
           height={17}
           className={` transition-all duration-200 ${

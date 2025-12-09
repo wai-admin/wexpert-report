@@ -38,7 +38,7 @@ const RowsPerPageDropdown = ({
             {rowsPerPage}
           </p>
           <img
-            src="/images/arrow-normal-icon.png"
+            src="./images/arrow-normal-icon.png"
             width={22}
             height={22}
             className={` transition-all duration-200 ${
