@@ -35,13 +35,115 @@ jobs:
       - name: 🌐 Build
         run: pnpm build
 
-      - name: 🔍 Check generated files
-        run: ls -R dist
+      # version 추출
+      - name: 🏷 Extract version
+        id: version
+        run: echo "APP_VERSION=$(cat package.json | jq -r .version)" >> $GITHUB_ENV
+
+      # dist 구조 재정렬
+      - name: 🗂 Prepare versioned build
+        run: |
+          mkdir -p output/versions/v${{ env.APP_VERSION }}
+          cp -r dist/* output/versions/v${{ env.APP_VERSION }}/
+
+      # loader index.html 생성
+      - name: 🧩 Generate loader index.html
+        run: |
+          cat << 'EOF' > output/index.html
+          <!doctype html>
+          <html lang="en">
+            <head>
+              <meta charset="UTF-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+              <meta http-equiv="Expires" content="0" />
+              <title>W Expert Report - Loading...</title>
+              <style>
+                body {
+                  margin: 0;
+                  padding: 0;
+                  overflow: hidden;
+                }
+                #loading {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  height: 100vh;
+                  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                  color: #666;
+                }
+              </style>
+            </head>
+            <body>
+              <script>
+                function loadApp(nativeVersion) {
+                  console.log('[Loader] Loading version:', nativeVersion);
+                  
+                  const url = '/versions/v' + nativeVersion + '/index.html';
+                  const iframe = document.createElement('iframe');
+                  iframe.src = url;
+                  iframe.style.width = '100vw';
+                  iframe.style.height = '100vh';
+                  iframe.style.border = '0';
+                  iframe.style.position = 'absolute';
+                  iframe.style.top = '0';
+                  iframe.style.left = '0';
+
+                  document.body.appendChild(iframe);
+                }
+
+                // C# WebView2 Bridge 통신
+                function initializeBridge() {
+                  if (window.chrome?.webview) {
+                    console.log('[Loader] WebView2 bridge detected');
+                    window.chrome.webview.addEventListener('message', function(event) {
+                      console.log('[Loader] Received message from C#:', event.data);
+                      const data = event.data?.data || event.data;
+                      
+                      if (data.nativeVersion) {
+                        loadApp(data.nativeVersion);
+                      }
+                    });
+
+                    // C#에 초기화 메시지 전송
+                    window.chrome.webview.postMessage({ 
+                      type: 'initialized',
+                      from: 'loader' 
+                    });
+                    console.log('[Loader] Sent initialization message to C#');
+                  } else {
+                    console.log('[Loader] No WebView2 bridge detected, using fallback version');
+                    // 개발 환경 fallback
+                    console.warn('[Loader] No WebView2 bridge detected, using fallback version');
+                    loadApp('${{ env.APP_VERSION }}');
+                  }
+                }
+
+                // DOM 로드 후 실행
+                if (document.readyState === 'loading') {
+                  document.addEventListener('DOMContentLoaded', initializeBridge);
+                } else {
+                  initializeBridge();
+                }
+              </script>
+            </body>
+          </html>
+          EOF
+
+      # 디버깅: output 폴더 구조 확인
+      - name: 🔍 Check output structure
+        run: |
+          ls -R output/
 
       - name: 📤 Deploy to S3
         env:
           S3_BUCKET: wexpert-report-dev
-        run: aws s3 sync ./dist s3://wexpert-report-dev --delete
+        run: |
+          # 버전별 폴더 업로드 (--delete 제거하여 이전 버전 보존)
+          aws s3 sync ./output/ s3://$S3_BUCKET/ --exclude ".DS_Store"
+
+          echo "✅ Deployed to s3://$S3_BUCKET/"
+          echo "📦 Version: v${{ env.APP_VERSION }}"
 
       - name: 🔁 Invalidate CloudFront cache
         run: |
