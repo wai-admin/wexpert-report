@@ -17,7 +17,7 @@ const Cover = ({ hospitalName }: CoverProps) => {
     <div className="a4-page">
       <div className="a4-content">
         <div style={{ marginTop: "25mm" }}>
-          <img src="/images/wexpert.png" className="cover-logo" />
+          <img src="./images/wexpert.png" className="cover-logo" />
           <h1 className="cover-title-highlight" style={{ marginTop: "7mm" }}>
             {i18n("cover.title-highlight")}
           </h1>
@@ -29,7 +29,7 @@ const Cover = ({ hospitalName }: CoverProps) => {
       </div>
       <div className="cover-footer">
         <img
-          src="/images/background.webp"
+          src="./images/background.webp"
           className="cover-background"
           style={{ opacity: "0", transition: "opacity 0.5s ease" }}
           onLoad={handleLoadImage}
