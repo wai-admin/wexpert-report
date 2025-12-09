@@ -1,0 +1,69 @@
+<!--
+  WARNING: CI 파일에서 loader.html을 사용하고 있기 때문에 수정 시 주의해야함.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Expires" content="0" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: rgba(39, 41, 44, 1);
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // 버전별 경로로 리다이렉트
+      function loadApp(nativeVersion) {
+        // 웹에서는 targetUrl로 이동하여 index.html을 찾지만, WebView2에서는 index.html을 찾지 못하므로 index.html을 직접 열어준다.
+        const targetUrl = "/versions/v" + nativeVersion + "/index.html";
+        window.location.href = targetUrl;
+      }
+
+      // C# WebView2 Bridge 통신
+      function initializeBridge() {
+        if (window.chrome?.webview) {
+          window.chrome.webview.addEventListener("message", function (event) {
+            const data = event.data?.data || event.data;
+
+            if (data.nativeVersion) {
+              // nativeVersion에서 메이저.마이너.패치만 추출 ("1.8.1.25336" → "1.8.1")
+              const version = data.nativeVersion
+                .split(".")
+                .slice(0, 3)
+                .join(".");
+              loadApp(version);
+            }
+          });
+
+          // C#에 초기화 메시지 전송
+          window.chrome.webview.postMessage({
+            type: "initialized",
+          });
+        } else {
+          // 개발 환경 fallback
+          loadApp("__APP_VERSION__");
+        }
+      }
+
+      // DOM 로드 후 실행
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initializeBridge);
+      } else {
+        initializeBridge();
+      }
+    </script>
+  </body>
+</html>
