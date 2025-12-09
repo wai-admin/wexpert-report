@@ -139,7 +139,15 @@ jobs:
         env:
           S3_BUCKET: wexpert-report-dev
         run: |
-          # 버전별 폴더 업로드 (--delete 제거하여 이전 버전 보존)
+          echo "🧹 Cleaning up root-level legacy files..."
+          # 루트 레벨의 오래된 파일 정리 (index.html 제외)
+          aws s3 rm s3://$S3_BUCKET/assets/ --recursive 2>/dev/null || echo "No assets/ to clean"
+          aws s3 rm s3://$S3_BUCKET/images/ --recursive 2>/dev/null || echo "No images/ to clean"
+          aws s3 rm s3://$S3_BUCKET/service-worker.js 2>/dev/null || echo "No service-worker.js to clean"
+
+          echo ""
+          echo "📤 Uploading new version..."
+          # 새 구조 업로드 (이전 버전 보존)
           aws s3 sync ./output/ s3://$S3_BUCKET/ --exclude ".DS_Store"
 
           echo "✅ Deployed to s3://$S3_BUCKET/"
