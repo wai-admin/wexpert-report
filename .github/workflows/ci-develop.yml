@@ -57,47 +57,34 @@ jobs:
               <meta name="viewport" content="width=device-width, initial-scale=1.0" />
               <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
               <meta http-equiv="Expires" content="0" />
-              <title>W Expert Report - Loading...</title>
               <style>
                 body {
                   margin: 0;
                   padding: 0;
                   overflow: hidden;
-                }
-                #loading {
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
+                  background-color: rgba(39, 41, 44, 1);
+                  width: 100vw;
                   height: 100vh;
-                  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                  color: #666;
                 }
               </style>
             </head>
             <body>
-              <div id="loading">로딩 중...</div>
               <script>
+                // 버전별 경로로 리다이렉트 
                 function loadApp(nativeVersion) {
-                  console.log('[Loader] Redirecting to version:', nativeVersion);
-                  
-                  // 버전별 경로로 리다이렉트 (iframe 대신 직접 이동)
                   // 웹에서는 targetUrl로 이동하여 index.html을 찾지만, WebView2에서는 index.html을 찾지 못하므로 index.html을 직접 열어준다.
                   const targetUrl = '/versions/v' + nativeVersion + '/index.html';
-                  console.log('[Loader] Target URL:', targetUrl);
                   window.location.href = targetUrl;
                 }
 
                 // C# WebView2 Bridge 통신
                 function initializeBridge() {
                   if (window.chrome?.webview) {
-                    console.log('[Loader] WebView2 bridge detected');
                     window.chrome.webview.addEventListener('message', function(event) {
-                      console.log('[Loader] Received message from C#:', event.data);
                       const data = event.data?.data || event.data;
                       
                       if (data.nativeVersion) {
-                        // nativeVersion에서 메이저.마이너.패치만 추출
-                        // 예: "1.8.1.25336" → "1.8.1"
+                        // nativeVersion에서 메이저.마이너.패치만 추출 ("1.8.1.25336" → "1.8.1")
                         const version = data.nativeVersion.split('.').slice(0, 3).join('.');
                         loadApp(version);
                       }
@@ -105,12 +92,9 @@ jobs:
 
                     // C#에 초기화 메시지 전송
                     window.chrome.webview.postMessage({ 
-                      type: 'initialized',
-                      from: 'loader' 
+                      type: 'initialized'
                     });
-                    console.log('[Loader] Sent initialization message to C#');
                   } else {
-                    console.log('[Loader] No WebView2 bridge detected, using fallback version');
                     // 개발 환경 fallback
                     loadApp('${{ env.APP_VERSION }}');
                   }
@@ -136,14 +120,14 @@ jobs:
         env:
           S3_BUCKET: wexpert-report-dev
         run: |
-          echo "🧹 Cleaning up root-level legacy files..."
-          # 루트 레벨의 오래된 파일 정리 (index.html 제외)
+          echo "📤 Uploading new version..."
+
+          # 루트 레벨의 오래된 파일 정리
           aws s3 rm s3://$S3_BUCKET/assets/ --recursive 2>/dev/null || echo "No assets/ to clean"
           aws s3 rm s3://$S3_BUCKET/images/ --recursive 2>/dev/null || echo "No images/ to clean"
           aws s3 rm s3://$S3_BUCKET/service-worker.js 2>/dev/null || echo "No service-worker.js to clean"
 
-          echo ""
-          echo "📤 Uploading new version..."
+
           # 새 구조 업로드 (이전 버전 보존)
           aws s3 sync ./output/ s3://$S3_BUCKET/ --exclude ".DS_Store"
 
