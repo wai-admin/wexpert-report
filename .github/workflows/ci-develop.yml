@@ -75,21 +75,16 @@ jobs:
               </style>
             </head>
             <body>
+              <div id="loading">로딩 중...</div>
               <script>
                 function loadApp(nativeVersion) {
-                  console.log('[Loader] Loading version:', nativeVersion);
+                  console.log('[Loader] Redirecting to version:', nativeVersion);
                   
-                  const url = '/versions/v' + nativeVersion + '/index.html';
-                  const iframe = document.createElement('iframe');
-                  iframe.src = url;
-                  iframe.style.width = '100vw';
-                  iframe.style.height = '100vh';
-                  iframe.style.border = '0';
-                  iframe.style.position = 'absolute';
-                  iframe.style.top = '0';
-                  iframe.style.left = '0';
-
-                  document.body.appendChild(iframe);
+                  // 버전별 경로로 리다이렉트 (iframe 대신 직접 이동)
+                  // 웹에서는 targetUrl로 이동하여 index.html을 찾지만, WebView2에서는 index.html을 찾지 못하므로 index.html을 직접 열어준다.
+                  const targetUrl = '/versions/v' + nativeVersion + '/index.html';
+                  console.log('[Loader] Target URL:', targetUrl);
+                  window.location.href = targetUrl;
                 }
 
                 // C# WebView2 Bridge 통신
@@ -101,7 +96,10 @@ jobs:
                       const data = event.data?.data || event.data;
                       
                       if (data.nativeVersion) {
-                        loadApp(data.nativeVersion);
+                        // nativeVersion에서 메이저.마이너.패치만 추출
+                        // 예: "1.8.1.25336" → "1.8.1"
+                        const version = data.nativeVersion.split('.').slice(0, 3).join('.');
+                        loadApp(version);
                       }
                     });
 
@@ -114,7 +112,6 @@ jobs:
                   } else {
                     console.log('[Loader] No WebView2 bridge detected, using fallback version');
                     // 개발 환경 fallback
-                    console.warn('[Loader] No WebView2 bridge detected, using fallback version');
                     loadApp('${{ env.APP_VERSION }}');
                   }
                 }
