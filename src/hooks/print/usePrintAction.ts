@@ -1,6 +1,6 @@
 import { RefObject, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
-import { sendPrintStatus, checkTruthy, formatPdfFileName } from "@/utils";
+import { checkTruthy, formatPdfFileName } from "@/utils";
 import { useBridgeStore, useReportListStore } from "@/store";
 import { useReportUpload } from "@/services/useReportUpload";
 import { ReportData } from "@/lib";
@@ -47,9 +47,6 @@ export const usePrintAction = ({
     contentRef: printRef,
     documentTitle: fileName,
     onBeforePrint: async () => {
-      // Native에게 인쇄 요청 메시지 전송
-      sendPrintStatus(true);
-
       // 리포트 업로드 (옵션에 따라 분기)
       if (
         printOptionsRef.shouldUploadReport &&
@@ -69,10 +66,6 @@ export const usePrintAction = ({
       }
 
       return Promise.resolve();
-    },
-    onAfterPrint: () => {
-      // Native에게 인쇄 완료 메시지 전송
-      sendPrintStatus(false);
     },
     pageStyle: `
       @page {

@@ -13,11 +13,11 @@ const sendLoadingStatus = (isLoading: boolean) => {
   });
 };
 
-const sendPrintStatus = (isOpen: boolean) => {
+const sendCloseStatus = () => {
   window.chrome?.webview?.postMessage({
-    type: BRIDGE_TYPE.PRINT_STATUS,
-    payload: isOpen,
+    type: BRIDGE_TYPE.CLOSE,
+    payload: false,
   });
 };
 
-export { sendInitialized, sendLoadingStatus, sendPrintStatus };
+export { sendInitialized, sendLoadingStatus, sendCloseStatus };

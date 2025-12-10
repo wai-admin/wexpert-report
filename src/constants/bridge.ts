@@ -1,7 +1,7 @@
 const BRIDGE_TYPE = {
   INITIALIZED: "initialized",
   LOADING: "progress",
-  PRINT_STATUS: "open_print",
+  CLOSE: "close",
 };
 
 enum BRIDGE_MESSAGE_KEY {
