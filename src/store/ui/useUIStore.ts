@@ -9,7 +9,6 @@ interface UIState {
   error: Error | null;
   setError: (error: Error | null) => void;
   isError: boolean;
-  setIsError: (isError: boolean) => void;
 
   // 재시도 함수
   refetchFn: (() => void) | null;
@@ -23,9 +22,8 @@ export const useUIStore = create<UIState>((set) => ({
 
   // 에러 상태
   error: null,
-  setError: (error: Error | null) => set({ error }),
+  setError: (error: Error | null) => set({ error, isError: error !== null }),
   isError: false,
-  setIsError: (isError: boolean) => set({ isError }),
 
   // 재시도 함수
   refetchFn: null,

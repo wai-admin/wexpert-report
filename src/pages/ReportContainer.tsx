@@ -21,7 +21,7 @@ const ReportContainer = () => {
   // Loading Status
   const { isLoading } = useLoadingStore();
   // Error Status
-  const { isError } = useErrorStore();
+  const { error, isError } = useErrorStore();
   // Report List Empty Status
   const { isReportListEmpty } = useReportListStore();
   // Current Report Mode
@@ -35,6 +35,8 @@ const ReportContainer = () => {
     physicianAssessment: printData?.physicianAssessment ?? "",
     patientName: printData?.patientDetail.patientName ?? "",
   });
+
+  console.log("ReportContainer error: ", isError, error);
 
   // bridgeMessage를 받을 때까지 아무것도 렌더링하지 않음 (프로덕션 환경에서만)
   if (!isInitializedBridgeMessage && checkProd()) {
