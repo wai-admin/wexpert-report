@@ -20,4 +20,16 @@ const sendCloseStatus = () => {
   });
 };
 
-export { sendInitialized, sendLoadingStatus, sendCloseStatus };
+const sendExpiredStatus = () => {
+  window.chrome?.webview?.postMessage({
+    type: BRIDGE_TYPE.EXPIRED,
+    payload: true,
+  });
+};
+
+export {
+  sendInitialized,
+  sendLoadingStatus,
+  sendCloseStatus,
+  sendExpiredStatus,
+};
