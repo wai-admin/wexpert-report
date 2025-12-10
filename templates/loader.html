@@ -34,40 +34,90 @@
 
       // S3에 배포된 사용 가능한 버전 목록 (CI/CD에서 주입)
       const AVAILABLE_VERSIONS = __AVAILABLE_VERSIONS__;
+      const LATEST_VERSION = "__LATEST_VERSION__";
+      const LAST_VERSION = "__LAST_VERSION__";
 
       // 버전 문자열을 숫자로 변환 ("1.8.1.00000" → 18100000)
       function versionToNumber(version) {
         return parseInt(version.replace(/\./g, ""), 10);
       }
 
-      // 가장 가까운 버전 찾기
+      // 버전 비교 함수
+      function compareVersions(v1, v2) {
+        return versionToNumber(v1) - versionToNumber(v2);
+      }
+
+      // 버전 매칭 로직 (3가지 시나리오)
       function findClosestVersion(targetVersion) {
+        console.log("[Loader] Finding version for:", targetVersion);
+        console.log("[Loader] Latest:", LATEST_VERSION, "Last:", LAST_VERSION);
+        console.log("[Loader] Available:", AVAILABLE_VERSIONS);
+
         // S3에 배포된 버전이 없으면 기본 버전 반환
         if (AVAILABLE_VERSIONS.length === 0) {
-          return "__APP_VERSION__";
+          console.log("[Loader] No versions, using fallback");
+          return "__LATEST_VERSION__";
         }
 
-        // 정확히 일치하는 버전이 있으면 바로 반환
-        if (AVAILABLE_VERSIONS.includes(targetVersion)) {
-          return targetVersion;
-        }
-
-        // 일치하는 버전이 없으면 가장 가까운 버전 찾기
         const targetNum = versionToNumber(targetVersion);
-        let closestVersion = AVAILABLE_VERSIONS[0];
-        let minDiff = Math.abs(versionToNumber(closestVersion) - targetNum);
+        const latestNum = versionToNumber(LATEST_VERSION);
+        const lastNum = versionToNumber(LAST_VERSION);
 
-        for (let i = 1; i < AVAILABLE_VERSIONS.length; i++) {
+        // 시나리오 2: latestVersion <= nativeVersion <= lastVersion
+        if (targetNum >= latestNum && targetNum <= lastNum) {
+          console.log(
+            "[Loader] ✅ latestVersion <= nativeVersion <= lastVersion → using latestVersion:",
+            LATEST_VERSION
+          );
+          return LATEST_VERSION;
+        }
+
+        // 시나리오 3: nativeVersion > lastVersion (미래 버전)
+        if (targetNum > lastNum) {
+          console.log(
+            "[Loader] ✅ nativeVersion > lastVersion → using latestVersion:",
+            LATEST_VERSION
+          );
+          return LATEST_VERSION;
+        }
+
+        // 시나리오 1: nativeVersion < latestVersion (과거 버전)
+        console.log("[Loader] nativeVersion < latestVersion");
+
+        // supportedVersions에서 가장 가까우면서 낮은 버전 찾기
+        let closestVersion = null;
+        let minDiff = Infinity;
+
+        for (let i = 0; i < AVAILABLE_VERSIONS.length; i++) {
           const version = AVAILABLE_VERSIONS[i];
-          const diff = Math.abs(versionToNumber(version) - targetNum);
+          const versionNum = versionToNumber(version);
 
-          if (diff < minDiff) {
-            minDiff = diff;
-            closestVersion = version;
+          // targetVersion보다 낮거나 같은 버전만 고려
+          if (versionNum <= targetNum) {
+            const diff = targetNum - versionNum;
+            console.log("[Loader]   Checking:", version, "diff:", diff);
+
+            if (diff < minDiff) {
+              minDiff = diff;
+              closestVersion = version;
+            }
           }
         }
 
-        return closestVersion;
+        if (closestVersion) {
+          console.log("[Loader] ✅ Closest lower version:", closestVersion);
+          return closestVersion;
+        }
+
+        // 모든 버전이 targetVersion보다 높으면 가장 낮은 버전 사용
+        const lowestVersion = AVAILABLE_VERSIONS.reduce((lowest, current) =>
+          compareVersions(current, lowest) < 0 ? current : lowest
+        );
+        console.log(
+          "[Loader] ⚠️ All versions higher, using lowest:",
+          lowestVersion
+        );
+        return lowestVersion;
       }
 
       // C# WebView2 Bridge 통신
@@ -88,7 +138,7 @@
           });
         } else {
           // 개발 환경 fallback
-          loadApp("__APP_VERSION__");
+          loadApp("__LATEST_VERSION__");
         }
       }
 

@@ -35,19 +35,19 @@ jobs:
       - name: 🌐 Build
         run: pnpm build
 
-      # version 추출 (전체 버전 사용 → 메이저.마이너.패치.빌드)
+      # version 추출 (config/versions.json의 latestVersion 사용)
       - name: 🏷 Extract version
         id: version
         run: |
-          VERSION=$(cat package.json | jq -r .version)
-          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Extracted version: $VERSION"
+          LATEST=$(cat config/versions.json | jq -r '.latestVersion')
+          echo "LATEST_VERSION=$LATEST" >> $GITHUB_ENV
+          echo "Extracted latestVersion from config: $LATEST"
 
       # dist 구조 재정렬
       - name: 🗂 Prepare versioned build
         run: |
-          mkdir -p output/versions/${{ env.APP_VERSION }}
-          cp -r dist/* output/versions/${{ env.APP_VERSION }}/
+          mkdir -p output/versions/${{ env.LATEST_VERSION }}
+          cp -r dist/* output/versions/${{ env.LATEST_VERSION }}/
 
       # loader index.html 생성
       - name: 🧩 Generate loader index.html
@@ -57,44 +57,31 @@ jobs:
           # 템플릿 파일 복사
           cp templates/loader.html output/index.html
 
-          # S3에서 사용 가능한 버전 목록 가져오기
-          AVAILABLE_VERSIONS="[]"
-          if aws s3 ls s3://$S3_BUCKET/versions/ 2>/dev/null; then
-            # S3에서 버전 목록 추출 (1.8.1 형식)
-            VERSIONS=$(aws s3 ls s3://$S3_BUCKET/versions/ | grep "PRE" | awk '{print $2}' | sed 's/\///' | sort -V)
-            
-            # JSON 배열로 변환
-            AVAILABLE_VERSIONS="["
-            FIRST=true
-            for VERSION in $VERSIONS; do
-              if [ "$FIRST" = true ]; then
-                AVAILABLE_VERSIONS="${AVAILABLE_VERSIONS}\"${VERSION}\""
-                FIRST=false
-              else
-                AVAILABLE_VERSIONS="${AVAILABLE_VERSIONS},\"${VERSION}\""
-              fi
-            done
-            AVAILABLE_VERSIONS="${AVAILABLE_VERSIONS}]"
-          fi
+          # config/versions.json에서 버전 정보 추출
+          LATEST_VERSION=$(cat config/versions.json | jq -r '.latestVersion')
+          LAST_VERSION=$(cat config/versions.json | jq -r '.lastVersion')
+          SUPPORTED_VERSIONS=$(cat config/versions.json | jq -c '.supportedVersions')
 
-          echo "Available versions in S3: $AVAILABLE_VERSIONS"
-
-          # 현재 배포할 버전을 목록에 추가 (중복 체크)
-          CURRENT_VERSION="${{ env.APP_VERSION }}"
-          if [[ "$AVAILABLE_VERSIONS" != *"\"$CURRENT_VERSION\""* ]]; then
-            if [ "$AVAILABLE_VERSIONS" = "[]" ]; then
-              AVAILABLE_VERSIONS="[\"$CURRENT_VERSION\"]"
+          # latestVersion을 supportedVersions에 추가 (중복 체크)
+          if [[ "$SUPPORTED_VERSIONS" != *"\"$LATEST_VERSION\""* ]]; then
+            if [ "$SUPPORTED_VERSIONS" = "[]" ]; then
+              AVAILABLE_VERSIONS="[\"$LATEST_VERSION\"]"
             else
-              # 배열 끝에 추가: ["1.8.1"] → ["1.8.1","1.8.2"]
-              AVAILABLE_VERSIONS="${AVAILABLE_VERSIONS%]*},\"$CURRENT_VERSION\"]"
+              # 배열 끝에 추가: ["1.8.1"] → ["1.8.1","1.9.0"]
+              AVAILABLE_VERSIONS="${SUPPORTED_VERSIONS%]*},\"$LATEST_VERSION\"]"
             fi
-            echo "Added current version: $CURRENT_VERSION"
+          else
+            AVAILABLE_VERSIONS="$SUPPORTED_VERSIONS"
           fi
 
-          echo "Final available versions: $AVAILABLE_VERSIONS"
+          echo "📦 Latest Version: $LATEST_VERSION"
+          echo "📦 Last Version: $LAST_VERSION"
+          echo "📦 Supported Versions: $SUPPORTED_VERSIONS"
+          echo "📦 Available Versions (for loader): $AVAILABLE_VERSIONS"
 
-          # 변수 치환 (output/index.html의 __APP_VERSION__ 및 __AVAILABLE_VERSIONS__ → 실제 버전 및 버전 목록으로 치환)
-          sed -i "s/__APP_VERSION__/${{ env.APP_VERSION }}/g" output/index.html
+          # 변수 치환
+          sed -i "s/__LATEST_VERSION__/$LATEST_VERSION/g" output/index.html
+          sed -i "s/__LAST_VERSION__/$LAST_VERSION/g" output/index.html
           sed -i "s/__AVAILABLE_VERSIONS__/$AVAILABLE_VERSIONS/g" output/index.html
 
       # 디버깅: output 폴더 구조 확인
@@ -102,38 +89,18 @@ jobs:
         run: |
           ls -R output/
 
-      # versions/ 폴더 전체 삭제 (일회성 작업)
-      - name: 🗑️ Clean all versions
-        env:
-          S3_BUCKET: wexpert-report-dev
-        run: |
-          echo "🗑️ Deleting all existing versions..."
-
-          if aws s3 ls s3://$S3_BUCKET/versions/ 2>/dev/null; then
-            aws s3 rm s3://$S3_BUCKET/versions/ --recursive
-            echo "✅ All versions deleted"
-          else
-            echo "ℹ️  No versions folder found"
-          fi
-
+      # 버전 목록 출력
       - name: 📤 Deploy to S3
         env:
           S3_BUCKET: wexpert-report-dev
         run: |
           echo "📤 Uploading new version..."
 
-          # 필요할 때 사용
-          # 루트 레벨의 오래된 파일 정리
-          # aws s3 rm s3://$S3_BUCKET/assets/ --recursive 2>/dev/null || echo "No assets/ to clean"
-          # aws s3 rm s3://$S3_BUCKET/images/ --recursive 2>/dev/null || echo "No images/ to clean"
-          # aws s3 rm s3://$S3_BUCKET/service-worker.js 2>/dev/null || echo "No service-worker.js to clean"
-
-
           # 새 구조 업로드 (이전 버전 보존)
           aws s3 sync ./output/ s3://$S3_BUCKET/ --exclude ".DS_Store"
 
           echo "✅ Deployed to s3://$S3_BUCKET/"
-          echo "📦 Version: v${{ env.APP_VERSION }}"
+          echo "📦 Version: ${{ env.LATEST_VERSION }}"
 
       - name: 🔁 Invalidate CloudFront cache
         run: |
