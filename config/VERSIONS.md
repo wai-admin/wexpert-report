@@ -2,8 +2,6 @@
 
 ## 📋 개요
 
-`config/versions.json` 파일은 React 웹뷰 앱의 버전 관리를 위한 **단일 진실 공급원(Single Source of Truth)**입니다.
-
 C# 네이티브 앱과 React 웹뷰 간의 Bridge 호환성을 관리하며, S3 버전별 배포를 지원합니다.
 
 ---
