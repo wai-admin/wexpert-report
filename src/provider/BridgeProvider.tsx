@@ -3,7 +3,7 @@ import { useBridgeStore, useAuthStore, useReportListStore } from "@/store";
 import { BridgeMessage, BridgeMessageData } from "@/lib/bridgeMessageType";
 import { hasKey } from "@/utils/common";
 import { BRIDGE_MESSAGE_KEY } from "@/constants/bridge";
-import { sendInitialized } from "@/utils/bridge";
+import { sendInitialized, sendCloseStatus } from "@/utils/bridge";
 
 interface BridgeProviderProps {
   children: ReactNode;
@@ -37,6 +37,7 @@ const BridgeProvider = ({ children }: BridgeProviderProps) => {
     }
   };
 
+  // C#의 WebView2에게 초기화 메시지 전송 및 메시지 수신 리스너 등록
   useEffect(() => {
     window.chrome?.webview?.addEventListener("message", receiveBridgeMessage);
     initializeBridge();
@@ -46,6 +47,22 @@ const BridgeProvider = ({ children }: BridgeProviderProps) => {
         "message",
         receiveBridgeMessage
       );
+    };
+  }, []);
+
+  // ESC 키 감지 → C#에 close 메시지 전송
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      console.log("handleKeyDown: ", event.key);
+      if (event.key === "Escape") {
+        sendCloseStatus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
