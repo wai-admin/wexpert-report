@@ -28,8 +28,46 @@
       // 버전별 경로로 리다이렉트
       function loadApp(nativeVersion) {
         // 웹에서는 targetUrl로 이동하여 index.html을 찾지만, WebView2에서는 index.html을 찾지 못하므로 index.html을 직접 열어준다.
-        const targetUrl = "/versions/v" + nativeVersion + "/index.html";
+        const targetUrl = "/versions/" + nativeVersion + "/index.html";
         window.location.href = targetUrl;
+      }
+
+      // S3에 배포된 사용 가능한 버전 목록 (CI/CD에서 주입)
+      const AVAILABLE_VERSIONS = __AVAILABLE_VERSIONS__;
+
+      // 버전 문자열을 숫자로 변환 ("1.8.1.00000" → 18100000)
+      function versionToNumber(version) {
+        return parseInt(version.replace(/\./g, ""), 10);
+      }
+
+      // 가장 가까운 버전 찾기
+      function findClosestVersion(targetVersion) {
+        // S3에 배포된 버전이 없으면 기본 버전 반환
+        if (AVAILABLE_VERSIONS.length === 0) {
+          return "__APP_VERSION__";
+        }
+
+        // 정확히 일치하는 버전이 있으면 바로 반환
+        if (AVAILABLE_VERSIONS.includes(targetVersion)) {
+          return targetVersion;
+        }
+
+        // 일치하는 버전이 없으면 가장 가까운 버전 찾기
+        const targetNum = versionToNumber(targetVersion);
+        let closestVersion = AVAILABLE_VERSIONS[0];
+        let minDiff = Math.abs(versionToNumber(closestVersion) - targetNum);
+
+        for (let i = 1; i < AVAILABLE_VERSIONS.length; i++) {
+          const version = AVAILABLE_VERSIONS[i];
+          const diff = Math.abs(versionToNumber(version) - targetNum);
+
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestVersion = version;
+          }
+        }
+
+        return closestVersion;
       }
 
       // C# WebView2 Bridge 통신
@@ -39,12 +77,8 @@
             const data = event.data?.data || event.data;
 
             if (data.nativeVersion) {
-              // nativeVersion에서 메이저.마이너.패치만 추출 ("1.8.1.25336" → "1.8.1")
-              const version = data.nativeVersion
-                .split(".")
-                .slice(0, 3)
-                .join(".");
-              loadApp(version);
+              const matchedVersion = findClosestVersion(data.nativeVersion);
+              loadApp(matchedVersion);
             }
           });
 
