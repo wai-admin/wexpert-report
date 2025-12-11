@@ -31,7 +31,7 @@ const PrintPage = ({
     if (checkTruthy(selectedReportId) && checkTruthy(scrollRef.current)) {
       scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }, [[selectedReportId]]);
+  }, [selectedReportId]);
   // Data Information
   const hospitalName = checkTruthy(printData)
     ? printData.cover.hospitalName
