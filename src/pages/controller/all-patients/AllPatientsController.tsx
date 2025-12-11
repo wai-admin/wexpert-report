@@ -98,9 +98,23 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
       return;
     }
 
+    const dataList = allPatientReportListResponse?.data.data;
+
+    // 인덱스가 배열 범위를 벗어나면 0으로 리셋
+    if (selectedReportIndex >= dataList.length) {
+      setSelectedReportIndex(0);
+      return;
+    }
+
     // 선택된 리포트 정보 업데이트
-    const { reportId, patientId } =
-      allPatientReportListResponse.data.data[selectedReportIndex];
+    const selectedReport = dataList[selectedReportIndex];
+
+    // undefined 체크
+    if (!checkTruthy(selectedReport)) {
+      return;
+    }
+
+    const { reportId, patientId } = selectedReport;
 
     if (checkTruthy(reportId) && checkTruthy(patientId)) {
       setSelectedReportId(reportId);

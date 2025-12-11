@@ -2,6 +2,7 @@ import { RefObject } from "react";
 import { TableCell } from "@/pages";
 import { ALL_PATIENTS_TABLE_COLUMNS } from "@/constants";
 import { AllPatientReportListDetailData } from "@/lib/allPatientReportListType";
+import { checkTruthy } from "@/utils/common";
 
 interface TableRowsProps {
   scrollRef: RefObject<HTMLDivElement | null>;
@@ -25,9 +26,14 @@ const TableRows = ({
         (report: AllPatientReportListDetailData, index: number) => {
           const isSelected = index === selectedReportIndex;
 
+          // undefined 체크
+          if (!checkTruthy(report) || !checkTruthy(report.reportId)) {
+            return null;
+          }
+
           return (
             <div
-              key={report.reportId.toString()}
+              key={index}
               className={`w-full h-[48px] flex items-center justify-between py-[1px] hover:bg-[rgb(49,51,53)] border-b border-b-solid-dk px-[14px] transition-colors duration-100
                 ${isSelected ? "bg-[rgb(49,51,53)]" : "bg-transparent"}
                 `}
