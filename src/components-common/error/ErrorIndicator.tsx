@@ -1,7 +1,10 @@
 import { useUIStore } from "@/store";
+import { getErrorStatusCode, checkTruthy } from "@/utils";
 
 const ErrorIndicator = () => {
-  const { refetchFn, isLoading } = useUIStore();
+  const { refetchFn, isLoading, error } = useUIStore();
+
+  const errorCode = getErrorStatusCode(error);
 
   const handleRetry = () => {
     if (refetchFn) {
@@ -17,6 +20,7 @@ const ErrorIndicator = () => {
         </p>
         <p className="text-[12px] text-text-tertiary font-pretendard">
           The page couldn't be loaded. Please reload or try again in a moment.
+          {checkTruthy(errorCode) ? `(Error Code: ${errorCode})` : ""}
         </p>
       </div>
       <button
