@@ -197,9 +197,7 @@ const generateAnalysisItems = ({
   sonographies.forEach((item: Sonography) => {
     if (item.type === "BREAST_IMPLANT") {
       const breastImplantAnalysisLabels = item.analysis.labels.filter(
-        (label) =>
-          label.result_type?.toLowerCase() === "rupture" &&
-          label.result_class?.toLowerCase() === "positive"
+        (label) => label.result_type?.toLowerCase() === "rupture"
       );
 
       if (breastImplantAnalysisLabels.length > 0) {
@@ -210,8 +208,7 @@ const generateAnalysisItems = ({
     if (item.type === "LYMPH_NODE") {
       const lymphNodeAnalysisLabels = item.analysis.labels.filter(
         (label) =>
-          label.result_type?.toLowerCase() === "silicone_invasion_to_ln" &&
-          label.result_class?.toLowerCase() === "positive"
+          label.result_type?.toLowerCase() === "silicone_invasion_to_ln"
       );
 
       if (lymphNodeAnalysisLabels.length > 0) {
