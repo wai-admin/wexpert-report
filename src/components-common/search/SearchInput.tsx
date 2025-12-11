@@ -42,7 +42,7 @@ const SearchInput = ({ placeholder, onSearch, onClear }: SearchInputProps) => {
             onClick={handleClear}
             className="cursor-default"
           >
-            <img src="/images/close-icon.png" className="w-[17px] h-[17px]" />
+            <img src="./images/close-icon.png" className="w-[17px] h-[17px]" />
           </button>
         )}
       </div>
@@ -50,7 +50,7 @@ const SearchInput = ({ placeholder, onSearch, onClear }: SearchInputProps) => {
         type="submit"
         className="w-[44px] h-[44px] flex items-center justify-center bg-blue-300 hover:bg-blue-400 rounded-[6px] transition-all duration-100 cursor-default"
       >
-        <img src="/images/search-icon.png" className="w-[17px] h-[17px]" />
+        <img src="./images/search-icon.png" className="w-[17px] h-[17px]" />
       </button>
     </form>
   );
