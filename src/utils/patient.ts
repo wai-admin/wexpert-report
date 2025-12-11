@@ -153,7 +153,8 @@ const getRuptureImageCount = (sonographies: Sonography[]) => {
   const ruptureImages = breastImplantImages.filter((item: Sonography) => {
     return item.analysis.labels.some(
       (label) =>
-        label.result_type === "rupture" && label.result_class === "exist"
+        label.result_type?.toLowerCase() === "rupture" &&
+        label.result_class?.toLowerCase() === "positive"
     );
   });
 
@@ -170,7 +171,8 @@ const getAnalysisItemCount = (sonographies: Sonography[]) => {
   const ruptureImages = breastImplantImages.filter((item: Sonography) => {
     return item.analysis.labels.some(
       (label) =>
-        label.result_type === "rupture" && label.result_class === "exist"
+        label.result_type?.toLowerCase() === "rupture" &&
+        label.result_class?.toLowerCase() === "positive"
     );
   });
 
@@ -195,7 +197,9 @@ const generateAnalysisItems = ({
   sonographies.forEach((item: Sonography) => {
     if (item.type === "BREAST_IMPLANT") {
       const breastImplantAnalysisLabels = item.analysis.labels.filter(
-        (label) => label.result_type === "rupture"
+        (label) =>
+          label.result_type?.toLowerCase() === "rupture" &&
+          label.result_class?.toLowerCase() === "positive"
       );
 
       if (breastImplantAnalysisLabels.length > 0) {
@@ -205,7 +209,9 @@ const generateAnalysisItems = ({
 
     if (item.type === "LYMPH_NODE") {
       const lymphNodeAnalysisLabels = item.analysis.labels.filter(
-        (label) => label.result_type === "silicone_invasion_to_ln"
+        (label) =>
+          label.result_type?.toLowerCase() === "silicone_invasion_to_ln" &&
+          label.result_class?.toLowerCase() === "positive"
       );
 
       if (lymphNodeAnalysisLabels.length > 0) {
@@ -219,7 +225,8 @@ const generateAnalysisItems = ({
       ...breastImplantLabels.filter((item: Sonography) =>
         item.analysis.labels.some(
           (label) =>
-            label.result_type === "rupture" && label.result_class === "exist"
+            label.result_type?.toLowerCase() === "rupture" &&
+            label.result_class?.toLowerCase() === "positive"
         )
       ),
       // TODO: 기획 회의 후 변경 가능성 있음.

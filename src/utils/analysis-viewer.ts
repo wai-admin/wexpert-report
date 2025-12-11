@@ -168,21 +168,22 @@ const getAnalysisResultExist = (props: GetAnalysisResultExistProps) => {
   const isRuptureExist =
     analysis?.labels?.some(
       ({ result_type, result_class }: AnalysisLabel) =>
-        result_type === "rupture" && result_class === "exist"
+        result_type?.toLowerCase() === "rupture" &&
+        result_class?.toLowerCase() === "positive"
     ) ?? false;
   // 실리콘 피막 침범 존재 여부 확인
   const isInvasionToCapsuleExist =
     analysis?.labels?.some(
       (label) =>
-        label?.result_type === "silicone_invasion_to_capsule" &&
-        label?.result_class === "exist"
+        label?.result_type?.toLowerCase() === "silicone_invasion_to_capsule" &&
+        label?.result_class?.toLowerCase() === "positive"
     ) ?? false;
   // 실리콘 림프절 침범 존재 여부 확인
   const isInvasionToLymphNodeExist =
     analysis?.labels?.some(
       (label) =>
-        label?.result_type === "silicone_invasion_to_ln" &&
-        label?.result_class === "exist"
+        label?.result_type?.toLowerCase() === "silicone_invasion_to_ln" &&
+        label?.result_class?.toLowerCase() === "positive"
     ) ?? false;
 
   return {
