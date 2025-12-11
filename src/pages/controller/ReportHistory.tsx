@@ -15,12 +15,12 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
 
   const { setSelectedReportId, setIsReportListEmpty } = useReportListStore();
   const { setLoading } = useLoadingStore();
-  const { setIsError } = useErrorStore();
+  const { setError } = useErrorStore();
 
   const {
     data: patientReportListData,
     isFetching: isPatientReportListLoading,
-    isError: isPatientReportListError,
+    error: patientReportListError,
   } = usePatientReportList({
     enabled: true,
   });
@@ -59,8 +59,8 @@ const ReportHistory = ({ onPrint }: ReportHistoryProps) => {
   }, [isPatientReportListLoading]);
 
   useEffect(() => {
-    setIsError(isPatientReportListError);
-  }, [isPatientReportListError]);
+    setError(patientReportListError);
+  }, [patientReportListError]);
 
   // List를 받아온 상태에서 리스트가 비어있는 경우
   const isEmptyReportList =

@@ -39,12 +39,12 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
   } = useAllPatientsFilterStore();
   const { setSelectedReportId, setSelectedPatientId, setIsReportListEmpty } =
     useReportListStore();
-  const { setIsError } = useErrorStore();
+  const { setError } = useErrorStore();
 
   const {
     data: allPatientReportListResponse,
     isFetching: isAllPatientReportListLoading,
-    isError: isAllPatientReportListError,
+    error: allPatientReportListError,
   } = useAllPatientReportList();
 
   const isValidAllPatientReportList = checkTruthy(allPatientReportListResponse);
@@ -58,8 +58,8 @@ const AllPatientsController = ({ onPrint }: AllPatientsControllerProps) => {
 
   // 리스트 에러 상태 업데이트
   useEffect(() => {
-    setIsError(isAllPatientReportListError);
-  }, [isAllPatientReportListError]);
+    setError(allPatientReportListError);
+  }, [allPatientReportListError]);
 
   // 새로운 리포트 리스트 호출 시
   useEffect(() => {

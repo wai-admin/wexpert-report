@@ -35,12 +35,12 @@ const usePrintHandler = (): UsePrintHandlerReturn => {
   const { isNewReportMode, isPatientReportMode, isAllReportMode } =
     useCurrentReportMode();
   const { setLoading } = useLoadingStore();
-  const { setIsError } = useErrorStore();
+  const { setError } = useErrorStore();
   // New Report 모드
   const {
     data: newReport,
     isFetching: isNewReportFetching,
-    isError: isNewReportError,
+    error: newReportError,
   } = useReport({
     enabled: isNewReportMode,
   });
@@ -49,7 +49,7 @@ const usePrintHandler = (): UsePrintHandlerReturn => {
   const {
     data: reportHistoryDetail,
     isFetching: isHistoryDetailFetching,
-    isError: isHistoryDetailError,
+    error: historyDetailError,
   } = usePatientReportDetail({
     enabled: isPatientReportMode || isAllReportMode,
   });
@@ -59,8 +59,8 @@ const usePrintHandler = (): UsePrintHandlerReturn => {
   }, [isNewReportFetching, isHistoryDetailFetching]);
 
   useEffect(() => {
-    setIsError(isNewReportError || isHistoryDetailError);
-  }, [isNewReportError, isHistoryDetailError]);
+    setError(newReportError || historyDetailError);
+  }, [newReportError, historyDetailError]);
 
   if (
     checkTruthy(reportHistoryDetail) &&
