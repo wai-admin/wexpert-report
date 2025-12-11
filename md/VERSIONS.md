@@ -407,7 +407,7 @@ fi
 ## 🔗 관련 파일
 
 - `config/versions.json`: 버전 정의
-- `.github/workflows/ci-develop.yml`: 배포 자동화
+- `.github/workflows/ci-{branch}.yml`: 배포 자동화
 - `templates/loader.html`: 버전 매칭 로직
 - `src/constants/bridge.ts`: React 앱 버전 상수
 
