@@ -3,27 +3,20 @@ import useA4Handler from "@/hooks/print/useA4Handler";
 import { checkTruthy } from "@/utils";
 import { A4Template } from "@/components";
 import { Cover, ElementRenderer } from "@/pages";
-import { PrintData, PrintPageOption } from "@/types";
+import { PrintData } from "@/types";
 import { useReportListStore } from "@/store";
 
 interface PrintPageProps {
   printRef: RefObject<HTMLDivElement | null>;
   scrollRef: RefObject<HTMLDivElement | null>;
   printData: PrintData | null;
-  option: PrintPageOption;
 }
 
-const PrintPage = ({
-  printRef,
-  scrollRef,
-  printData,
-  option,
-}: PrintPageProps) => {
+const PrintPage = ({ printRef, scrollRef, printData }: PrintPageProps) => {
   const { selectedReportId } = useReportListStore();
 
   const { elementPageInfo, MeasureContainer } = useA4Handler({
     printData,
-    option,
   });
 
   // 새로운 리포트 선택 시 스크롤 초기화 (Report History 모드에 해당)

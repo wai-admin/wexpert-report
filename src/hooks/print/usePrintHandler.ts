@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useReport } from "@/services/useReport";
 import {
   useNewReportStore,
@@ -6,46 +6,39 @@ import {
   useErrorStore,
   useCurrentReportMode,
 } from "@/store";
-import { ImageExportOptionValues, UsePrintHandlerReturn } from "@/types";
-import {
-  checkTruthy,
-  getPatientType,
-  formatAnalysisDate,
-  getImageCommentSummary,
-  getRuptureImageCount,
-  generateAnalysisItems,
-  convertISOToLocal,
-} from "@/utils";
+import { UsePrintHandlerReturn } from "@/types";
+import { checkTruthy } from "@/utils";
 import { usePatientReportDetail } from "@/services/usePatientReportDetail";
+import {
+  buildHistoryPrintResult,
+  buildNewReportPrintResult,
+} from "@/utils/printTransform";
 
 const usePrintHandler = (): UsePrintHandlerReturn => {
   /**
    * @description: 훅 플로우
    * 1. Bridge Message Store에서 현재 타입 읽기
    * 2. 타입에 따라 적절한 데이터 훅 호출
-   *    type === "new-report" → useNewReportDetail(...)
-   *    type === "report-history" → useReportHistoryDetail(...)
-   *    type === "all-report-history" → useAllReportHistoryDetail(...)
-   *    각각은 내부에서 API(Call) + 가공까지 담당 (또는 최소한 원본 응답을 리턴)
-   * 3. (필요하면) PrintPage용 zustand 스토어 값과 합쳐서 printData 생성
-   * 4. { printData, isLoading, error } 형태로 반환
+   *    - new-report → useReport
+   *    - report-history / all-report-history → usePatientReportDetail
+   * 3. PrintPage용 데이터 변환 및 메모이제이션
+   * 4. { printData } 반환
    */
 
+  // Store
   const { imageExportOption, physicianAssessment } = useNewReportStore();
   const { isNewReportMode, isPatientReportMode, isAllReportMode } =
     useCurrentReportMode();
   const { setLoading } = useLoadingStore();
   const { setError } = useErrorStore();
-  // New Report 모드
+
+  // 모드별 데이터 fetching
   const {
     data: newReport,
     isFetching: isNewReportFetching,
     error: newReportError,
-  } = useReport({
-    enabled: isNewReportMode,
-  });
+  } = useReport({ enabled: isNewReportMode });
 
-  // Report History 모드 - 같은 쿼리 키로 캐시된 데이터 사용
   const {
     data: reportHistoryDetail,
     isFetching: isHistoryDetailFetching,
@@ -54,160 +47,53 @@ const usePrintHandler = (): UsePrintHandlerReturn => {
     enabled: isPatientReportMode || isAllReportMode,
   });
 
+  // 로딩 상태 동기화
   useEffect(() => {
     setLoading(isNewReportFetching || isHistoryDetailFetching);
-  }, [isNewReportFetching, isHistoryDetailFetching]);
+  }, [isNewReportFetching, isHistoryDetailFetching, setLoading]);
 
+  // 에러 상태 동기화
   useEffect(() => {
     setError(newReportError || historyDetailError);
-  }, [newReportError, historyDetailError]);
+  }, [newReportError, historyDetailError, setError]);
 
-  if (
-    checkTruthy(reportHistoryDetail) &&
-    (isPatientReportMode || isAllReportMode)
-  ) {
-    return {
-      printData: {
-        cover: {
-          hospitalName:
-            reportHistoryDetail.data.report.patientSummary.hospitalName,
-        },
-        patientDetail: {
-          chartNumber: checkTruthy(
-            reportHistoryDetail.data.report.patientSummary.chartNumber
-          )
-            ? reportHistoryDetail.data.report.patientSummary.chartNumber
-            : "-",
-          patientName: checkTruthy(
-            reportHistoryDetail.data.report.patientSummary.patientName
-          )
-            ? reportHistoryDetail.data.report.patientSummary.patientName
-            : "-",
-          birth: checkTruthy(
-            reportHistoryDetail.data.report.patientDetail.birthDate
-          )
-            ? convertISOToLocal(
-                reportHistoryDetail.data.report.patientDetail.birthDate,
-                true
-              )
-            : "-",
-          patientType: getPatientType(
-            reportHistoryDetail.data.report.patientDetail.type
-          ),
-          analysisDate: formatAnalysisDate(
-            reportHistoryDetail.data.report.patientSummary.analysisDateTime
-          ),
-        },
-        analysisSummary: {
-          implantPosition:
-            reportHistoryDetail.data.report.analysisSummary.implantPosition,
-          surfaceType:
-            reportHistoryDetail.data.report.analysisSummary.surfaceType,
-          ruptureStatus:
-            reportHistoryDetail.data.report.analysisSummary.ruptureStatus,
-        },
-        analysisResultByAI:
-          reportHistoryDetail.data.report.recommendedTreatment,
-        analysisImage: {
-          commentSummary: getImageCommentSummary({
-            totalAnalysisImageCount:
-              reportHistoryDetail.data.report.patientDetail.sonographyCount,
-            ruptureImageCount: getRuptureImageCount(
-              reportHistoryDetail.data.report.patientDetail.sonographies
-            ),
-            invasionToCapsuleExist:
-              reportHistoryDetail.data.report.analysisSummary
-                .invasionToCapsuleExist,
-            invasionToLymphNodeExist:
-              reportHistoryDetail.data.report.analysisSummary
-                .invasionToLymphNodeExist,
-          }),
-          analysisItems: generateAnalysisItems({
-            onlyRuptureExist: !reportHistoryDetail.data.includeAllImages,
-            sonographies:
-              reportHistoryDetail.data.report.patientDetail.sonographies,
-          }),
-        },
-        physicianAssessment: reportHistoryDetail.data.doctorOpinion,
-      },
-      option: {
-        imageExportOption: reportHistoryDetail.data.includeAllImages
-          ? ImageExportOptionValues.ALL_IMAGE
-          : ImageExportOptionValues.RUPTURE_CASE,
-        sonographies:
-          reportHistoryDetail.data.report.patientDetail.sonographies,
-      },
-      // 개발 환경에서는 false, 프로덕션에서는 true
-      isLoading: import.meta.env.PROD,
-      error: null,
-    };
+  // Report History 데이터 메모이제이션
+  const historyResult = useMemo(() => {
+    const isValidReportHistoryData =
+      checkTruthy(reportHistoryDetail) &&
+      (isPatientReportMode || isAllReportMode);
+    if (isValidReportHistoryData) {
+      return buildHistoryPrintResult(reportHistoryDetail.data);
+    }
+
+    return null;
+  }, [reportHistoryDetail, isPatientReportMode, isAllReportMode]);
+
+  // New Report 데이터 메모이제이션
+  const newReportResult = useMemo(() => {
+    const isValidNewReportData = checkTruthy(newReport) && isNewReportMode;
+    if (isValidNewReportData) {
+      return buildNewReportPrintResult(
+        newReport.data,
+        imageExportOption,
+        physicianAssessment
+      );
+    }
+
+    return null;
+  }, [newReport, isNewReportMode, imageExportOption, physicianAssessment]);
+
+  if (checkTruthy(historyResult)) {
+    return historyResult;
   }
 
-  if (checkTruthy(newReport) && isNewReportMode) {
-    return {
-      printData: {
-        cover: {
-          hospitalName: newReport.data.patientSummary.hospitalName,
-        },
-        patientDetail: {
-          chartNumber: checkTruthy(newReport.data.patientDetail.chartNumber)
-            ? newReport.data.patientDetail.chartNumber
-            : "-",
-          patientName: checkTruthy(newReport.data.patientSummary.patientName)
-            ? newReport.data.patientSummary.patientName
-            : "-",
-          birth: checkTruthy(newReport.data.patientDetail.birthDate)
-            ? convertISOToLocal(newReport.data.patientDetail.birthDate, true)
-            : "-",
-          patientType: getPatientType(newReport.data.patientDetail.type),
-          analysisDate: formatAnalysisDate(
-            newReport.data.patientSummary.analysisDateTime
-          ),
-        },
-        analysisSummary: {
-          implantPosition: newReport.data.analysisSummary.implantPosition,
-          surfaceType: newReport.data.analysisSummary.surfaceType,
-          ruptureStatus: newReport.data.analysisSummary.ruptureStatus,
-        },
-        analysisResultByAI: newReport.data.recommendedTreatment,
-        analysisImage: {
-          commentSummary: getImageCommentSummary({
-            totalAnalysisImageCount:
-              newReport.data.patientDetail.sonographyCount,
-            ruptureImageCount: getRuptureImageCount(
-              newReport.data.patientDetail.sonographies
-            ),
-            invasionToCapsuleExist:
-              newReport.data.analysisSummary.invasionToCapsuleExist,
-            invasionToLymphNodeExist:
-              newReport.data.analysisSummary.invasionToLymphNodeExist,
-          }),
-          analysisItems: generateAnalysisItems({
-            onlyRuptureExist:
-              imageExportOption === ImageExportOptionValues.RUPTURE_CASE,
-            sonographies: newReport.data.patientDetail.sonographies,
-          }),
-        },
-        physicianAssessment: physicianAssessment,
-      },
-      option: {
-        imageExportOption: imageExportOption,
-        sonographies: newReport.data.patientDetail.sonographies,
-      },
-      isLoading: isNewReportFetching,
-      error: null,
-    };
+  if (checkTruthy(newReportResult)) {
+    return newReportResult;
   }
 
+  // Fallback (데이터 로딩 중 또는 없음)
   return {
     printData: null,
-    option: {
-      imageExportOption: imageExportOption,
-      sonographies: [],
-    },
-    // 개발 환경에서는 false, 프로덕션에서는 true
-    isLoading: import.meta.env.PROD,
-    error: null,
   };
 };
 

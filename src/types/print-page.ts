@@ -1,5 +1,6 @@
 import { ImageExportOptionValues } from "./new-report";
-import { Sonography } from "@/lib/reportType";
+import { ReportSonography } from "@/lib/reportType";
+import { Sonography as DetailSonography } from "@/lib/patientReportDetailType";
 
 /**
  * PrintPage에서 사용하는 환자 상세 정보
@@ -26,7 +27,16 @@ export interface PrintPageAnalysisSummary {
  */
 export interface PrintPageAnalysisImage {
   commentSummary: string;
-  analysisItems: Sonography[];
+  analysisItems: ReportSonography[] | DetailSonography[];
+  itemOption: AnalysisItemOption;
+}
+
+/**
+ * PrintPage에서 사용하는 분석 이미지 옵션
+ */
+export interface AnalysisItemOption {
+  imageExportOption: ImageExportOptionValues;
+  sonographies: ReportSonography[] | DetailSonography[];
 }
 
 /**
@@ -51,17 +61,6 @@ export interface PrintPageCover {
 /**
  * usePrintHandler의 반환 타입
  */
-export interface PrintPageOption {
-  imageExportOption: ImageExportOptionValues;
-  sonographies: Sonography[];
-}
-
-/**
- * usePrintHandler의 반환 타입
- */
 export interface UsePrintHandlerReturn {
   printData: PrintData | null;
-  option: PrintPageOption;
-  isLoading: boolean;
-  error: Error | null;
 }

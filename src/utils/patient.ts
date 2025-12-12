@@ -1,5 +1,13 @@
-import { Sonography } from "@/lib/reportType";
+import { ReportSonography, ReportAnalysisLabel } from "@/lib/reportType";
+import {
+  Sonography as DetailSonography,
+  AnalysisLabel as DetailAnalysisLabel,
+} from "@/lib/patientReportDetailType";
 import { checkFalsy } from "@/utils/common";
+
+// 공통 타입 (두 API 모두 지원)
+type CommonSonography = DetailSonography | ReportSonography;
+type CommonAnalysisLabel = DetailAnalysisLabel | ReportAnalysisLabel;
 
 /**
  * Bridge 메시지에서 환자 ID를 안전하게 추출하는 함수
@@ -146,13 +154,13 @@ const getPatientType = (type: string) => {
   }
 };
 
-const getRuptureImageCount = (sonographies: Sonography[]) => {
+const getRuptureImageCount = (sonographies: CommonSonography[]) => {
   const breastImplantImages = sonographies.filter(
-    (item: Sonography) => item.type === "BREAST_IMPLANT"
+    (item: CommonSonography) => item.type === "BREAST_IMPLANT"
   );
-  const ruptureImages = breastImplantImages.filter((item: Sonography) => {
+  const ruptureImages = breastImplantImages.filter((item: CommonSonography) => {
     return item.analysis.labels.some(
-      (label) =>
+      (label: CommonAnalysisLabel) =>
         label.result_type?.toLowerCase() === "rupture" &&
         label.result_class?.toLowerCase() === "positive"
     );
@@ -161,16 +169,16 @@ const getRuptureImageCount = (sonographies: Sonography[]) => {
   return ruptureImages.length;
 };
 
-const getAnalysisItemCount = (sonographies: Sonography[]) => {
+const getAnalysisItemCount = (sonographies: CommonSonography[]) => {
   const breastImplantImages = sonographies.filter(
-    (item: Sonography) => item.type === "BREAST_IMPLANT"
+    (item: CommonSonography) => item.type === "BREAST_IMPLANT"
   );
   const lymphNodeImages = sonographies.filter(
-    (item: Sonography) => item.type === "LYMPH_NODE"
+    (item: CommonSonography) => item.type === "LYMPH_NODE"
   );
-  const ruptureImages = breastImplantImages.filter((item: Sonography) => {
+  const ruptureImages = breastImplantImages.filter((item: CommonSonography) => {
     return item.analysis.labels.some(
-      (label) =>
+      (label: CommonAnalysisLabel) =>
         label.result_type?.toLowerCase() === "rupture" &&
         label.result_class?.toLowerCase() === "positive"
     );
@@ -189,16 +197,18 @@ const generateAnalysisItems = ({
   sonographies,
 }: {
   onlyRuptureExist: boolean;
-  sonographies: Sonography[];
+  sonographies: CommonSonography[];
 }) => {
-  let breastImplantLabels: Sonography[] = [];
-  let lymphNodeLabels: Sonography[] = [];
+  let breastImplantLabels: Array<CommonSonography> = [];
+  let lymphNodeLabels: Array<CommonSonography> = [];
 
-  sonographies.forEach((item: Sonography) => {
+  sonographies.forEach((item: CommonSonography) => {
     if (item.type === "BREAST_IMPLANT") {
-      const breastImplantAnalysisLabels = item.analysis.labels.filter(
-        (label) => label.result_type?.toLowerCase() === "rupture"
-      );
+      const breastImplantAnalysisLabels =
+        item.analysis.labels.filter(
+          (label: CommonAnalysisLabel) =>
+            label.result_type?.toLowerCase() === "rupture"
+        ) ?? [];
 
       if (breastImplantAnalysisLabels.length > 0) {
         breastImplantLabels.push(item);
@@ -206,10 +216,11 @@ const generateAnalysisItems = ({
     }
 
     if (item.type === "LYMPH_NODE") {
-      const lymphNodeAnalysisLabels = item.analysis.labels.filter(
-        (label) =>
-          label.result_type?.toLowerCase() === "silicone_invasion_to_ln"
-      );
+      const lymphNodeAnalysisLabels =
+        item.analysis.labels.filter(
+          (label: CommonAnalysisLabel) =>
+            label.result_type?.toLowerCase() === "silicone_invasion_to_ln"
+        ) ?? [];
 
       if (lymphNodeAnalysisLabels.length > 0) {
         lymphNodeLabels.push(item);
@@ -219,15 +230,13 @@ const generateAnalysisItems = ({
 
   if (onlyRuptureExist) {
     return [
-      ...breastImplantLabels.filter((item: Sonography) =>
+      ...breastImplantLabels.filter((item: CommonSonography) =>
         item.analysis.labels.some(
-          (label) =>
+          (label: CommonAnalysisLabel) =>
             label.result_type?.toLowerCase() === "rupture" &&
             label.result_class?.toLowerCase() === "positive"
         )
       ),
-      // TODO: 기획 회의 후 변경 가능성 있음.
-      // ...lymphNodeLabels,
     ];
   } else {
     return [...breastImplantLabels, ...lymphNodeLabels];

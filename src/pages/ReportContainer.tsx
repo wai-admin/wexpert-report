@@ -11,8 +11,8 @@ import { PrintPage, ReportController, EmptyPrintPage } from "@/pages";
 import usePrintHandler from "@/hooks/print/usePrintHandler";
 import { LoadingIndicator, ErrorIndicator } from "@/components-common";
 import { checkProd } from "@/utils";
+import { ImageExportOptionValues } from "@/types";
 
-// WARNING: usePrintHandler 업데이트 시 전체 렌더링 주의 (개선 필요)
 const ReportContainer = () => {
   const printRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -27,11 +27,13 @@ const ReportContainer = () => {
   // Current Report Mode
   const { isAllReportMode } = useCurrentReportMode();
   // Data Information
-  const { printData, option } = usePrintHandler();
+  const { printData } = usePrintHandler();
   // Handlers & State
   const { handlePrint } = usePrintAction({
     printRef,
-    imageExportOption: option.imageExportOption,
+    imageExportOption:
+      printData?.analysisImage.itemOption.imageExportOption ??
+      ImageExportOptionValues.ALL_IMAGE,
     physicianAssessment: printData?.physicianAssessment ?? "",
     patientName: printData?.patientDetail.patientName ?? "",
   });
@@ -75,7 +77,6 @@ const ReportContainer = () => {
             printRef={printRef}
             scrollRef={scrollRef}
             printData={printData}
-            option={option}
           />
         )}
       </div>

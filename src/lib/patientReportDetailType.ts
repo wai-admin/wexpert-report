@@ -1,5 +1,5 @@
 // 환자 요약 정보
-interface PatientSummary {
+export interface PatientSummary {
   hospitalName: string;
   patientName: string;
   analysisDateTime: string; // ISO date string
@@ -8,7 +8,7 @@ interface PatientSummary {
 }
 
 // 분석 요약
-interface AnalysisSummary {
+export interface AnalysisSummary {
   implantPosition: string;
   surfaceType: string;
   ruptureStatus: string;
@@ -17,7 +17,7 @@ interface AnalysisSummary {
 }
 
 // 환자 상세 정보
-interface PatientDetail {
+export interface PatientDetail {
   id: number;
   wexpertId: string;
   registeredAt: string; // ISO date string
@@ -41,7 +41,7 @@ interface NoteDetail {
 }
 
 // 초음파(sonography) 데이터
-interface Sonography {
+export interface Sonography {
   type: "LYMPH_NODE" | "BREAST_IMPLANT";
   id: string;
   imageUrl: string;
@@ -62,7 +62,7 @@ interface SonographyAnalysis {
 }
 
 // 라벨 정보
-interface AnalysisLabel {
+export interface AnalysisLabel {
   result_type: string;
   result_class: string;
   points: number[][][]; // [[[x, y], [x, y], ...]]

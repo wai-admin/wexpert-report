@@ -9,7 +9,7 @@ import {
 } from "@/components/html";
 import { ELEMENT, CONTENTS_MAX_HEIGHT } from "@/constants";
 import { generateAnalysisItems } from "@/utils";
-import { ImageExportOptionValues, PrintData, PrintPageOption } from "@/types";
+import { ImageExportOptionValues, PrintData } from "@/types";
 
 interface ElementPageInfo {
   page: number;
@@ -18,10 +18,9 @@ interface ElementPageInfo {
 
 interface UseA4HandlerProps {
   printData: PrintData | null;
-  option: PrintPageOption;
 }
 
-const useA4Handler = ({ printData, option }: UseA4HandlerProps) => {
+const useA4Handler = ({ printData }: UseA4HandlerProps) => {
   const measureRootRef = useRef<HTMLDivElement>(null);
   const [elementPageInfo, setElementPageInfo] = useState<ElementPageInfo[]>([]);
 
@@ -47,8 +46,9 @@ const useA4Handler = ({ printData, option }: UseA4HandlerProps) => {
   const getA4Element = (printData: PrintData) => {
     const analysisItems = generateAnalysisItems({
       onlyRuptureExist:
-        option?.imageExportOption === ImageExportOptionValues.RUPTURE_CASE,
-      sonographies: option?.sonographies ?? [],
+        printData.analysisImage.itemOption.imageExportOption ===
+        ImageExportOptionValues.RUPTURE_CASE,
+      sonographies: printData.analysisImage.itemOption.sonographies,
     });
 
     return [
