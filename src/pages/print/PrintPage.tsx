@@ -1,31 +1,20 @@
-import { useEffect, RefObject } from "react";
+import { RefObject } from "react";
 import useA4Handler from "@/hooks/print/useA4Handler";
 import { checkTruthy } from "@/utils";
 import { A4Template } from "@/components";
 import { Cover, ElementRenderer } from "@/pages";
 import { PrintData } from "@/types";
-import { useReportListStore } from "@/store";
 
 interface PrintPageProps {
   printRef: RefObject<HTMLDivElement | null>;
-  scrollRef: RefObject<HTMLDivElement | null>;
   printData: PrintData | null;
 }
 
-const PrintPage = ({ printRef, scrollRef, printData }: PrintPageProps) => {
-  const { selectedReportId } = useReportListStore();
-
+const PrintPage = ({ printRef, printData }: PrintPageProps) => {
   const { elementPageInfo, MeasureContainer } = useA4Handler({
     printData,
   });
 
-  // 새로운 리포트 선택 시 스크롤 초기화 (Report History 모드에 해당)
-  useEffect(() => {
-    if (checkTruthy(selectedReportId) && checkTruthy(scrollRef.current)) {
-      scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [selectedReportId]);
-  // Data Information
   const hospitalName = checkTruthy(printData)
     ? printData.cover.hospitalName
     : "";
