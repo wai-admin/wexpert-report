@@ -4,7 +4,7 @@ import { NewReport, ReportHistory } from "@/pages";
 import { PrintData, ReportTabValues, CurrentReportModeValues } from "@/types";
 import { usePatientControllerStore, useCurrentReportMode } from "@/store";
 import { PrintOptions } from "@/hooks/print/usePrintAction";
-import { ReportOptionType } from "@/lib";
+import { ReportOptionType } from "@/types";
 
 interface PatientControllerProps {
   printData: PrintData | null;

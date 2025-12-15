@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { reportApi } from "@/services/api";
-import { AllPatientReportListParams, QUERY_KEYS } from "@/lib/queryKeys";
+import { AllPatientReportListParams, QUERY_KEYS } from "@/services/queryKeys";
 import {
   SortBy,
   SortOrder,

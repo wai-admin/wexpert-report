@@ -1,6 +1,6 @@
 import { ImageExportOptionValues } from "./new-report";
-import { ReportSonography } from "@/lib/reportType";
-import { Sonography as DetailSonography } from "@/lib/patientReportDetailType";
+import { ReportSonography } from "@/services/types/reportType";
+import { Sonography as DetailSonography } from "@/services/types/patientReportDetailType";
 
 /**
  * PrintPage에서 사용하는 환자 상세 정보

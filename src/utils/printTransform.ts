@@ -13,14 +13,14 @@ import {
   ReportPatientDetail,
   ReportDetail,
   ReportSonography,
-} from "@/lib/reportType";
+} from "@/services/types/reportType";
 import {
   PatientSummary as DetailPatientSummary,
   PatientDetail as DetailPatientDetail,
   AnalysisSummary as DetailAnalysisSummary,
   PatientReportDetailData,
   Sonography as DetailSonography,
-} from "@/lib/patientReportDetailType";
+} from "@/services/types/patientReportDetailType";
 import { ImageExportOptionValues, UsePrintHandlerReturn } from "@/types";
 
 // 공통 Sonography 타입 (두 API 모두 지원)

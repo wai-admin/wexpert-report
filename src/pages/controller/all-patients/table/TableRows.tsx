@@ -1,7 +1,7 @@
 import { RefObject } from "react";
 import { TableCell } from "@/pages";
 import { ALL_PATIENTS_TABLE_COLUMNS } from "@/constants";
-import { AllPatientReportListDetailData } from "@/lib/allPatientReportListType";
+import { AllPatientReportListDetailData } from "@/services/types/allPatientReportListType";
 import { checkTruthy } from "@/utils/common";
 
 interface TableRowsProps {

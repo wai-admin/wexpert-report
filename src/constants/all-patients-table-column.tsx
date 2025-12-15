@@ -1,6 +1,6 @@
 import { RadioIndicator } from "@/components-common";
 import { checkTruthy, convertISOToLocal } from "@/utils";
-import { AllPatientReportListDetailData } from "@/lib/allPatientReportListType";
+import { AllPatientReportListDetailData } from "@/services/types/allPatientReportListType";
 
 interface RenderProps {
   report: AllPatientReportListDetailData;

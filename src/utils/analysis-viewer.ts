@@ -1,4 +1,4 @@
-import { AnalysisLabel, SonographyAnalysis } from "@/lib/reportType";
+import { AnalysisLabel, SonographyAnalysis } from "@/services/types/reportType";
 
 interface GetImageCommentSummaryProps {
   totalAnalysisImageCount: number;

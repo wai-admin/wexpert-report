@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { reportApi } from "@/services/api";
-import { ReportUploadRequest, ReportUploadResponse, QUERY_KEYS } from "@/lib";
+import { ReportUploadRequest, ReportUploadResponse } from "@/services/types";
+import { QUERY_KEYS } from "@/services/queryKeys";
 import { checkFalsy } from "@/utils/common";
 import { useInvalidateReportCache } from "@/hooks";
 

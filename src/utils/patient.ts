@@ -1,8 +1,11 @@
-import { ReportSonography, ReportAnalysisLabel } from "@/lib/reportType";
+import {
+  ReportSonography,
+  ReportAnalysisLabel,
+} from "@/services/types/reportType";
 import {
   Sonography as DetailSonography,
   AnalysisLabel as DetailAnalysisLabel,
-} from "@/lib/patientReportDetailType";
+} from "@/services/types/patientReportDetailType";
 import { checkFalsy } from "@/utils/common";
 
 // 공통 타입 (두 API 모두 지원)

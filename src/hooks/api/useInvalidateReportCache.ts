@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { QUERY_KEYS } from "@/lib";
+import { QUERY_KEYS } from "@/services/queryKeys";
 import { useBridgeStore } from "@/store";
 import { getPatientId } from "@/utils";
 

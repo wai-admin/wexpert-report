@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useBridgeStore } from "../bridge/useBridgeStore";
 import { usePatientControllerStore } from "../patient/usePatientControllerStore";
-import { ReportOptionType } from "@/lib/bridgeMessageType";
+import { ReportOptionType } from "@/types";
 import { CurrentReportModeValues, ReportTabValues } from "@/types";
 import { checkFalsy } from "@/utils";
 

@@ -6,7 +6,7 @@ import {
   PatientReportListResponse,
   AllPatientReportListResponse,
   PatientReportDetailResponse,
-} from "@/lib";
+} from "@/services/types";
 import { ENDPOINTS } from "@/constants/endpoints";
 
 // 리포트 관련 API

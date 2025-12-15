@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { BridgeMessage } from "@/lib/bridgeMessageType";
+import { BridgeMessage } from "@/types/bridgeMessageType";
 
 interface BridgeState {
   bridgeMessage: BridgeMessage | null;

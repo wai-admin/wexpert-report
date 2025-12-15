@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Sonography, AnalysisLabel } from "@/lib/reportType";
+import { Sonography, AnalysisLabel } from "@/services/types/reportType";
 import { ROICoordinate } from "@/utils/roi";
 import { AnalysisImage } from "@/components";
 import {

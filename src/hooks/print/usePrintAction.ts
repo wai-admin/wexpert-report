@@ -3,7 +3,7 @@ import { useReactToPrint } from "react-to-print";
 import { checkTruthy, formatPdfFileName } from "@/utils";
 import { useBridgeStore, useReportListStore } from "@/store";
 import { useReportUpload } from "@/services/useReportUpload";
-import { ReportData } from "@/lib";
+import { ReportData } from "@/services/types";
 import { ImageExportOptionValues } from "@/types";
 
 interface UsePrintActionProps {

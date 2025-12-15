@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { reportApi } from "@/services/api";
-import { QUERY_KEYS } from "@/lib/queryKeys";
+import { QUERY_KEYS } from "@/services/queryKeys";
 import { useReportListStore, useUIStore } from "@/store";
 import { checkTruthy } from "@/utils";
 

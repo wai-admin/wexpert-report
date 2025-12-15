@@ -5,7 +5,7 @@ import {
   useReportListStore,
   useErrorStore,
 } from "@/store";
-import { BridgeMessage, BridgeMessageData } from "@/lib/bridgeMessageType";
+import { BridgeMessage, BridgeMessageData } from "@/types/bridgeMessageType";
 import { BRIDGE_MESSAGE_KEY, EXPIRED_ERROR_CODES } from "@/constants";
 import {
   sendInitialized,
