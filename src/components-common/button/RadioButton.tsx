@@ -9,6 +9,15 @@ const RadioButton = ({ label, checked, onChange }: RadioButtonProps) => {
     <label className="text-[16px] cursor-default font-pretendard flex items-center gap-[10px] text-white">
       <input
         type="radio"
+        // Grammarly 및 브라우저 또는 프로그램 방지 설정
+        spellCheck={false}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        data-gramm="false"
+        data-gramm_editor="false"
+        data-enable-grammarly="false"
+        //
         value={label}
         checked={checked}
         onChange={onChange}

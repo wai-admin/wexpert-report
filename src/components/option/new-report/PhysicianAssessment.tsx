@@ -30,6 +30,14 @@ const PhysicianAssessment = () => {
           maxLength={1000}
           value={physicianAssessment}
           onChange={handleChange}
+          // Grammarly 및 브라우저 또는 프로그램 방지 설정
+          spellCheck={false}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          data-gramm="false"
+          data-gramm_editor="false"
+          data-enable-grammarly="false"
         />
       </div>
     </OptionField>

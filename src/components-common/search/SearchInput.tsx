@@ -29,10 +29,18 @@ const SearchInput = ({ placeholder, onSearch, onClear }: SearchInputProps) => {
           <input
             name="keyword"
             type="text"
+            // Grammarly 및 브라우저 또는 프로그램 방지 설정
+            spellCheck={false}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            data-gramm="false"
+            data-gramm_editor="false"
+            data-enable-grammarly="false"
+            //
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             placeholder={placeholder}
-            autoComplete="off"
             className="w-full h-full text-[16px] text-white placeholder:text-solid-lt font-pretendard bg-transparent outline-none border-none"
           />
         </div>
