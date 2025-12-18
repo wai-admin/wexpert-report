@@ -33,11 +33,13 @@ export const getCurrentReportMode = (): ReportModeResult => {
     usePatientControllerStore.getState().selectedReportTab;
 
   // bridgeMessage가 없으면 NONE
-  if (checkFalsy(bridgeMessage)) {
-    return defaultReportModeResult;
-  }
+  // if (checkFalsy(bridgeMessage)) {
+  //   return defaultReportModeResult;
+  // }
 
-  const { reportMode } = bridgeMessage;
+  // const { reportMode } = bridgeMessage;
+  // nativeMessage의 reportMode에 따라 ReportOptionType을 결정합니다.
+  const reportMode = ReportOptionType.ALL_REPORT_HISTORY;
 
   // ALL_REPORT_HISTORY 모드
   if (reportMode === ReportOptionType.ALL_REPORT_HISTORY) {

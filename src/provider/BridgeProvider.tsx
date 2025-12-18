@@ -52,7 +52,15 @@ const BridgeProvider = ({ children }: BridgeProviderProps) => {
 
         setBridgeMessage(bridgeData);
         setAccessToken(bridgeData.accessToken);
-        setSelectedPatientId(bridgeData.id);
+
+        // setSelectedPatientId(bridgeData.id);
+        /*
+         * nativeMessage의 reportMode가
+         * "all"인 경우 patient Id가 null로 전달
+         * "patient", "create"인 경우 patient Id가 전달
+         * W Expert 프로그램에서 F12를 클릭하여 개발자 도구 콘솔에 native message를 확인할 수 있습니다. 해당 부분에서 patient id를 복사하여 붙여넣으세요.
+         */
+        setSelectedPatientId(null);
       }
     };
 
