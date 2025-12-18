@@ -35,19 +35,18 @@ jobs:
       - name: 🌐 Build
         run: pnpm build
 
-      # version 추출 (config/versions.json의 latestVersion 사용)
+      # version 추출 (config/versions.json의 minimumAppVersion 사용)
       - name: 🏷 Extract version
         id: version
         run: |
-          LATEST=$(cat config/versions.json | jq -r '.latestVersion')
-          echo "LATEST_VERSION=$LATEST" >> $GITHUB_ENV
-          echo "Extracted latestVersion from config: $LATEST"
+          MINIMUM_APP=$(cat config/versions.json | jq -r '.minimumAppVersion')
+          echo "MINIMUM_APP_VERSION=$MINIMUM_APP" >> $GITHUB_ENV
 
       # dist 구조 재정렬
       - name: 🗂 Prepare versioned build
         run: |
-          mkdir -p output/versions/${{ env.LATEST_VERSION }}
-          cp -r dist/* output/versions/${{ env.LATEST_VERSION }}/
+          mkdir -p output/versions/${{ env.MINIMUM_APP_VERSION }}
+          cp -r dist/* output/versions/${{ env.MINIMUM_APP_VERSION }}/
 
       # loader index.html 생성
       - name: 🧩 Generate loader index.html
@@ -58,31 +57,14 @@ jobs:
           cp templates/loader.html output/index.html
 
           # config/versions.json에서 버전 정보 추출
-          LATEST_VERSION=$(cat config/versions.json | jq -r '.latestVersion')
-          LAST_VERSION=$(cat config/versions.json | jq -r '.lastVersion')
-          SUPPORTED_VERSIONS=$(cat config/versions.json | jq -c '.supportedVersions')
-
-          # latestVersion을 supportedVersions에 추가 (중복 체크)
-          if [[ "$SUPPORTED_VERSIONS" != *"\"$LATEST_VERSION\""* ]]; then
-            if [ "$SUPPORTED_VERSIONS" = "[]" ]; then
-              AVAILABLE_VERSIONS="[\"$LATEST_VERSION\"]"
-            else
-              # 배열 끝에 추가: ["1.8.1"] → ["1.8.1","1.9.0"]
-              AVAILABLE_VERSIONS="${SUPPORTED_VERSIONS%]*},\"$LATEST_VERSION\"]"
-            fi
-          else
-            AVAILABLE_VERSIONS="$SUPPORTED_VERSIONS"
-          fi
-
-          echo "📦 Latest Version: $LATEST_VERSION"
-          echo "📦 Last Version: $LAST_VERSION"
-          echo "📦 Supported Versions: $SUPPORTED_VERSIONS"
-          echo "📦 Available Versions (for loader): $AVAILABLE_VERSIONS"
+          MINIMUM_APP_VERSION=$(cat config/versions.json | jq -r '.minimumAppVersion')
+          CURRENT_APP_VERSION=$(cat config/versions.json | jq -r '.currentAppVersion')
+          SUPPORTED_APP_VERSIONS=$(cat config/versions.json | jq -c '.supportedAppVersions')
 
           # 변수 치환
-          sed -i "s/__LATEST_VERSION__/$LATEST_VERSION/g" output/index.html
-          sed -i "s/__LAST_VERSION__/$LAST_VERSION/g" output/index.html
-          sed -i "s/__AVAILABLE_VERSIONS__/$AVAILABLE_VERSIONS/g" output/index.html
+          sed -i "s/__MINIMUM_APP_VERSION__/$MINIMUM_APP_VERSION/g" output/index.html
+          sed -i "s/__CURRENT_APP_VERSION__/$CURRENT_APP_VERSION/g" output/index.html
+          sed -i "s/__SUPPORTED_APP_VERSIONS__/$SUPPORTED_APP_VERSIONS/g" output/index.html
 
       # 디버깅: output 폴더 구조 확인
       - name: 🔍 Check output structure
@@ -93,13 +75,8 @@ jobs:
         env:
           S3_BUCKET: wexpert-report
         run: |
-          echo "📤 Uploading new version..."
-
           # 새 구조 업로드 (이전 버전 보존)
           aws s3 sync ./output/ s3://$S3_BUCKET/ --exclude ".DS_Store"
-
-          echo "✅ Deployed to s3://$S3_BUCKET/"
-          echo "📦 Version: ${{ env.LATEST_VERSION }}"
 
       - name: 🔁 Invalidate CloudFront cache
         run: |

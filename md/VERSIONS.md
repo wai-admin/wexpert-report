@@ -6,52 +6,73 @@ C# 네이티브 앱과 React 웹뷰 간의 Bridge 호환성을 관리하며, S3 
 
 ---
 
+## 📜 관련 파일
+
+### versions.json ⭐️⭐️⭐️⭐️⭐️
+
+- Native App 버전 정보 명시.
+- 해당 파일을 기준으로 S3 버킷에 버전 디렉터리가 생성됨.
+- Native App 버전 수정 시 필수로 함께 변경되어야 하는 파일.
+
+### loader.html
+
+- index.html로 파일명이 치환되어 S3 버킷에 업로드됨.
+- 브라우저에서 호스팅 시 처음으로 실행되는 파일.
+- Bridge를 통해 Native 버전 정보를 수신하고 이를 기반으로 어떤 버전의 웹 프로젝트를 표시할지 결정하는 로직이 존재함.
+
+### ci-develop / ci-stage / ci-prod
+
+- versions.json의 정보를 기반으로 S3 버킷에 파일을 업로드 함.
+- versions.json의 정보를 기반으로 loader.html의 버전 정보를 주입.
+
+---
+
 ## 📊 버전 필드 설명
 
 ✅ 파일 참고: versions.json
 
-### 1. `latestVersion` (최신 범위 시작 버전)
+### 1. `minimumAppVersion` (최신 범위 시작 버전)
 
 현재 사용 중인 **버전 범위의 시작점**입니다.
 
-- 이 버전부터 `lastVersion`까지는 **Bridge 변경 없음**
+- 이 버전부터 `currentAppVersion`까지는 **Bridge 변경 없음**
 - 하위 호환성을 유지하는 버전 범위의 첫 번째 버전
 - **S3에 배포되는 실제 폴더명**으로 사용됨
 
 **예시**:
 
 ```json
-"latestVersion": "1.8.1.25336"
+"minimumAppVersion": "1.8.1.25336"
 ```
 
-### 2. `lastVersion` (최신 범위 마지막 버전)
+### 2. `currentAppVersion` (최신 범위 마지막 버전)
 
 현재 사용 중인 **버전 범위의 끝점**입니다.
 
-- `latestVersion` ~ `lastVersion` 사이는 **동일한 코드** 사용 가능
-- C# 네이티브 앱이 이 범위의 어떤 버전이어도 `latestVersion`의 웹뷰로 동작
+- `minimumAppVersion` ~ `currentAppVersion` 사이는 **동일한 코드** 사용 가능
+- C# 네이티브 앱이 이 범위의 어떤 버전이어도 `minimumAppVersion`의 웹뷰로 동작
 
 **예시**:
 
 ```json
-"latestVersion": "1.8.1.25336",
-"lastVersion": "1.8.3.50000"
+"minimumAppVersion": "1.8.1.25336",
+"currentAppVersion": "1.8.3.50000"
 ```
 
 → 의미: 1.8.1.25336 ~ 1.8.3.50000 동안 **Bridge 변경 없음**
 
-### 3. `supportedVersions` (지원 버전 목록)
+### 3. `supportedAppVersions` (지원 버전 목록)
 
 과거에 사용했던 **주요 버전들의 목록**입니다.
 
 - Bridge에 **Breaking Change**가 있었던 버전들
 - 각 버전은 S3에 별도 폴더로 배포됨
-- 배열의 순서는 오래된 것부터 최신 순
+- 배열의 순서 상관 없음
 
 **예시**:
 
 ```json
-"supportedVersions": [
+"supportedAppVersions": [
   "1.7.0.10000",
   "1.8.1.25336"
 ]
@@ -71,9 +92,9 @@ C# 네이티브 앱과 React 웹뷰 간의 Bridge 호환성을 관리하며, S3 
 
 ```json
 {
-  "latestVersion": "1.8.1.25336",
-  "lastVersion": "1.8.1.25336",
-  "supportedVersions": []
+  "minimumAppVersion": "1.8.1.25336",
+  "currentAppVersion": "1.8.1.25336",
+  "supportedAppVersions": []
 }
 ```
 
@@ -81,9 +102,9 @@ C# 네이티브 앱과 React 웹뷰 간의 Bridge 호환성을 관리하며, S3 
 
 ```json
 {
-  "latestVersion": "1.8.1.25336",
-  "lastVersion": "1.8.2.30000",     ← 변경
-  "supportedVersions": []             ← 변경 없음
+  "minimumAppVersion": "1.8.1.25336",
+  "currentAppVersion": "1.8.2.30000",     ← 변경
+  "supportedAppVersions": []             ← 변경 없음
 }
 ```
 
@@ -102,9 +123,9 @@ C# 네이티브 앱과 React 웹뷰 간의 Bridge 호환성을 관리하며, S3 
 
 ```json
 {
-  "latestVersion": "1.8.1.25336",
-  "lastVersion": "1.8.3.50000",
-  "supportedVersions": []
+  "minimumAppVersion": "1.8.1.25336",
+  "currentAppVersion": "1.8.3.50000",
+  "supportedAppVersions": []
 }
 ```
 
@@ -112,10 +133,10 @@ C# 네이티브 앱과 React 웹뷰 간의 Bridge 호환성을 관리하며, S3 
 
 ```json
 {
-  "latestVersion": "1.8.4.60000",     ← 새 버전으로 변경
-  "lastVersion": "1.8.4.60000",       ← 새 버전으로 변경
-  "supportedVersions": [
-    "1.8.1.25336"                     ← 기존 latestVersion 추가
+  "minimumAppVersion": "1.8.4.60000",     ← 새 버전으로 변경
+  "currentAppVersion": "1.8.4.60000",       ← 새 버전으로 변경
+  "supportedAppVersions": [
+    "1.8.1.25336"                     ← 기존 minimumAppVersion 추가
   ]
 }
 ```
@@ -137,9 +158,9 @@ C# 네이티브 앱과 React 웹뷰 간의 Bridge 호환성을 관리하며, S3 
 
 ```json
 {
-  "latestVersion": "1.9.0.80000",
-  "lastVersion": "1.9.2.85000",
-  "supportedVersions": [
+  "minimumAppVersion": "1.9.0.80000",
+  "currentAppVersion": "1.9.2.85000",
+  "supportedAppVersions": [
     "1.7.0.10000",    ← 첫 버전
     "1.8.1.25336",    ← 두 번째 Breaking Change
     "1.8.4.60000"     ← 세 번째 Breaking Change
@@ -171,23 +192,23 @@ s3://bucket/versions/
 
 ```json
 {
-  "latestVersion": "1.9.0.80000",
-  "lastVersion": "1.9.2.85000",
-  "supportedVersions": ["1.7.0.10000", "1.8.1.25336", "1.8.4.60000"]
+  "minimumAppVersion": "1.9.0.80000",
+  "currentAppVersion": "1.9.2.85000",
+  "supportedAppVersions": ["1.7.0.10000", "1.8.1.25336", "1.8.4.60000"]
 }
 ```
 
-### 시나리오 1: nativeVersion < latestVersion
+### 시나리오 1: nativeVersion < minimumAppVersion
 
-**조건**: nativeVersion이 `latestVersion`보다 **낮은** 경우
+**조건**: nativeVersion이 `minimumAppVersion`보다 **낮은** 경우
 
 **예시**: nativeVersion = `1.7.2.53455`
 
 **로직**:
 
-1. latestVersion(1.9.0.80000) ~ lastVersion(1.9.2.85000) 범위 체크 → ❌ 범위 밖
-2. nativeVersion < latestVersion → ✅ 과거 버전
-3. `supportedVersions`에서 **가장 가까우면서 낮은** 버전 찾기
+1. minimumAppVersion(1.9.0.80000) ~ currentAppVersion(1.9.2.85000) 범위 체크 → ❌ 범위 밖
+2. nativeVersion < minimumAppVersion → ✅ 과거 버전
+3. `supportedAppVersions`에서 **가장 가까우면서 낮은** 버전 찾기
 4. 후보: `1.7.0.10000` ✅
 
 **결과**: `/versions/1.7.0.10000/` 로 호스팅
@@ -202,7 +223,7 @@ s3://bucket/versions/
 → 선택: 1.7.0.10000 ✅
 ```
 
-### 시나리오 2: latestVersion ≤ nativeVersion ≤ lastVersion
+### 시나리오 2: minimumAppVersion ≤ nativeVersion ≤ currentAppVersion
 
 **조건**: nativeVersion이 현재 활성 **범위 내**인 경우
 
@@ -210,8 +231,8 @@ s3://bucket/versions/
 
 **로직**:
 
-1. latestVersion(1.9.0.80000) ~ lastVersion(1.9.2.85000) 범위 체크 → ✅ 범위 내
-2. `latestVersion` 반환
+1. minimumAppVersion(1.9.0.80000) ~ currentAppVersion(1.9.2.85000) 범위 체크 → ✅ 범위 내
+2. `minimumAppVersion` 반환
 
 **결과**: `/versions/1.9.0.80000/` 로 호스팅
 
@@ -220,17 +241,17 @@ s3://bucket/versions/
 - 1.9.0 ~ 1.9.2 동안 Bridge 변경 없음
 - 모두 동일한 웹뷰 코드 사용
 
-### 시나리오 3: nativeVersion > lastVersion
+### 시나리오 3: nativeVersion > currentAppVersion
 
-**조건**: nativeVersion이 `lastVersion`보다 **높은** 경우 (미래 버전)
+**조건**: nativeVersion이 `currentAppVersion`보다 **높은** 경우 (미래 버전)
 
 **예시**: nativeVersion = `1.9.4.00000`
 
 **로직**:
 
-1. latestVersion(1.9.0.80000) ~ lastVersion(1.9.2.85000) 범위 체크 → ❌ 범위 밖
-2. nativeVersion > lastVersion → ✅ 미래 버전
-3. `latestVersion` 반환 (최신 코드 사용)
+1. minimumAppVersion(1.9.0.80000) ~ currentAppVersion(1.9.2.85000) 범위 체크 → ❌ 범위 밖
+2. nativeVersion > currentAppVersion → ✅ 미래 버전
+3. `minimumAppVersion` 반환 (최신 코드 사용)
 
 **결과**: `/versions/1.9.0.80000/` 로 호스팅
 
@@ -243,19 +264,19 @@ s3://bucket/versions/
 
 ## 📊 전체 매칭 테이블
 
-| nativeVersion | 범위               | 매칭 로직                                   | 결과 버전   |
-| ------------- | ------------------ | ------------------------------------------- | ----------- |
-| 1.6.5.00000   | < latest           | supportedVersions에서 가장 가까운 낮은 버전 | 1.7.0.10000 |
-| 1.7.0.10000   | < latest           | 정확히 일치                                 | 1.7.0.10000 |
-| 1.7.2.53455   | < latest           | supportedVersions에서 가장 가까운 낮은 버전 | 1.7.0.10000 |
-| 1.8.0.20000   | < latest           | supportedVersions에서 가장 가까운 낮은 버전 | 1.8.1.25336 |
-| 1.8.2.40000   | < latest           | supportedVersions에서 가장 가까운 낮은 버전 | 1.8.1.25336 |
-| 1.8.5.70000   | < latest           | supportedVersions에서 가장 가까운 낮은 버전 | 1.8.4.60000 |
-| 1.9.0.80000   | = latest           | latestVersion 사용                          | 1.9.0.80000 |
-| 1.9.1.82000   | latest ~ last 사이 | latestVersion 사용                          | 1.9.0.80000 |
-| 1.9.2.85000   | = last             | latestVersion 사용                          | 1.9.0.80000 |
-| 1.9.4.00000   | > last             | latestVersion 사용 (미래 버전)              | 1.9.0.80000 |
-| 2.0.0.00000   | > last             | latestVersion 사용 (미래 버전)              | 1.9.0.80000 |
+| nativeVersion | 범위                                       | 매칭 로직                                      | 결과 버전   |
+| ------------- | ------------------------------------------ | ---------------------------------------------- | ----------- |
+| 1.6.5.00000   | < min app version                          | supportedAppVersions에서 가장 가까운 낮은 버전 | 1.7.0.10000 |
+| 1.7.0.10000   | < min app version                          | 정확히 일치                                    | 1.7.0.10000 |
+| 1.7.2.53455   | < min app version                          | supportedAppVersions에서 가장 가까운 낮은 버전 | 1.7.0.10000 |
+| 1.8.0.20000   | < min app version                          | supportedAppVersions에서 가장 가까운 낮은 버전 | 1.8.1.25336 |
+| 1.8.2.40000   | < min app version                          | supportedAppVersions에서 가장 가까운 낮은 버전 | 1.8.1.25336 |
+| 1.8.5.70000   | < min app version                          | supportedAppVersions에서 가장 가까운 낮은 버전 | 1.8.4.60000 |
+| 1.9.0.80000   | = min app version                          | minimumAppVersion 사용                         | 1.9.0.80000 |
+| 1.9.1.82000   | min app version ~ current app version 사이 | minimumAppVersion 사용                         | 1.9.0.80000 |
+| 1.9.2.85000   | = current app version                      | minimumAppVersion 사용                         | 1.9.0.80000 |
+| 1.9.4.00000   | > current app version                      | minimumAppVersion 사용 (미래 버전)             | 1.9.0.80000 |
+| 2.0.0.00000   | > current app version                      | minimumAppVersion 사용 (미래 버전)             | 1.9.0.80000 |
 
 ---
 
@@ -267,37 +288,24 @@ s3://bucket/versions/
 # 1. 버전만 업데이트
 # config/versions.json
 {
-  "lastVersion": "1.8.2.30000"  ← 변경
+  "currentAppVersion": "1.8.2.30000"  ← 변경
 }
 
-# 2. 커밋 & 푸시
-git add config/versions.json
-git commit -m "chore: bump lastVersion to 1.8.2.30000"
-git push
-
-# 3. CI/CD는 자동으로 스킵 (새 배포 없음)
 ```
 
 ### 2. **Breaking Change 업데이트**
 
 ```bash
-# 1. 버전 업데이트 및 supportedVersions 추가
+# 1. 버전 업데이트 및 supportedAppVersions 추가
 # config/versions.json
 {
-  "latestVersion": "1.8.4.60000",    ← 새 버전
-  "lastVersion": "1.8.4.60000",      ← 새 버전
-  "supportedVersions": [
+  "minimumAppVersion": "1.8.4.60000",    ← 새 버전
+  "currentAppVersion": "1.8.4.60000",      ← 새 버전
+  "supportedAppVersions": [
     "1.8.1.25336"                     ← 기존 추가
   ]
 }
 
-# 2. 커밋 & 푸시
-git add config/versions.json
-git commit -m "feat: bump to 1.8.4.60000 (Bridge API changed)"
-git push
-
-# 3. CI/CD가 자동으로 새 버전 배포
-# → S3에 /versions/1.8.4.60000/ 생성
 ```
 
 ---
@@ -308,9 +316,9 @@ git push
 
 ```json
 {
-  "latestVersion": "1.8.1.25336",
-  "lastVersion": "1.8.1.25336",
-  "supportedVersions": []
+  "minimumAppVersion": "1.8.1.25336",
+  "currentAppVersion": "1.8.1.25336",
+  "supportedAppVersions": []
 }
 ```
 
@@ -323,9 +331,9 @@ git push
 
 ```json
 {
-  "latestVersion": "1.8.1.25336",
-  "lastVersion": "1.8.3.50000",
-  "supportedVersions": []
+  "minimumAppVersion": "1.8.1.25336",
+  "currentAppVersion": "1.8.3.50000",
+  "supportedAppVersions": []
 }
 ```
 
@@ -338,9 +346,9 @@ git push
 
 ```json
 {
-  "latestVersion": "1.8.4.60000",
-  "lastVersion": "1.8.5.70000",
-  "supportedVersions": ["1.8.1.25336"]
+  "minimumAppVersion": "1.8.4.60000",
+  "currentAppVersion": "1.8.5.70000",
+  "supportedAppVersions": ["1.8.1.25336"]
 }
 ```
 
@@ -355,54 +363,27 @@ git push
 
 ### ✅ DO
 
-- `lastVersion`은 항상 `latestVersion` 이상이어야 함
-- Breaking Change 시 기존 `latestVersion`을 `supportedVersions`에 추가
+- `currentAppVersion`은 항상 `minimumAppVersion` 이상이어야 함
+- Breaking Change 시 기존 `minimumAppVersion`을 `supportedAppVersions`에 추가
 - 버전은 시간 순서대로 증가
 
 ### ❌ DON'T
 
-- `lastVersion` < `latestVersion` (논리적 오류)
-- Breaking Change 없이 `supportedVersions` 추가
-- 배포 없이 `latestVersion` 변경
-
----
-
-## 🚀 CI/CD 자동화
-
-### 배포 조건
-
-```yaml
-# latestVersion이 S3에 없으면 새로 배포
-if ! aws s3 ls s3://bucket/versions/$LATEST_VERSION/; then
-  echo "Deploying new version: $LATEST_VERSION"
-  # 배포 실행
-fi
-```
-
-### 버전 검증
-
-```yaml
-# lastVersion >= latestVersion 체크
-LATEST=$(cat config/versions.json | jq -r '.latestVersion')
-LAST=$(cat config/versions.json | jq -r '.lastVersion')
-
-if [[ "$LAST" < "$LATEST" ]]; then
-  echo "❌ Error: lastVersion must be >= latestVersion"
-  exit 1
-fi
-```
+- `currentAppVersion` < `minimumAppVersion` (논리적 오류)
+- Breaking Change 없이 `supportedAppVersions` 추가
+- 배포 없이 `minimumAppVersion` 변경
 
 ---
 
 ## 📖 용어 정리
 
-| 용어                | 의미                  | 예시                  |
-| ------------------- | --------------------- | --------------------- |
-| `latestVersion`     | 현재 활성 범위의 시작 | 1.8.1.25336           |
-| `lastVersion`       | 현재 활성 범위의 끝   | 1.8.3.50000           |
-| `supportedVersions` | 과거 주요 버전들      | ["1.7.0", "1.8.1"]    |
-| Breaking Change     | Bridge API 변경       | postMessage 구조 변경 |
-| 하위 호환성         | 이전 버전 지원        | 1.8.1 사용자도 작동   |
+| 용어                   | 의미                  | 예시                  |
+| ---------------------- | --------------------- | --------------------- |
+| `minimumAppVersion`    | 현재 활성 범위의 시작 | 1.8.1.25336           |
+| `currentAppVersion`    | 현재 활성 범위의 끝   | 1.8.3.50000           |
+| `supportedAppVersions` | 과거 주요 버전들      | ["1.7.0", "1.8.1"]    |
+| Breaking Change        | Bridge API 변경       | postMessage 구조 변경 |
+| 하위 호환성            | 이전 버전 지원        | 1.8.1 사용자도 작동   |
 
 ---
 
@@ -419,40 +400,40 @@ fi
 
 ```
 # 첫 배포
-latestVersion: 1.8.1.25336
-lastVersion: 1.8.1.25336
-supportedVersions: []
+minimumAppVersion: 1.8.1.25336
+currentAppVersion: 1.8.1.25336
+supportedAppVersions: []
 
 # 1.8.2 릴리스 (Bridge 변경 없음)
-latestVersion: 1.8.1.25336  (유지)
-lastVersion: 1.8.2.30000    (갱신)
-supportedVersions: []
+minimumAppVersion: 1.8.1.25336  (유지)
+currentAppVersion: 1.8.2.30000    (갱신)
+supportedAppVersions: []
 
 # 1.8.3 릴리스 (Bridge 변경 없음)
-latestVersion: 1.8.1.25336  (유지)
-lastVersion: 1.8.3.50000    (갱신)
-supportedVersions: []
+minimumAppVersion: 1.8.1.25336  (유지)
+currentAppVersion: 1.8.3.50000    (갱신)
+supportedAppVersions: []
 
 # 1.8.4 릴리스 (Bridge 변경 있음 - Breaking Change!)
-latestVersion: 1.8.4.60000  (새 버전)
-lastVersion: 1.8.4.60000    (새 버전)
-supportedVersions: [
-  "1.8.1.25336"              (기존 latestVersion 추가)
+minimumAppVersion: 1.8.4.60000  (새 버전)
+currentAppVersion: 1.8.4.60000    (새 버전)
+supportedAppVersions: [
+  "1.8.1.25336"              (기존 minimumAppVersion 추가)
 ]
 
 # 1.8.5 릴리스 (Bridge 변경 없음)
-latestVersion: 1.8.4.60000  (유지)
-lastVersion: 1.8.5.70000    (갱신)
-supportedVersions: [
+minimumAppVersion: 1.8.4.60000  (유지)
+currentAppVersion: 1.8.5.70000    (갱신)
+supportedAppVersions: [
   "1.8.1.25336"              (유지)
 ]
 
 # 1.9.0 릴리스 (Bridge 변경 있음 - Breaking Change!)
-latestVersion: "1.9.0.80000"  (새 버전)
-lastVersion: "1.9.0.80000"    (새 버전)
-supportedVersions: [
+minimumAppVersion: "1.9.0.80000"  (새 버전)
+currentAppVersion: "1.9.0.80000"    (새 버전)
+supportedAppVersions: [
   "1.8.1.25336",               (유지)
-  "1.8.4.60000"                (기존 latestVersion 추가)
+  "1.8.4.60000"                (기존 minimumAppVersion 추가)
 ]
 ```
 
@@ -464,9 +445,9 @@ supportedVersions: [
 
 ```json
 {
-  "latestVersion": "1.9.0.80000",
-  "lastVersion": "1.9.2.85000",
-  "supportedVersions": [
+  "minimumAppVersion": "1.9.0.80000",
+  "currentAppVersion": "1.9.2.85000",
+  "supportedAppVersions": [
     "1.7.0.10000", // 2024-06: 첫 배포
     "1.8.1.25336", // 2024-09: Bridge v2 (Breaking Change)
     "1.8.4.60000" // 2024-11: Bridge v3 (Breaking Change)
@@ -498,15 +479,15 @@ supportedVersions: [
 s3://wexpert-report-dev/
 ├── index.html                    (Loader)
 └── versions/
-    ├── {latestVersion}/         (현재 활성 버전)
-    └── {supportedVersions[]}/   (과거 버전들)
+    ├── {minimumAppVersion}/         (현재 활성 버전)
+    └── {supportedAppVersions[]}/   (과거 버전들)
 ```
 
 ### Loader 매칭 로직
 
-1. `AVAILABLE_VERSIONS` = `supportedVersions` + `latestVersion`
+1. `AVAILABLE_VERSIONS` = `supportedAppVersions` + `minimumAppVersion`
 2. C# Native Version과 정확히 일치하는 버전 찾기
 3. 없으면 숫자로 변환하여 가장 가까운 버전 선택
 4. 해당 버전의 웹뷰로 리다이렉트
 
-**마지막 업데이트**: 2025-12-10
+**마지막 업데이트**: 2025-12-18

@@ -1,5 +1,5 @@
 {
-  "latestVersion": "1.8.1.25344",
-  "lastVersion": "1.8.1.25344",
-  "supportedVersions": []
+  "minimumAppVersion": "1.8.1.25344",
+  "currentAppVersion": "1.8.1.25344",
+  "supportedAppVersions": []
 }
