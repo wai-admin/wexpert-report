@@ -1,7 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/services/queryKeys";
-import { useBridgeStore } from "@/store";
-import { getPatientId } from "@/utils";
+import { useReportListStore } from "@/store";
 
 /**
  * 리포트 관련 캐시를 무효화하는 훅
@@ -9,8 +8,9 @@ import { getPatientId } from "@/utils";
  */
 export const useInvalidateReportCache = () => {
   const queryClient = useQueryClient();
-  const { bridgeMessage } = useBridgeStore();
-  const patientId = getPatientId(bridgeMessage);
+
+  const { selectedPatientId } = useReportListStore();
+  const patientId = selectedPatientId?.toString() ?? "";
 
   /**
    * 특정 환자의 리포트 리스트 캐시 무효화

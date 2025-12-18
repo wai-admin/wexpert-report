@@ -1,8 +1,10 @@
 import { useMemo } from "react";
-import { useBridgeStore } from "../bridge/useBridgeStore";
-import { usePatientControllerStore } from "../patient/usePatientControllerStore";
-import { ReportOptionType } from "@/types";
-import { CurrentReportModeValues, ReportTabValues } from "@/types";
+import { useBridgeStore, usePatientControllerStore } from "@/store";
+import {
+  CurrentReportModeValues,
+  ReportTabValues,
+  ReportOptionType,
+} from "@/types";
 import { checkFalsy } from "@/utils";
 
 export interface ReportModeResult {

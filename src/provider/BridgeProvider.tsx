@@ -87,7 +87,6 @@ const BridgeProvider = ({ children }: BridgeProviderProps) => {
    */
   useEffect(() => {
     if (checkTruthy(error) && isError) {
-      console.log("BridgeProvider error: ", error);
       if (isErrorCodeIn(error, EXPIRED_ERROR_CODES)) {
         sendExpiredStatus();
       }
