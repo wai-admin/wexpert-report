@@ -1,5 +1,7 @@
 {
-  "minimumAppVersion": "1.8.1.25344",
-  "currentAppVersion": "1.8.1.25344",
-  "supportedAppVersions": []
+  "minimumAppVersion": "1.9.1.12345",
+  "currentAppVersion": "1.9.1.12345",
+  "supportedAppVersions": [
+    "1.8.1.25344"
+  ]
 }
