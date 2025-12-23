@@ -19,6 +19,7 @@ C# 네이티브 앱과 React 웹뷰 간의 Bridge 호환성을 관리하며, S3 
 - index.html로 파일명이 치환되어 S3 버킷에 업로드됨.
 - 브라우저에서 호스팅 시 처음으로 실행되는 파일.
 - Bridge를 통해 Native 버전 정보를 수신하고 이를 기반으로 어떤 버전의 웹 프로젝트를 표시할지 결정하는 로직이 존재함.
+- 매 배포 마다 이 파일은 새로 배포되므로 이 파일은 하위 호환성이 유지되어야 함.
 
 ### ci-develop / ci-stage / ci-prod
 
@@ -110,7 +111,7 @@ C# 네이티브 앱과 React 웹뷰 간의 Bridge 호환성을 관리하며, S3 
 
 **결과**:
 
-- ✅ 새 배포 없음 (S3에 1.8.1.25336만 유지)
+- ✅ 기존 버킷 경로에 덮어쓰기로 배포, 새 버킷 경로 생성 없음 (S3에 1.8.1.25336만 유지)
 - ✅ 1.8.1.xxxxx ~ 1.8.2.xxxxx 모두 `/versions/1.8.1.25336/` 사용
 
 ---
@@ -366,6 +367,7 @@ s3://bucket/versions/
 - `currentAppVersion`은 항상 `minimumAppVersion` 이상이어야 함
 - Breaking Change 시 기존 `minimumAppVersion`을 `supportedAppVersions`에 추가
 - 버전은 시간 순서대로 증가
+- loader.html 은 하위 호환성이 유지되어야 함.
 
 ### ❌ DON'T
 
