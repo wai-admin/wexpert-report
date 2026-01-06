@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { Sonography, AnalysisLabel } from "@/services/types/reportType";
 import { ROICoordinate } from "@/utils/roi";
 import { AnalysisImage } from "@/components";
 import {
@@ -9,6 +8,7 @@ import {
   getAnalysisResultExist,
   getRoiCoordinates,
 } from "@/utils";
+import { AnalysisLabel, Sonography } from "@/services/types";
 
 interface AnalysisResultProps {
   index: number;
