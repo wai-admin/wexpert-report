@@ -31,6 +31,7 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
     isRuptureExist,
     isInvasionToCapsuleExist,
     isInvasionToLymphNodeExist,
+    leftOrRight,
   } = getAnalysisResultExist({
     analysis,
   });
@@ -61,6 +62,10 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
         <p className="analysis-status">
           <span className="analysis-status" style={{ color: "#595959" }}>
             {i18n("complication-images-attached.image-number", { index })}{" "}
+          </span>
+          |{" "}
+          <span className="analysis-status" style={{ color: "#595959" }}>
+            {i18n("complication-images-attached.image-left-right", { leftOrRight: i18n(`complication-images-attached.${leftOrRight}`) })}{" "}
           </span>
           |{" "}
           <span

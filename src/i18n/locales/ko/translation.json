@@ -38,6 +38,7 @@
     "rupture-comment-with-capsule": "총 {{totalAnalysisImageCount}}장의 이미지 중 {{ruptureImageCount}}장에서 파열이 감지되었으며, 실리콘의 피막 침범이 함께 확인되었습니다.",
     "rupture-comment-with-ln": "총 {{totalAnalysisImageCount}}장의 이미지 중 {{ruptureImageCount}}장에서 파열이 감지되었으며, 실리콘의 림프절 침범이 함께 확인되었습니다.",
     "image-number": "{{index}}번 이미지",
+    "image-left-right": "{{leftOrRight}}측 유방",
     "image-status": {
       "normal": "정상",
       "rupture": "파열",
@@ -50,7 +51,9 @@
       "ln": "현재 이미지는 보형물 파열이 감지되어 실리콘의 림프절 침범 여부를 확인한 이미지입니다.",
       "invasion-to-ln": "AI 분석 결과 누출된 실리콘의 림프절 침범이 감지되었습니다.",
       "no-invasion-to-ln": "AI 분석을 통해 실리콘의 림프절 침범 여부를 확인한 결과 림프절 침범이 감지되지 않았습니다."
-    }
+    },
+    "left": "좌",
+    "right": "우"
   },
   "assessment": {}
 }
