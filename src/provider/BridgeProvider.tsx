@@ -44,24 +44,11 @@ const BridgeProvider = ({ children }: BridgeProviderProps) => {
      * - 환자 ID 저장
      */
     const receiveBridgeMessage = (message: MessageEvent<BridgeMessage>) => {
-      console.info("Bridge message received: ", message);
-      if (message.origin !== window.origin) {
-          console.warn(
-            "Origin mismatch: ",
-            message.origin,
-            "!==",
-            window.origin
-          );
-        return;
-      }
-
       const { data: bridgeData } = message;
+      console.log("receiveBridgeMessage from C#: ", message.data);
       if (bridgeData == null || bridgeData.accessToken == null) {
         console.warn("Invalid bridge data received");
-        return;
       }
-
-      console.log("receiveBridgeMessage from C#: ", message.data);
       if (hasKey(bridgeData, BRIDGE_MESSAGE_KEY.INITIALIZED)) {
         setBridgeMessage(bridgeData);
         setAccessToken(bridgeData.accessToken);
