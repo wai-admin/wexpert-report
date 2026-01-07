@@ -45,22 +45,18 @@ const BridgeProvider = ({ children }: BridgeProviderProps) => {
      */
     const receiveBridgeMessage = (message: MessageEvent<BridgeMessage>) => {
       if (message.origin !== window.origin) {
-        if (import.meta.env.DEV) {
           console.warn(
             "Origin mismatch: ",
             message.origin,
             "!==",
             window.origin
           );
-        }
         return;
       }
 
       const { data: bridgeData } = message;
       if (bridgeData == null || bridgeData.accessToken == null) {
-        if (import.meta.env.DEV) {
-          console.warn("Invalid bridge data received");
-        }
+        console.warn("Invalid bridge data received");
         return;
       }
 
