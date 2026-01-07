@@ -1,11 +1,11 @@
-import { useEffect, ReactNode } from "react";
+import { useEffect, ReactNode, useRef } from "react";
 import {
   useBridgeStore,
   useAuthStore,
   useReportListStore,
   useErrorStore,
 } from "@/store";
-import { BridgeMessage, BridgeMessageData } from "@/types/bridgeMessageType";
+import { BridgeMessage } from "@/types/bridgeMessageType";
 import { BRIDGE_MESSAGE_KEY, EXPIRED_ERROR_CODES } from "@/constants";
 import {
   sendInitialized,
@@ -32,6 +32,7 @@ const BridgeProvider = ({ children }: BridgeProviderProps) => {
   const { setAccessToken } = useAuthStore();
   const { setSelectedPatientId } = useReportListStore();
   const { error, isError } = useErrorStore();
+  const devCounterRef = useRef(0);
 
   /**
    * Bridge 초기화 및 메시지 수신 리스너 등록
@@ -42,21 +43,56 @@ const BridgeProvider = ({ children }: BridgeProviderProps) => {
      * - 액세스 토큰 저장
      * - 환자 ID 저장
      */
-    const receiveBridgeMessage = (message: BridgeMessageData) => {
+    const receiveBridgeMessage = (message: MessageEvent<BridgeMessage>) => {
+      if (message.origin !== window.origin) {
+        if (import.meta.env.DEV) {
+          console.warn(
+            "Origin mismatch: ",
+            message.origin,
+            "!==",
+            window.origin
+          );
+        }
+        return;
+      }
+
+      const { data: bridgeData } = message;
+      if (bridgeData == null || bridgeData.accessToken == null) {
+        if (import.meta.env.DEV) {
+          console.warn("Invalid bridge data received");
+        }
+        return;
+      }
+
       console.log("receiveBridgeMessage from C#: ", message.data);
-
-      const { data } = message;
-
-      if (hasKey(data, BRIDGE_MESSAGE_KEY.INITIALIZED)) {
-        const bridgeData = data as BridgeMessage;
-
+      if (hasKey(bridgeData, BRIDGE_MESSAGE_KEY.INITIALIZED)) {
         setBridgeMessage(bridgeData);
         setAccessToken(bridgeData.accessToken);
         setSelectedPatientId(bridgeData.id);
       }
     };
 
+    // TODO: send message from console for testing
     window.chrome?.webview?.addEventListener("message", receiveBridgeMessage);
+    if (import.meta.env.DEV) {
+      window.addEventListener("message", receiveBridgeMessage);
+      setTimeout(() => {
+        devCounterRef.current += 1;
+        if (devCounterRef.current > 1) return;
+        console.log(
+          `[DEV] Simulating bridge message #${devCounterRef.current}`
+        );
+        window.postMessage(
+          {
+            accessToken: import.meta.env.VITE_WEXPERT_USER_ACCESS_TOKEN || "test-access-token",
+            nativeVersion: import.meta.env.VITE_WEXPERT_NATIVE_VERSION || "1.0.0-dev",
+            id: Number.parseInt(import.meta.env.VITE_WEXPERT_PATIENT_ID) || 0,
+            reportMode: import.meta.env.VITE_WEXPERT_REPORT_MODE || "all",
+          } as BridgeMessage,
+          window.origin
+        );
+      }, 1000);
+    }
     sendInitialized();
 
     return () => {
@@ -64,6 +100,9 @@ const BridgeProvider = ({ children }: BridgeProviderProps) => {
         "message",
         receiveBridgeMessage
       );
+      if (import.meta.env.DEV) {
+        window.removeEventListener("message", receiveBridgeMessage);
+      }
     };
   }, [setBridgeMessage, setAccessToken, setSelectedPatientId]);
 

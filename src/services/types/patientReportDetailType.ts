@@ -50,7 +50,7 @@ export interface Sonography {
   consultationSummary: ConsultationSummary;
 }
 
-interface SonographyAnalysis {
+export interface SonographyAnalysis {
   id: number;
   analyzedAt: string; // ISO date string
   sonographyId: string;
