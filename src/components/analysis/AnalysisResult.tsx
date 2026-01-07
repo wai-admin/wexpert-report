@@ -63,10 +63,12 @@ const AnalysisResult = ({ index, item }: AnalysisResultProps) => {
           <span className="analysis-status" style={{ color: "#595959" }}>
             {i18n("complication-images-attached.image-number", { index })}{" "}
           </span>
-          |{" "}
-          <span className="analysis-status" style={{ color: "#595959" }}>
-            {i18n("complication-images-attached.image-left-right", { leftOrRight: i18n(`complication-images-attached.${leftOrRight}`) })}{" "}
-          </span>
+          {(leftOrRight != null)&&<>
+            |{" "}
+            <span className="analysis-status" style={{ color: "#595959" }}>
+              {i18n("complication-images-attached.image-left-right", { leftOrRight: i18n(`complication-images-attached.${leftOrRight}`) })}{" "}
+            </span>
+          </>}
           |{" "}
           <span
             className="analysis-status"
