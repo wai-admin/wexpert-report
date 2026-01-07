@@ -44,6 +44,7 @@ const BridgeProvider = ({ children }: BridgeProviderProps) => {
      * - 환자 ID 저장
      */
     const receiveBridgeMessage = (message: MessageEvent<BridgeMessage>) => {
+      console.info("Bridge message received: ", message);
       if (message.origin !== window.origin) {
           console.warn(
             "Origin mismatch: ",
