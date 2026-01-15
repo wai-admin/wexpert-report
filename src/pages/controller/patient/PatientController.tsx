@@ -28,7 +28,7 @@ const PatientController = ({ printData, onPrint }: PatientControllerProps) => {
         ? ReportTabValues.NEW_REPORT
         : ReportTabValues.REPORT_HISTORY
     );
-  }, [currentReportMode]);
+  }, [currentReportMode, setSelectedReportTab]);
 
   const isInitialNewReport = initialReportMode === ReportOptionType.NEW_REPORT;
   const isInitialReportHistory =

@@ -16,7 +16,8 @@ export interface ReportModeResult {
 }
 
 const defaultReportModeResult: ReportModeResult = {
-  currentReportMode: CurrentReportModeValues.NONE,
+  // 브라우저에서 시뮬레이션 할 경우 기본 값이 NONE 이면 Report History 탭이 선택된 상태로 표시되는 문제 수정
+  currentReportMode: import.meta.env.DEV ? CurrentReportModeValues.NEW_REPORT : CurrentReportModeValues.NONE,
   initialReportMode: null,
   isNewReportMode: false,
   isPatientReportMode: false,

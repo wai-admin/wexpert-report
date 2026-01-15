@@ -40,6 +40,7 @@
     "invasion-to-ln-exist-comment": "Silicone lymph node invasion was detected.",
     "no-invasion-to-ln-comment": "No silicone lymph node invasion was detected.",
     "image-number": "Image {{index}}",
+    "image-left-right": "{{leftOrRight}} Breast",
     "image-status-normal": "Normal",
     "image-status-rupture": "Rupture",
     "analysis-result-comment": {
@@ -48,6 +49,8 @@
       "invasion-to-capsule": "Silicone capsule invasion was detected.",
       "invasion-to-ln": "Silicone lymph node invasion was detected by the AI analysis.",
       "no-invasion-to-ln": "No silicone lymph node invasion was detected by the AI analysis."
-    }
+    },
+    "left": "Left",
+    "right": "Right"
   }
 }

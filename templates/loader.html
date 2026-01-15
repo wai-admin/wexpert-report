@@ -38,6 +38,8 @@
       const SUPPORTED_APP_VERSIONS = __SUPPORTED_APP_VERSIONS__;
 
       // 버전 문자열을 숫자로 변환 ("1.8.1.00000" → 18100000)
+      // TODO: 버전이 두자릿수가 되면 비교 시 오류 발생.
+      // period 로 자릿수를 나누어 숫자 변환 후 비교하는 방식으로 개선 필요
       function versionToNumber(version) {
         return parseInt(version.replace(/\./g, ""), 10);
       }

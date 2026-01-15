@@ -1,4 +1,4 @@
-import { AnalysisLabel, SonographyAnalysis } from "@/services/types/reportType";
+import { AnalysisLabel, SonographyAnalysis } from "@/services/types";
 
 interface GetImageCommentSummaryProps {
   totalAnalysisImageCount: number;
@@ -186,10 +186,15 @@ const getAnalysisResultExist = (props: GetAnalysisResultExistProps) => {
         label?.result_class?.toLowerCase() === "positive"
     ) ?? false;
 
+  const leftOrRight = analysis?.labels?.find(
+    (label) => label?.result_type === "left_right"
+  )?.result_class;
+
   return {
     isRuptureExist,
     isInvasionToCapsuleExist,
     isInvasionToLymphNodeExist,
+    leftOrRight,
   };
 };
 
