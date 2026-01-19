@@ -169,8 +169,21 @@ const getAnalysisResultExist = (props: GetAnalysisResultExistProps) => {
     analysis?.labels?.some(
       ({ result_type, result_class }: AnalysisLabel) =>
         result_type?.toLowerCase() === "rupture" &&
-        result_class?.toLowerCase() === "positive"
+        result_class?.toLowerCase().startsWith("positive")
     ) ?? false;
+  // 파열 양성일 경우 보형물 성분 결과 확인
+  const isSaline = analysis?.labels?.some(
+      ({ result_type, result_class }: AnalysisLabel) =>
+        result_type?.toLowerCase() === "rupture" &&
+        result_class?.toLowerCase().startsWith("positive") &&
+        result_class?.toLowerCase().includes("saline")
+      ) ?? false;
+  const isSilicone = analysis?.labels?.some(
+      ({ result_type, result_class }: AnalysisLabel) =>
+        result_type?.toLowerCase() === "rupture" &&
+        result_class?.toLowerCase().startsWith("positive") &&
+        result_class?.toLowerCase().includes("silicone")
+      ) ?? false;
   // 실리콘 피막 침범 존재 여부 확인
   const isInvasionToCapsuleExist =
     analysis?.labels?.some(
@@ -192,6 +205,8 @@ const getAnalysisResultExist = (props: GetAnalysisResultExistProps) => {
 
   return {
     isRuptureExist,
+    isSaline,
+    isSilicone,
     isInvasionToCapsuleExist,
     isInvasionToLymphNodeExist,
     leftOrRight,
